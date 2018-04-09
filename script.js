@@ -1,36 +1,46 @@
-var app = angular.module("catApp", ["ngRoute"]);
+
+var app = angular.module('catApp', [
+    'ngRoute',
+    'xeditable',
+]);
+
 
 app.config(function config($routeProvider) {
-  $routeProvider
-    .when("/", {
-      templateUrl: "pages/map.html",
-      controller: "mapController"
-    })
-    .when("/login", {
-      templateUrl: "pages/login.html",
-      controller: "loginController"
-    })
-    .when("/register", {
-      templateUrl: "pages/register.html",
-      controller: "registerController"
-    })
-    .when("/profile", {
-      templateUrl: "pages/profile.html",
-      controller: "profileController"
-    })
-    .when("/grade", {
-      templateUrl: "pages/map.html",
-      controller: "gradeController"
-    })
-    .when("/vote", {
-      templateUrl: "pages/map.html",
-      controller: "voteController"
-    })
-    .when("/display", {
-      templateUrl: "pages/map.html",
-      controller: "displayController"
-    })
-    .otherwise("/");
+    $routeProvider.
+        when('/home', {
+            templateUrl: 'pages/map.html',
+            controller: 'mapController'
+        }).
+        when('/login', {
+            templateUrl: 'pages/login.html',
+            controller: 'loginController'
+        }).
+        when('/register', {
+            templateUrl: 'pages/register.html',
+            controller: 'registerController'
+        }).
+        when('/profile', {
+            templateUrl: 'pages/profile.html',
+            controller: 'profileController'
+        }).
+        when('/grade', {
+            templateUrl: 'pages/map.html',
+            controller: 'gradeController'
+        }).
+        when('/vote', {
+            templateUrl: 'pages/map.html',
+            controller: 'voteController'
+        }).
+        when('/display', {
+            templateUrl: 'pages/map.html',
+            controller: 'displayController'
+        }).
+        when('/admin', {
+            templateUrl: 'pages/admin.html',
+            controller: 'adminController'
+        }).
+
+        otherwise('/home');
 });
 
 app.controller("banController", function($scope) {
@@ -142,3 +152,80 @@ app.controller("voteController", function($scope) {
 app.controller("displayController", function($scope) {
   $scope.message = "display";
 });
+<<<<<<< HEAD
+=======
+
+app.controller("adminController", function ($scope, $filter, $http) {
+    $scope.message = 'admin';
+
+    $scope.users = [
+        { id: 1, name: 'awesome user1', status: 2, group: 4, groupName: 'admin' },
+        { id: 2, name: 'awesome user2', status: undefined, group: 3, groupName: 'vip' },
+        { id: 3, name: 'awesome user3', status: 2, group: null }
+    ];
+
+    $scope.statuses = [
+        { value: 1, text: 'status1' },
+        { value: 2, text: 'status2' },
+        { value: 3, text: 'status3' },
+        { value: 4, text: 'status4' }
+    ];
+
+    $scope.groups = [];
+    $scope.loadGroups = function () {
+        return $scope.groups.length ? null : $http.get('/groups').success(function (data) {
+            $scope.groups = data;
+        });
+    };
+
+    $scope.showGroup = function (user) {
+        if (user.group && $scope.groups.length) {
+            var selected = $filter('filter')($scope.groups, { id: user.group });
+            return selected.length ? selected[0].text : 'Not set';
+        } else {
+            return user.groupName || 'Not set';
+        }
+    };
+
+    $scope.showStatus = function (user) {
+        var selected = [];
+        if (user.status) {
+            selected = $filter('filter')($scope.statuses, { value: user.status });
+        }
+        return selected.length ? selected[0].text : 'Not set';
+    };
+
+    $scope.checkName = function (data, id) {
+        if (id === 2 && data !== 'awesome') {
+            return "Username 2 should be `awesome`";
+        }
+    };
+
+    $scope.saveUser = function (data, id) {
+        //$scope.user not updated yet
+        angular.extend(data, { id: id });
+        return $http.post('/saveUser', data);
+    };
+
+    // remove user
+    $scope.removeUser = function (index) {
+        $scope.users.splice(index, 1);
+    };
+
+    // add user
+    $scope.addUser = function () {
+        $scope.inserted = {
+            id: $scope.users.length + 1,
+            name: '',
+            status: null,
+            group: null
+        };
+        $scope.users.push($scope.inserted);
+    };
+
+});
+
+app.run(['editableOptions', function (editableOptions) {
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+}]);
+>>>>>>> 07d13bbabf7057b2fced5179509590737a68ebd8
