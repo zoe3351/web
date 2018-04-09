@@ -33,6 +33,10 @@ app.config(function config($routeProvider) {
             templateUrl: 'pages/map.html',
             controller: 'displayController'
         }).
+        when('/admin', {
+            templateUrl: 'pages/admin.html',
+            controller: 'adminController'
+        }).
 
         otherwise('/');
 });
@@ -113,5 +117,9 @@ app.controller("voteController", function ($scope) {
 
 app.controller("displayController", function ($scope) {
     $scope.message = 'display';
+});
+
+app.controller("adminController", function ($scope) {
+    $scope.message = 'admin';
 });
 
