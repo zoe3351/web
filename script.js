@@ -87,48 +87,95 @@ app.controller("mapController", function($scope, $http) {
       };
     }
   };
+
+  if (window.localStorage["token"]) {
+    $http
+      .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
+        headers: {
+          "x-access-token": `${window.localStorage["token"]}`
+        }
+      })
+      .success(function(data, status, headers, config) {
+        // $scope.PostDataResponse = data;
+        console.log(data["username"]);
+        $scope.username = data[0]["username"];
+      })
+      .error(function(data, status, header, config) {
+        alert(data["message"]);
+        window.localStorage["token"] = "";
+      });
+  }
 });
 
-app.controller("loginController", function($scope, $http) {
+app.controller("loginController", function($scope, $http, $location) {
   $scope.message = "login";
 
-  let config = {
-    method: "POST",
-    url: "http://bulubulu.ischool.uw.edu/auth/login",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-      "Access-Control-Allow-Headers": "X-Requested-With"
-    },
-    data: {
-      username: $scope.username,
-      password: $scope.password
-    }
+  $scope.login = () => {
+    let config = {
+      method: "POST",
+      url: "http://bulubulu.ischool.uw.edu:4000/auth/login",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: {
+        username: $scope.username,
+        password: $scope.password
+      }
+    };
+    // alert("start login!");
+    $http(config)
+      .success(function(data, status, headers, config) {
+        // $scope.PostDataResponse = data;
+        if (data["auth"]) {
+          window.localStorage["token"] = data["token"];
+          $location.path("#/home");
+        } else {
+          alert(data);
+        }
+      })
+      .error(function(data, status, header, config) {
+        alert(data);
+      });
   };
-  // alert("start login!");
-  $http(config)
-    .success(function(data, status, headers, config) {
-      $scope.PostDataResponse = data;
-    })
-    .error(function(data, status, header, config) {
-      $scope.ResponseDetails =
-        "Data: " +
-        data +
-        "<hr />status: " +
-        status +
-        "<hr />headers: " +
-        header +
-        "<hr />config: " +
-        config;
-    });
   //   .then(function(response) {
   //     $scope.proposals = response.data;
   //   });
 });
 
-app.controller("registerController", function($scope) {
+app.controller("registerController", function($scope, $http, $location) {
   $scope.message = "register";
+
+  $scope.signup = () => {
+    if ($scope.password !== $scope.cm_password) {
+      alert("password must be the same!");
+      return;
+    }
+    let config = {
+      method: "POST",
+      url: "http://bulubulu.ischool.uw.edu:4000/auth/register",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: {
+        username: $scope.username,
+        password: $scope.password
+      }
+    };
+    // alert("start login!");
+    $http(config)
+      .success(function(data, status, headers, config) {
+        // $scope.PostDataResponse = data;
+        if (data["auth"]) {
+          window.localStorage["token"] = data["token"];
+          $location.path("#/home");
+        } else {
+          alert(data);
+        }
+      })
+      .error(function(data, status, header, config) {
+        alert(data);
+      });
+  };
 });
 
 app.controller("profileController", function($scope) {
