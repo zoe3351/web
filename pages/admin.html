@@ -1,32 +1,84 @@
 <div class="container">
+
+    <h3>Draft Proposal Management</h3>
     <div class="row">
-        <p>
-            User Management
-        </p>
+
         <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">
-                <td style="width:35%">Email</td>
-                <td style="width:20%">Phone</td>
-                <td style="width:20%">Group</td>
+                <td style="width:10%">Number</td>
+                <td style="width:40%">Title</td>
+                <td style="width:20%">Location</td>
+                <td style="width:20%">Idea</td>
+                <td style="width:10%">Edit</td>
+            </tr>
+            <tr ng-repeat="draft in proposals">
+                <td>
+                    <span>
+                        {{ draft.no}}
+                    </span>
+                </td>
+                <td>
+                    <span editable-text="draft.title" e-name="title" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.title}}
+                    </span>
+                </td>
+                <td>
+                    <h6 editable-text="draft.location" e-name="location" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.location}}
+                    </h6>
+                </td>
+                <td>
+                    <h6 editable-text="draft.idea" e-name="idea" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.idea}}
+                    </h6>
+                </td>
+                <td style="white-space: nowrap">
+                    <!-- form -->
+                    <form editable-form name="rowform" onbeforesave="saveDraft($data)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                        shown="inserted == draft">
+                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                            save
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                            cancel
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeDraft($index)">del</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <button type="button" class="btn btn-warning" ng-click="addDraft()">Export Drafts to Excel</button>
+    </div>
+
+    <h3>User Management</h3>
+    <div class="row">
+
+        <table class="table table-bordered table-hover table-condensed">
+            <tr style="font-weight: bold">
+                <td style="width:25%">ID</td>
+                <td style="width:25%">Email</td>
+                <td style="width:25%">Phone</td>
                 <td style="width:25%">Edit</td>
             </tr>
             <tr ng-repeat="user in users">
                 <td>
+                    <span>
+                        {{ user.id}}
+                    </span>
+                </td>
+                <td>
                     <!-- editable username (text with validation) -->
-                    <span editable-text="user.name" e-name="name" e-form="rowform" onbeforesave="checkName($data, user.id)">
-                        {{ user.name || 'empty' }}
+                    <span editable-text="user.email" e-name="email" e-form="rowform" onbeforesave="check($data)">
+                        {{ user.email}}
                     </span>
                 </td>
                 <td>
-                    <!-- editable status (select-local) -->
-                    <span editable-select="user.status" e-name="status" e-form="rowform" e-ng-options="s.value as s.text for s in statuses">
-                        {{ showStatus(user) }}
-                    </span>
-                </td>
-                <td>
-                    <!-- editable group (select-remote) -->
-                    <span editable-select="user.group" e-name="group" onshow="loadGroups()" e-form="rowform" e-ng-options="g.id as g.text for g in groups">
-                        {{ showGroup(user) }}
+                    <!-- editable username (text with validation) -->
+                    <span editable-text="user.phone" e-name="phone" e-form="rowform" onbeforesave="check($data)">
+                        {{ user.phone}}
                     </span>
                 </td>
                 <td style="white-space: nowrap">
@@ -47,9 +99,86 @@
                 </td>
             </tr>
         </table>
-        <button type="button" class="btn btn-warning" ng-click="addUser()">Add row</button>
+        <button type="button" class="btn btn-warning" ng-click="addUser()">Add User</button>
+    </div>
+
+    <h3>Proposal Management</h3>
+    <div class="row">
+        <div class="collapse" id="collapseOne">
+            <div class="col-12" ng-model="proposal">
+                {{proposal.idea}}
+            </div>
+        </div>
     </div>
 
 
-    
+    <div class="row">
+        <table class="table table-bordered table-hover table-condensed">
+            <tr style="font-weight: bold">
+                <td style="width:15%">No</td>
+                <td style="width:35%">Title</td>
+                <td style="width:25%">Location</td>
+                <td style="width:25%">Edit</td>
+            </tr>
+            <tr ng-repeat="pro in proposals">
+                <td>
+                    <!-- editable username (text with validation) -->
+                    <span editable-text="pro.no" e-name="no" e-form="rowform" onbeforesave="checkName($data, pro.no)">
+                        {{ pro.no || 'empty' }}
+                    </span>
+                </td>
+                <td>
+                    <!-- editable status (select-local) -->
+                    <span editable-select="pro.title" e-name="title" e-form="rowform" onbeforesave="checkName($data, pro.title)">
+                        {{ pro.title || "empty" }}
+                    </span>
+                </td>
+                <td>
+                    <span editable-select="pro.location" e-name="location" onbeforesave="checkName($data, pro.location)" e-form="rowform">
+                        {{ pro.location || "empty" }}
+                    </span>
+                </td>
+                <td style="white-space: nowrap">
+                    <!-- form -->
+                    <form editable-form name="rowform" onbeforesave="saveUser($data, pro.no)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                        shown="inserted == pro">
+                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                            save
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                            cancel
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeUser($index)">del</button>
+                        <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#collapseOne" ng-click="showPro(pro)">toggle</button>
+                        <button type="button" class="btn btn-warning" ng-click="showPro(null)">collapse</button>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+        <button type="button" class="btn btn-warning">Import Excel as Final Proposal</button>
+    </div>
+
+
+    <h3>Phase Management</h3>
+    <div class="row">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Current Phase</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" ng-model="phase">
+                <option value="1" ng-selected="phase==1">Draft Proposal</option>
+                <option value="2" ng-selected="phase==2">Grade Proposal</option>
+                <option value="3" ng-selected="phase==3">Vote</option>
+                <option value="4" ng-selected="phase==4">Display</option>
+
+            </select>
+        </div>
+
+        <button type="button" class="btn btn-danger">Submit</button>
+    </div>
+
 </div>

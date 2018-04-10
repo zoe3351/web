@@ -123,46 +123,19 @@ app.controller("displayController", function ($scope) {
 app.controller("adminController", function ($scope, $filter, $http) {
     $scope.message = 'admin';
 
+    $http.get('data/proposals.json').then(function (response) {
+        $scope.proposals = response.data;
+    });
+
     $scope.users = [
-        { id: 1, name: 'awesome user1', status: 2, group: 4, groupName: 'admin' },
-        { id: 2, name: 'awesome user2', status: undefined, group: 3, groupName: 'vip' },
-        { id: 3, name: 'awesome user3', status: 2, group: null }
+        { id: 1, email: 'awesome user1', phone: 2},
+        { id: 2, email: 'awesome user2', phone: 3},
+        { id: 3, email: 'awesome user3', phone: 5}
     ];
 
-    $scope.statuses = [
-        { value: 1, text: 'status1' },
-        { value: 2, text: 'status2' },
-        { value: 3, text: 'status3' },
-        { value: 4, text: 'status4' }
-    ];
-
-    $scope.groups = [];
-    $scope.loadGroups = function () {
-        return $scope.groups.length ? null : $http.get('/groups').success(function (data) {
-            $scope.groups = data;
-        });
-    };
-
-    $scope.showGroup = function (user) {
-        if (user.group && $scope.groups.length) {
-            var selected = $filter('filter')($scope.groups, { id: user.group });
-            return selected.length ? selected[0].text : 'Not set';
-        } else {
-            return user.groupName || 'Not set';
-        }
-    };
-
-    $scope.showStatus = function (user) {
-        var selected = [];
-        if (user.status) {
-            selected = $filter('filter')($scope.statuses, { value: user.status });
-        }
-        return selected.length ? selected[0].text : 'Not set';
-    };
-
-    $scope.checkName = function (data, id) {
-        if (id === 2 && data !== 'awesome') {
-            return "Username 2 should be `awesome`";
+    $scope.check = function (data) {
+        if (!data) {
+            return "invalid!";
         }
     };
 
@@ -187,6 +160,14 @@ app.controller("adminController", function ($scope, $filter, $http) {
         };
         $scope.users.push($scope.inserted);
     };
+
+    $scope.proposal = null;
+    $scope.showPro = (pro)=>{
+        $scope.proposal = pro;
+        console.log(pro);
+    }  
+
+    $scope.phase = 1;
 
 });
 
