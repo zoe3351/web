@@ -1,5 +1,8 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
+// modify this later
+const SERVER = "http://localhost:8000/";
+
 app.config(function config($routeProvider) {
     $routeProvider
         .when("/home", {
@@ -32,9 +35,27 @@ app.config(function config($routeProvider) {
         })
         .when("/admin", {
             templateUrl: "pages/admin.html",
-            controller: "adminController"
+            controller: "adminController",
+            resolve: {
+                allUser: function (DataService) {
+                    return DataService.getAllUser();
+                }
+            }
         })
         .otherwise("/home");
+});
+
+
+// create an awesome InboxService to fetch our messages
+app.factory("DataService", function ($http) {
+    function getAllUser() {
+        return $http.get(SERVER + 'user/all').then(function (response) {
+            return response.data;
+        });
+    }
+    return {
+        getAllUser: getAllUser
+    };
 });
 
 app.controller("banController", function ($scope) {
@@ -194,105 +215,113 @@ app.controller("displayController", function ($scope) {
     $scope.message = "display";
 });
 
-app.controller("adminController", function ($scope, $filter, $http) {
-    $scope.message = 'admin';
+app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, allUser) {
+
+    // user mgt part
+    $scope.allUser = allUser.data;
+
+    $scope.saveUser = function (data, id) {
+        let body = {
+            username: data.username,
+            phone: data.phone,
+            email: data.email
+        }
+
+        if (id >= $scope.allUser[$scope.allUser.length-1].user_system_id) {
+            $http.post(SERVER + 'user/add/' + id, body)
+                .success((data, status, headers, config) => {
+                    $route.reload();
+                })
+                .error(function (data, status, header, config) {
+                    alert(data);
+                });;
+        } else {
+            $http.post(SERVER + 'user/edit/' + id, body)
+                .success((data, status, headers, config) => {
+                    $route.reload();
+                })
+                .error(function (data, status, header, config) {
+                    alert(data);
+                });;
+        }
+    };
+
+    // remove user
+    $scope.removeUser = function (id) {
+        $http.post(SERVER + 'user/rm/' + id)
+            .success((data, status, headers, config) => {
+                $route.reload();
+            })
+            .error(function (data, status, header, config) {
+                alert(data);
+            });;
+    };
+
+    // add new user
+    $scope.addUser = function () {
+        $scope.inserted = {
+            user_system_id: $scope.allUser[$scope.allUser.length-1].user_system_id + 1,
+            account_name: "",
+            user_email: null,
+            user_phone_number: null
+        };
+        $scope.allUser.push($scope.inserted);
+    };
+
+
+    $scope.phase = 1;
 
     $http.get('data/proposals.json').then(function (response) {
-        $scope.proposals = response.data;
+        $scope.all_finals = response.data;
     });
+
+    // get all draft proposals
+    $http.get('data/proposals.json').then(function (response) {
+        $scope.all_drafts = response.data;
+    });
+
+    if (window.localStorage["token"]) {
+        $http
+            .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
+                headers: {
+                    "x-access-token": `${window.localStorage["token"]}`
+                }
+            })
+            .success(function (data, status, headers, config) {
+                // $scope.PostDataResponse = data;
+                console.log(data);
+                $scope.username = data[0]["username"];
+                // TODO: set admin page visible only to admin user
+            })
+            .error(function (data, status, header, config) {
+                alert(data["message"]);
+                window.localStorage["token"] = "";
+            });
+    }
+
+    $scope.scrollTo = function (id) {
+        $location.hash(id);
+        $anchorScroll();
+    }
+
+    $scope.upload = function () {
+        var uploadInputFile = angular.element(document.getElementById('uploadInput'))[0].files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+            console.log(event.target.result);
+            //TODO: POST
+        }
+
+        reader.readAsArrayBuffer(uploadInputFile);
+    }
+
+    $scope.message = 'admin';
 
     $scope.check = function (data) {
         if (!data) {
             return "invalid!";
         }
-    };
-
-    $scope.saveUser = function (data, id) {
-        //$scope.user not updated yet
-        angular.extend(data, { id: id });
-        return $http.post('/saveUser', data);
-    };
-
-    $scope.users = [
-        { id: 1, name: "awesome user1", status: 2, group: 4, groupName: "admin" },
-        {
-            id: 2,
-            name: "awesome user2",
-            status: undefined,
-            group: 3,
-            groupName: "vip"
-        },
-        { id: 3, name: "awesome user3", status: 2, group: null }
-    ];
-
-    $scope.statuses = [
-        { value: 1, text: "status1" },
-        { value: 2, text: "status2" },
-        { value: 3, text: "status3" },
-        { value: 4, text: "status4" }
-    ];
-
-    $scope.groups = [];
-    $scope.loadGroups = function () {
-        return $scope.groups.length
-            ? null
-            : $http.get("/groups").success(function (data) {
-                $scope.groups = data;
-            });
-    };
-
-    $scope.showGroup = function (user) {
-        if (user.group && $scope.groups.length) {
-            var selected = $filter("filter")($scope.groups, { id: user.group });
-            return selected.length ? selected[0].text : "Not set";
-        } else {
-            return user.groupName || "Not set";
-        }
-    };
-
-    $scope.showStatus = function (user) {
-        var selected = [];
-        if (user.status) {
-            selected = $filter("filter")($scope.statuses, { value: user.status });
-        }
-        return selected.length ? selected[0].text : "Not set";
-    };
-
-    $scope.checkName = function (data, id) {
-        if (id === 2 && data !== "awesome") {
-            return "Username 2 should be `awesome`";
-        }
-    };
-
-    $scope.saveUser = function (data, id) {
-        //$scope.user not updated yet
-        angular.extend(data, { id: id });
-        return $http.post("/saveUser", data);
-    };
-
-    // remove user
-    $scope.removeUser = function (index) {
-        $scope.users.splice(index, 1);
-    };
-
-    // add user
-    $scope.addUser = function () {
-        $scope.inserted = {
-            id: $scope.users.length + 1,
-            name: "",
-            status: null,
-            group: null
-        };
-
-        $scope.proposal = null;
-        $scope.showPro = (pro) => {
-            $scope.proposal = pro;
-            console.log(pro);
-        }
-
-        $scope.phase = 1;
-
-        $scope.users.push($scope.inserted);
     };
 });
 
