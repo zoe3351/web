@@ -164,7 +164,10 @@ app.controller("loginController", function ($scope, $http, $location) {
 });
 
 app.controller("registerController", function ($scope, $http, $location) {
-    $scope.message = "register";
+    $scope.username = "";
+    $scope.password = "";
+    $scope.email = "";
+    $scope.phone = "";
 
     $scope.signup = () => {
         if ($scope.password !== $scope.cm_password) {
@@ -179,7 +182,9 @@ app.controller("registerController", function ($scope, $http, $location) {
             },
             data: {
                 username: $scope.username,
-                password: $scope.password
+                password: $scope.password,
+                email: $scope.email,
+                phone: $scope.phone
             }
         };
         // alert("start login!");
@@ -227,7 +232,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
             email: data.email
         }
 
-        if (id >= $scope.allUser[$scope.allUser.length-1].user_system_id) {
+        if (id >= $scope.allUser[$scope.allUser.length - 1].user_system_id) {
             $http.post(SERVER + 'user/add/' + id, body)
                 .success((data, status, headers, config) => {
                     $route.reload();
@@ -260,7 +265,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     // add new user
     $scope.addUser = function () {
         $scope.inserted = {
-            user_system_id: $scope.allUser[$scope.allUser.length-1].user_system_id + 1,
+            user_system_id: $scope.allUser[$scope.allUser.length - 1].user_system_id + 1,
             account_name: "",
             user_email: null,
             user_phone_number: null

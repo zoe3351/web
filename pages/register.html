@@ -3,23 +3,40 @@
 		<div class="col-4">
 			<a href="#login">Already have an account? Sign in!</a>
 
-			<form class="form-horizontal">
-				<div class="form-group">
-					<label for="exampleInputEmail1">Username</label>
-					<input type="username" ng-model="username" class="form-control" placeholder="Enter username">
+			<form class="form-horizontal" name="registerForm" ng-submit="submitForm(registerForm.$valid)" novalidate>
+				<div class="form-group" ng-class="{ 'has-error' :registerForm.username.$invalid && !registerForm.username.$pristine}">
+					<label for="Username">Username*</label>
+					<input type="username" name="username" ng-model="username" class="form-control" placeholder="Enter username" ng-pattern="/^[a-zA-Z0-9_.-]*$/"
+					 required>
+					<p ng-show="registerForm.username.$error.required" class="help-block" style="color:red">username is required.</p>
+					<p ng-show="registerForm.username.$error.pattern" class="help-block" style="color:red">only number and characters allowed</p>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' :registerForm.password.$invalid && !registerForm.password.$pristine}">
+					<label for="Password">Password*</label>
+					<input type="password" name="password" class="form-control" ng-model="password" id="InputPassword1" placeholder="Password"
+					 ng-pattern="/^[a-zA-Z0-9_.-]*$/" required>
+					<p ng-show="registerForm.password.$error.required" class="help-block" style="color:red">password is required.</p>
+					<p ng-show="registerForm.password.$error.pattern" class="help-block" style="color:red">only number and characters allowed</p>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error' :registerForm.confirmpassword.$invalid && !registerForm.confirmpassword.$pristine}">
+					<label for="Confirm Password">Confirm Password*</label>
+					<input type="password" name="confirmpassword" class="form-control" ng-model="cm_password" id="InputPassword2" placeholder="Password"
+					 ng-pattern="/^[a-zA-Z0-9_.-]*$/" required>
+					<p ng-show="registerForm.confirmpassword.$error.required" class="help-block" style="color:red">confirm password is required.</p>
+					<p ng-show="registerForm.confirmpassword.$error.pattern" class="help-block" style="color:red">only number and characters allowed</p>
 				</div>
 				<div class="form-group">
-					<label for="exampleInputPassword1">Password</label>
-					<input type="password" class="form-control" ng-model="password" id="InputPassword1" placeholder="Password">
+					<label for="email">Email</label>
+					<input type="email" ng-model="email" name="email" class="form-control" placeholder="For further contact only">
+					<p ng-show="registerForm.email.$error.email" class="help-block" style="color:red">not a valid email</p>
 				</div>
-
 				<div class="form-group">
-					<label for="exampleInputPassword1">Confirm Password</label>
-					<input type="password" class="form-control" ng-model="cm_password" id="InputPassword2" placeholder="Password">
+					<label for="phone">Phone</label>
+					<input type="number" ng-model="phone" name="phone" class="form-control" placeholder="For further contact only" ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$$/">
+					<p ng-show="registerForm.phone.$error.pattern" class="help-block" style="color:red">not a valid number</p>
 				</div>
 
-
-				<button type="submit" class="btn btn-primary" ng-click="signup()">Sign Up</button>
+				<button type="submit" class="btn btn-primary" ng-click="signup()" ng-disabled="!registerForm.$valid">Sign Up</button>
 			</form>
 		</div>
 	</div>
