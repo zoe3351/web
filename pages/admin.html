@@ -26,12 +26,13 @@
 
         <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">
-                <td style="width:10%">Number</td>
-                <td style="width:40%">Title</td>
-                <td style="width:20%">Location</td>
+                <td style="width:10%">ID</td>
+                <td style="width:20%">Title</td>
                 <td style="width:20%">Idea</td>
-                <td style="width:20%">Longitude</td>
-                <td style="width:20%">Latitude</td>
+                <td style="width:20%">Location</td>
+                <td style="width:5%">LAT</td>
+                <td style="width:5%">LONG</td>
+                <td style="width:20%">Edit</td>
             </tr>
             <tr ng-repeat="draft in allDraft">
                 <td>
@@ -42,6 +43,11 @@
                 <td>
                     <h5 editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
                         {{draft.proposal_title}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.proposal_idea" e-name="proposal_idea" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_idea}}
                     </h5>
                 </td>
                 <td>
@@ -84,11 +90,11 @@
 
         <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">
-                <td style="width:25%">ID</td>
-                <td style="width:25%">username</td>
-                <td style="width:25%">Email</td>
-                <td style="width:25%">Phone</td>
-                <td style="width:25%">Edit</td>
+                <td style="width:10%">ID</td>
+                <td style="width:20%">username</td>
+                <td style="width:20%">Email</td>
+                <td style="width:20%">Phone</td>
+                <td style="width:30%">Edit</td>
             </tr>
             <tr ng-repeat="user in allUser">
                 <td>
@@ -148,28 +154,28 @@
     <div class="row">
         <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">
-                <td style="width:15%">No</td>
+                <td style="width:15%">ID</td>
                 <td style="width:35%">Title</td>
                 <td style="width:25%">Location</td>
                 <td style="width:25%">Edit</td>
             </tr>
-            <tr ng-repeat="final in all_finals">
+            <tr ng-repeat="final in allFinal">
                 <td>
                     <!-- editable username (text with validation) -->
-                    <span editable-text="final.no" e-name="no" e-form="rowform" onbeforesave="checkName($data, final.no)">
-                        {{ final.no || 'empty' }}
-                    </span>
+                    <h5 editable-text="final.proposal_id" e-name="id" e-form="rowform">
+                        {{ final.proposal_id || 'empty' }}
+                    </h5>
                 </td>
                 <td>
                     <!-- editable status (select-local) -->
-                    <span editable-select="final.title" e-name="title" e-form="rowform" onbeforesave="checkName($data, final.title)">
-                        {{ final.title || "empty" }}
-                    </span>
+                    <h5 editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
+                        {{ final.final_proposal_title || "empty" }}
+                    </h5>
                 </td>
                 <td>
-                    <span editable-select="final.location" e-name="location" onbeforesave="checkName($data, final.location)" e-form="rowform">
-                        {{ final.location || "empty" }}
-                    </span>
+                    <h5 editable-select="final.final_project_location" e-name="location" e-form="rowform">
+                        {{ final.final_project_location || "empty" }}
+                    </h5>
                 </td>
                 <td style="white-space: nowrap">
                     <!-- form -->
@@ -183,10 +189,10 @@
                         </button>
                     </form>
                     <div class="buttons" ng-show="!rowform.$visible">
-                        <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                        <button type="button" class="btn btn-danger" ng-click="removeUser($index)">del</button>
-                        <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#collapseOne" ng-click="showPro(final)">toggle</button>
-                        <button type="button" class="btn btn-warning" ng-click="showPro(null)">collapse</button>
+                        <button type="button" class="btn btn-primary" ng-click="open(final.proposal_id)">
+                                <i class="fa fa-external-link-square-alt"></i>
+                            edit</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeFinal(final.proposal_id)">del</button>
                     </div>
                 </td>
             </tr>

@@ -21,6 +21,15 @@ app.config(function config($routeProvider) {
             templateUrl: "pages/profile.html",
             controller: "profileController"
         })
+        .when("/proposalDetail/:pid", {
+            templateUrl: "pages/proposalDetail.html",
+            controller: "proposalDetailController",
+            resolve: {
+                proposal: function (DataService, $route) {
+                    return DataService.getProposal($route.current.params.pid);
+                },
+            }
+        })
         .when("/grade", {
             templateUrl: "pages/map.html",
             controller: "gradeController"
@@ -43,8 +52,8 @@ app.config(function config($routeProvider) {
                 allDraft: function (DataService) {
                     return DataService.getAllDraft();
                 },
-                allProposal: function (DataService) {
-                    return DataService.getAllProposal();
+                allFinal: function (DataService) {
+                    return DataService.getAllFinal();
                 },
             }
         })
@@ -66,8 +75,14 @@ app.factory("DataService", function ($http) {
         });
     }
 
-    function getAllProposal() {
+    function getAllFinal() {
         return $http.get(SERVER + 'final/all').then(function (response) {
+            return response.data;
+        });
+    }
+
+    function getProposal(pid) {
+        return $http.get(SERVER + 'final/' + pid).then(function (response) {
             return response.data;
         });
     }
@@ -75,7 +90,8 @@ app.factory("DataService", function ($http) {
     return {
         getAllUser: getAllUser,
         getAllDraft: getAllDraft,
-        getAllProposal: getAllProposal
+        getAllFinal: getAllFinal,
+        getProposal: getProposal
     };
 
 });
@@ -149,6 +165,33 @@ app.controller("mapController", function ($scope, $http) {
             });
     }
 });
+
+app.controller("proposalDetailController", function ($scope, $http, $routeParams, $route, proposal) {
+    $scope.pid = $routeParams.pid;
+    $scope.proposal = proposal.data[0];
+
+    $scope.editable = false;
+
+    $scope.edit = function () {
+        $scope.editable = true;
+    }
+
+    $scope.submitForm = function (valid) {
+        var body = $scope.proposal;
+        if (valid) {
+            $http.post(SERVER + 'final/edit/' + $scope.proposal.proposal_id
+                , body)
+                .success((data, status, headers, config) => {
+                    $route.reload();
+                })
+                .error(function (data, status, header, config) {
+                    alert(data);
+                });
+        }
+
+    }
+
+})
 
 app.controller("loginController", function ($scope, $http, $location) {
     $scope.message = "login";
@@ -242,21 +285,16 @@ app.controller("displayController", function ($scope) {
     $scope.message = "display";
 });
 
-app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, allUser, allDraft, allProposal) {
+app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, allUser, allDraft, allFinal) {
+    // final mgt part
+    $scope.allFinal = allFinal.data;
 
-    // draft mgt part
-    $scope.allDraft = allDraft.data;
+    $scope.open = function (id) {
+        $window.open('#/proposalDetail/' + id, '_blank');
+    }
 
-    $scope.saveDraft = function (data, id) {
-        let body = {
-            draft_id: id,
-            proposal_title: data.proposal_title,
-            project_location: data.project_location,
-            proposal_latitude: data.proposal_latitude,
-            proposal_longitude: data.proposal_longitude
-        }
-
-        $http.post(SERVER + 'draft/edit/'+ id, body)
+    $scope.removeFinal = function (id) {
+        $http.post(SERVER + 'final/rm/' + id)
             .success((data, status, headers, config) => {
                 $route.reload();
             })
@@ -265,7 +303,28 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
             });
     };
 
-    // remove user
+    // draft mgt part
+    $scope.allDraft = allDraft.data;
+
+    $scope.saveDraft = function (data, id) {
+        let body = {
+            draft_id: id,
+            proposal_title: data.proposal_title,
+            proposal_idea: data.proposal_idea,
+            project_location: data.project_location,
+            proposal_latitude: data.proposal_latitude,
+            proposal_longitude: data.proposal_longitude
+        }
+
+        $http.post(SERVER + 'draft/edit/' + id, body)
+            .success((data, status, headers, config) => {
+                $route.reload();
+            })
+            .error(function (data, status, header, config) {
+                alert(data);
+            });
+    };
+
     $scope.removeDraft = function (id) {
         $http.post(SERVER + 'draft/rm/' + id)
             .success((data, status, headers, config) => {
