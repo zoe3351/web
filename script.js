@@ -1,13 +1,18 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
 // modify this later
-const SERVER = "http://localhost:4000/";
+const SERVER = "http://localhost:8080/";
 
 app.config(function config($routeProvider) {
     $routeProvider
         .when("/home", {
             templateUrl: "pages/map.html",
-            controller: "mapController"
+            controller: "mapController",
+            resolve: {
+                phaseAndProposal: function (DataService) {
+                    return DataService.getPhaseThenProposal();
+                },
+            }
         })
         .when("/login", {
             templateUrl: "pages/login.html",
@@ -29,18 +34,6 @@ app.config(function config($routeProvider) {
                     return DataService.getProposal($route.current.params.pid);
                 },
             }
-        })
-        .when("/grade", {
-            templateUrl: "pages/map.html",
-            controller: "gradeController"
-        })
-        .when("/vote", {
-            templateUrl: "pages/map.html",
-            controller: "voteController"
-        })
-        .when("/display", {
-            templateUrl: "pages/map.html",
-            controller: "displayController"
         })
         .when("/admin", {
             templateUrl: "pages/admin.html",
@@ -64,7 +57,6 @@ app.config(function config($routeProvider) {
 });
 
 
-// create an awesome InboxService to fetch our messages
 app.factory("DataService", function ($http) {
     function getAllUser() {
         return $http.get(SERVER + 'user/all').then(function (response) {
@@ -96,25 +88,148 @@ app.factory("DataService", function ($http) {
         });
     }
 
+    function getPhaseThenProposal() {
+        return $http.get(SERVER + 'phase/all').then(function (response) {
+            let phase = Number(response.data.data[0].current_phase);
+            if (phase == 1) {
+                return $http.get(SERVER + 'draft/all').then(function (response) {
+                    let proposals = response.data.data;
+                    return {
+                        phase: phase,
+                        proposals: proposals
+                    }
+                });
+
+                //TODO: select over table phase 2
+            } else if (phase == 2) {
+                return $http.get(SERVER + 'final/all').then(function (response) {
+                    let proposals = response.data.data;
+                    return {
+                        phase: phase,
+                        proposals: proposals
+                    }
+                });
+
+                //TODO: select over table phase 3
+            } else if (phase == 3) {
+                return $http.get(SERVER + 'final/all').then(function (response) {
+                    let proposals = response.data.data;
+                    return {
+                        phase: phase,
+                        proposals: proposals
+                    }
+                });
+                ////TODO: select over table phase 4
+            } else if (phase == 4) {
+                return $http.get(SERVER + 'final/all').then(function (response) {
+                    let proposals = response.data.data;
+                    return {
+                        phase: phase,
+                        proposals: proposals
+                    }
+                });
+
+            }
+        });
+    }
+
     return {
         getAllUser: getAllUser,
         getAllDraft: getAllDraft,
         getAllFinal: getAllFinal,
         getProposal: getProposal,
-        getPhase: getPhase
+        getPhase: getPhase,
+        getPhaseThenProposal: getPhaseThenProposal
     };
 
 });
 
-app.controller("banController", function ($scope) {
-    $scope.message = "ban";
-});
+app.controller("mapController", function ($scope, $http, $route, phaseAndProposal) {
+    $scope.phase = phaseAndProposal.phase;
 
-app.controller("mapController", function ($scope, $http) {
-    $scope.message = "map";
-    $http.get("data/proposals.json").then(function (response) {
-        $scope.proposals = response.data;
-    });
+    $scope.proposals = phaseAndProposal.proposals;
+
+    let convert = function (data) {
+        let proposals = []
+        for (var d of data) {
+            proposals.push(d.proposal_id);
+        }
+        return proposals;
+    }
+
+    $scope.vote = function (pid) {
+        if (!$scope.userId) {
+            alert("Please Signin!");
+            return;
+        }
+        // check if user has voted more than suggested times
+        $http.get(SERVER + 'vote/check/' + $scope.userId)
+            .success((res, status, headers, config) => {
+                let votedProposals = convert(res.data);
+                if (votedProposals.includes(pid)) {
+                    alert("You have already voted this proposal!");
+                    return;
+                }
+                if (votedProposals.length >= 3) {
+                    alert("You have already voted for 3 proposals!");
+                    return;
+                }
+                voteCallback(pid);
+            })
+            .error(function (data, status, header, config) {
+                alert(data);
+            });
+    }
+
+    let voteCallback = function (pid) {
+        if (confirm("Do you want to vote for proposal " + pid + " ?")) {
+            $http.post(SERVER + 'vote/' + $scope.userId + '&' + pid)
+                .success((data, status, headers, config) => {
+                    alert("Vote recorded, thank you!");
+                    $route.reload();
+                })
+                .error(function (data, status, header, config) {
+                    alert(data);
+                });
+        }
+    }
+
+    $scope.grade = function (pid) {
+        if (!$scope.userId) {
+            alert("Please Signin!");
+            return;
+        }
+
+        let score1 = prompt("*Question2: Please grade proposal " + pid + " on Need at Location(from 0 to 10): ", "");
+
+        if (score1 === null || score1 == "") return;
+
+        if (Number(score1) <= 10 && Number(score1) >= 0) {
+            let score2 = prompt("*Question1: Please grade proposal " + pid + " on Community Benefit(from 0 to 10): ", "");
+
+            if (score2 === null || score2 == "") return;
+
+            if (Number(score2) <= 10 && Number(score2) >= 0) {
+                let body = {
+                    grade_Need_at_location: Number(score1),
+                    grade_Community_Benefit: Number(score2)
+                }
+                $http.post(SERVER + 'grade/' + $scope.userId + '&' + pid, body)
+                    .success((data, status, headers, config) => {
+                        alert("Grade recorded, thank you!");
+                        $route.reload();
+                    })
+                    .error(function (data, status, header, config) {
+                        alert(data);
+                    });
+            } else {
+                alert("Wrong score!");
+            }
+
+        } else {
+            alert("Wrong score!");
+        }
+    }
 
     $scope.showNewProposal = false;
 
@@ -146,7 +261,6 @@ app.controller("mapController", function ($scope, $http) {
     $scope.submitForm = function (isValid) {
         if (isValid) {
             $scope.newProposal.id = Date.now();
-            console.log($scope.newProposal);
             $scope.newProposal = {
                 title: "",
                 idea: "",
@@ -166,8 +280,10 @@ app.controller("mapController", function ($scope, $http) {
             })
             .success(function (data, status, headers, config) {
                 // $scope.PostDataResponse = data;
-                console.log(data["username"]);
+                console.log(data);
                 $scope.username = data[0]["username"];
+                $scope.userId = data[0]["id"];
+
             })
             .error(function (data, status, header, config) {
                 alert(data["message"]);
@@ -258,8 +374,6 @@ app.controller("registerController", function ($scope, $http, $location) {
             data: {
                 username: $scope.username,
                 password: $scope.password,
-                email: $scope.email,
-                phone: $scope.phone
             }
         };
         // alert("start login!");
@@ -403,7 +517,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
             email: data.email
         }
 
-        if (id >= $scope.allUser[$scope.allUser.length - 1].user_system_id) {
+        if (!id) {
             $http.post(SERVER + 'user/add/' + id, body)
                 .success((data, status, headers, config) => {
                     $route.reload();
@@ -436,7 +550,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     // add new user
     $scope.addUser = function () {
         $scope.inserted = {
-            user_system_id: $scope.allUser[$scope.allUser.length - 1].user_system_id + 1,
+            user_system_id: null,
             account_name: "",
             user_email: null,
             user_phone_number: null
