@@ -1,7 +1,7 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
 // modify this later
-const SERVER = "http://localhost:8080/";
+const SERVER = "http://bulubulu.ischool.uw.edu:4000/";
 
 app.config(function config($routeProvider) {
     $routeProvider
