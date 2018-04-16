@@ -30,32 +30,38 @@
                 <td style="width:40%">Title</td>
                 <td style="width:20%">Location</td>
                 <td style="width:20%">Idea</td>
-                <td style="width:10%">Edit</td>
+                <td style="width:20%">Longitude</td>
+                <td style="width:20%">Latitude</td>
             </tr>
-            <tr ng-repeat="draft in all_drafts">
+            <tr ng-repeat="draft in allDraft">
                 <td>
-                    <span>
-                        {{ draft.no}}
-                    </span>
+                    <h5>
+                        {{ draft.draft_id}}
+                    </h5>
                 </td>
                 <td>
-                    <span editable-text="draft.title" e-name="title" e-form="rowform" onbeforesave="check($data)">
-                        {{draft.title}}
-                    </span>
+                    <h5 editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_title}}
+                    </h5>
                 </td>
                 <td>
-                    <h6 editable-text="draft.location" e-name="location" e-form="rowform" onbeforesave="check($data)">
-                        {{draft.location}}
-                    </h6>
+                    <h5 editable-text="draft.project_location" e-name="project_location" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.project_location}}
+                    </h5>
                 </td>
                 <td>
-                    <h6 editable-text="draft.idea" e-name="idea" e-form="rowform" onbeforesave="check($data)">
-                        {{draft.idea}}
-                    </h6>
+                    <h5 editable-text="draft.proposal_latitude" e-name="proposal_latitude" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_latitude}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.proposal_longitude" e-name="proposal_longitude" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_longitude}}
+                    </h5>
                 </td>
                 <td style="white-space: nowrap">
                     <!-- form -->
-                    <form editable-form name="rowform" onbeforesave="saveDraft($data)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                    <form editable-form name="rowform" onbeforesave="saveDraft($data, draft.draft_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
                         shown="inserted == draft">
                         <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
                             save
@@ -66,7 +72,7 @@
                     </form>
                     <div class="buttons" ng-show="!rowform.$visible">
                         <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                        <button type="button" class="btn btn-danger" ng-click="removeDraft($index)">del</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeDraft(draft.draft_id)">del</button>
                     </div>
                 </td>
             </tr>
@@ -110,7 +116,8 @@
                 </td>
                 <td style="white-space: nowrap">
                     <!-- form -->
-                    <form editable-form name="rowform" onbeforesave="saveUser($data, user.user_system_id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
+                    <form editable-form name="rowform" onbeforesave="saveUser($data, user.user_system_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                        shown="inserted == user">
                         <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
                             save
                         </button>

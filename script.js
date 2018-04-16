@@ -39,7 +39,13 @@ app.config(function config($routeProvider) {
             resolve: {
                 allUser: function (DataService) {
                     return DataService.getAllUser();
-                }
+                },
+                allDraft: function (DataService) {
+                    return DataService.getAllDraft();
+                },
+                allProposal: function (DataService) {
+                    return DataService.getAllProposal();
+                },
             }
         })
         .otherwise("/home");
@@ -52,10 +58,26 @@ app.factory("DataService", function ($http) {
         return $http.get(SERVER + 'user/all').then(function (response) {
             return response.data;
         });
-    }
-    return {
-        getAllUser: getAllUser
     };
+
+    function getAllDraft() {
+        return $http.get(SERVER + 'draft/all').then(function (response) {
+            return response.data;
+        });
+    }
+
+    function getAllProposal() {
+        return $http.get(SERVER + 'final/all').then(function (response) {
+            return response.data;
+        });
+    }
+
+    return {
+        getAllUser: getAllUser,
+        getAllDraft: getAllDraft,
+        getAllProposal: getAllProposal
+    };
+
 });
 
 app.controller("banController", function ($scope) {
@@ -220,7 +242,39 @@ app.controller("displayController", function ($scope) {
     $scope.message = "display";
 });
 
-app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, allUser) {
+app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, allUser, allDraft, allProposal) {
+
+    // draft mgt part
+    $scope.allDraft = allDraft.data;
+
+    $scope.saveDraft = function (data, id) {
+        let body = {
+            draft_id: id,
+            proposal_title: data.proposal_title,
+            project_location: data.project_location,
+            proposal_latitude: data.proposal_latitude,
+            proposal_longitude: data.proposal_longitude
+        }
+
+        $http.post(SERVER + 'draft/edit/'+ id, body)
+            .success((data, status, headers, config) => {
+                $route.reload();
+            })
+            .error(function (data, status, header, config) {
+                alert(data);
+            });
+    };
+
+    // remove user
+    $scope.removeDraft = function (id) {
+        $http.post(SERVER + 'draft/rm/' + id)
+            .success((data, status, headers, config) => {
+                $route.reload();
+            })
+            .error(function (data, status, header, config) {
+                alert(data);
+            });
+    };
 
     // user mgt part
     $scope.allUser = allUser.data;
