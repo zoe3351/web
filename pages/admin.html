@@ -198,17 +198,19 @@
             </tr>
 
         </table>
+    </div>
 
-        <h4>Import Excel as Final Proposal</h4>
-        <div class="input-group mb-3 d-flex align-items-start">
-            <input type="file" id="uploadInput" name="uploadInput" multiple>
-            <button type="button" class="btn btn-danger" ng-click="upload()">Upload</button>
-        </div>
+    <h4>Import Excel as Final Proposal</h4>
+    <div class="row justify-content-md-center">
+        <form name="finalForm" ng-submit="upload()" novalidate>
+            <button type="submit" class="btn btn-danger" ng-disabled="!finalForm.uploadInput.$touched">Upload</button>
+            <input type="file" id="uploadInput" name="uploadInput" data-ng-click="finalForm.uploadInput.$touched=true">
+        </form>
     </div>
 
 
     <h3 id="phase">IV. Phase Management</h3>
-    <div class="row">
+    <div class="row justify-content-md-start">
         <form name="phaseForm" ng-submit="changePhase()" novalidate>
             <div class="row">
                 <div class="input-group form-group mb-3">

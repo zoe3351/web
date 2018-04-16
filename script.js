@@ -344,15 +344,20 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     };
 
     $scope.upload = function () {
-        var uploadInputFile = angular.element(document.getElementById('uploadInput'))[0].files[0];
-        var reader = new FileReader();
+        let uploadInput = angular.element(document.getElementById('uploadInput'))[0];
 
-        reader.onload = function (event) {
-            console.log(event.target.result);
-            //TODO: POST
+        if (uploadInput.files.length > 0) {
+            let uploadInputFile = uploadInput.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                console.log(event.target.result);
+                //TODO: POST
+            }
+
+            reader.readAsArrayBuffer(uploadInputFile);
         }
 
-        reader.readAsArrayBuffer(uploadInputFile);
     }
 
 
