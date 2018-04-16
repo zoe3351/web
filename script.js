@@ -1,7 +1,7 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
 // modify this later
-const SERVER = "http://localhost:8000/";
+const SERVER = "http://localhost:4000/";
 
 app.config(function config($routeProvider) {
     $routeProvider
@@ -55,6 +55,9 @@ app.config(function config($routeProvider) {
                 allFinal: function (DataService) {
                     return DataService.getAllFinal();
                 },
+                phase: function (DataService) {
+                    return DataService.getPhase();
+                }
             }
         })
         .otherwise("/home");
@@ -65,25 +68,31 @@ app.config(function config($routeProvider) {
 app.factory("DataService", function ($http) {
     function getAllUser() {
         return $http.get(SERVER + 'user/all').then(function (response) {
-            return response.data;
+            return response.data.data;
         });
     };
 
     function getAllDraft() {
         return $http.get(SERVER + 'draft/all').then(function (response) {
-            return response.data;
+            return response.data.data;
         });
     }
 
     function getAllFinal() {
         return $http.get(SERVER + 'final/all').then(function (response) {
-            return response.data;
+            return response.data.data;
         });
     }
 
     function getProposal(pid) {
         return $http.get(SERVER + 'final/' + pid).then(function (response) {
-            return response.data;
+            return response.data.data[0];
+        });
+    }
+
+    function getPhase() {
+        return $http.get(SERVER + 'phase/all').then(function (response) {
+            return response.data.data[0];
         });
     }
 
@@ -91,7 +100,8 @@ app.factory("DataService", function ($http) {
         getAllUser: getAllUser,
         getAllDraft: getAllDraft,
         getAllFinal: getAllFinal,
-        getProposal: getProposal
+        getProposal: getProposal,
+        getPhase: getPhase
     };
 
 });
@@ -168,7 +178,7 @@ app.controller("mapController", function ($scope, $http) {
 
 app.controller("proposalDetailController", function ($scope, $http, $routeParams, $route, proposal) {
     $scope.pid = $routeParams.pid;
-    $scope.proposal = proposal.data[0];
+    $scope.proposal = proposal;
 
     $scope.editable = false;
 
@@ -285,9 +295,39 @@ app.controller("displayController", function ($scope) {
     $scope.message = "display";
 });
 
-app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, allUser, allDraft, allFinal) {
+app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, allUser, allDraft, allFinal, phase) {
+    // phase mgt part
+    $scope.originPhase = Number(phase.current_phase)
+    $scope.phase = Number(phase.current_phase);
+
+    $scope.changePhase = function () {
+        $http.post(SERVER + 'phase/editCurrentPhase/' + phase.current_phase + '&' + $scope.phase)
+            .success((data, status, headers, config) => {
+                $route.reload();
+            })
+            .error(function (data, status, header, config) {
+                alert(data);
+            });
+    }
+
+    $scope.endDates = [{
+        phase1_end: phase.phase1_end,
+        phase2_end: phase.phase2_end,
+        phase3_end: phase.phase3_end,
+    }];
+
+    $scope.saveDate = function (data) {
+        $http.post(SERVER + 'phase/editEndDates/' + phase.current_phase, data)
+            .success((data, status, headers, config) => {
+                $route.reload();
+            })
+            .error(function (data, status, header, config) {
+                alert(data);
+            });
+    }
+
     // final mgt part
-    $scope.allFinal = allFinal.data;
+    $scope.allFinal = allFinal;
 
     $scope.open = function (id) {
         $window.open('#/proposalDetail/' + id, '_blank');
@@ -303,8 +343,21 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
             });
     };
 
+    $scope.upload = function () {
+        var uploadInputFile = angular.element(document.getElementById('uploadInput'))[0].files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+            console.log(event.target.result);
+            //TODO: POST
+        }
+
+        reader.readAsArrayBuffer(uploadInputFile);
+    }
+
+
     // draft mgt part
-    $scope.allDraft = allDraft.data;
+    $scope.allDraft = allDraft;
 
     $scope.saveDraft = function (data, id) {
         let body = {
@@ -336,7 +389,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     };
 
     // user mgt part
-    $scope.allUser = allUser.data;
+    $scope.allUser = allUser;
 
     $scope.saveUser = function (data, id) {
         let body = {
@@ -386,18 +439,6 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
         $scope.allUser.push($scope.inserted);
     };
 
-
-    $scope.phase = 1;
-
-    $http.get('data/proposals.json').then(function (response) {
-        $scope.all_finals = response.data;
-    });
-
-    // get all draft proposals
-    $http.get('data/proposals.json').then(function (response) {
-        $scope.all_drafts = response.data;
-    });
-
     if (window.localStorage["token"]) {
         $http
             .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
@@ -421,20 +462,6 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
         $location.hash(id);
         $anchorScroll();
     }
-
-    $scope.upload = function () {
-        var uploadInputFile = angular.element(document.getElementById('uploadInput'))[0].files[0];
-        var reader = new FileReader();
-
-        reader.onload = function (event) {
-            console.log(event.target.result);
-            //TODO: POST
-        }
-
-        reader.readAsArrayBuffer(uploadInputFile);
-    }
-
-    $scope.message = 'admin';
 
     $scope.check = function (data) {
         if (!data) {
