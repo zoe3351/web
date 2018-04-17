@@ -20,7 +20,12 @@ app.config(function config($routeProvider) {
         })
         .when("/register", {
             templateUrl: "pages/register.html",
-            controller: "registerController"
+            controller: "registerController",
+            resolve: {
+                allUsername: function (DataService){
+                    return DataService.getAllUsername();
+                }
+            }
         })
         .when("/profile", {
             templateUrl: "pages/profile.html",
@@ -88,6 +93,12 @@ app.factory("DataService", function ($http) {
         });
     }
 
+    function getAllUsername() {
+        return $http.get(SERVER + 'user/allUsername').then(function (response) {
+            return response.data.data;
+        });
+    }
+
     function getPhaseThenProposal() {
         return $http.get(SERVER + 'phase/all').then(function (response) {
             let phase = Number(response.data.data[0].current_phase);
@@ -139,7 +150,8 @@ app.factory("DataService", function ($http) {
         getAllFinal: getAllFinal,
         getProposal: getProposal,
         getPhase: getPhase,
-        getPhaseThenProposal: getPhaseThenProposal
+        getPhaseThenProposal: getPhaseThenProposal,
+        getAllUsername: getAllUsername
     };
 
 });
@@ -177,7 +189,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
                 voteCallback(pid);
             })
             .error(function (data, status, header, config) {
-                alert(data);
+                alert(JSON.stringify(data));
             });
     }
 
@@ -189,7 +201,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
                     $route.reload();
                 })
                 .error(function (data, status, header, config) {
-                    alert(data);
+                    alert(JSON.stringify(data));
                 });
         }
     }
@@ -215,7 +227,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
                         $route.reload();
                     })
                     .error(function (data, status, header, config) {
-                        alert(data);
+                        alert(JSON.stringify(data));
                     });
             } else {
                 alert("Wrong score!");
@@ -232,19 +244,19 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
             return;
         }
 
-         // check if user has graded the same proposal
-         $http.get(SERVER + 'grade/check/' + $scope.userId)
-         .success((res, status, headers, config) => {
-             let gradedProposals = convert(res.data);
-             if (gradedProposals.includes(pid)) {
-                 alert("You have already graded this proposal!");
-                 return;
-             }
-             gradeCallBack(pid);
-         })
-         .error(function (data, status, header, config) {
-             alert(data);
-         });
+        // check if user has graded the same proposal
+        $http.get(SERVER + 'grade/check/' + $scope.userId)
+            .success((res, status, headers, config) => {
+                let gradedProposals = convert(res.data);
+                if (gradedProposals.includes(pid)) {
+                    alert("You have already graded this proposal!");
+                    return;
+                }
+                gradeCallBack(pid);
+            })
+            .error(function (data, status, header, config) {
+                alert(JSON.stringify(data));
+            });
     }
 
     $scope.showNewProposal = false;
@@ -299,7 +311,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
                     };
                 })
                 .error(function (data, status, header, config) {
-                    alert(data);
+                    alert(JSON.stringify(data));
                 });
 
 
@@ -346,7 +358,7 @@ app.controller("proposalDetailController", function ($scope, $http, $routeParams
                     $route.reload();
                 })
                 .error(function (data, status, header, config) {
-                    alert(data);
+                    alert(JSON.stringify(data));
                 });
         }
 
@@ -381,7 +393,7 @@ app.controller("loginController", function ($scope, $http, $location) {
                 }
             })
             .error(function (data, status, header, config) {
-                alert(data);
+                alert(JSON.stringify(data));
             });
     };
     //   .then(function(response) {
@@ -389,11 +401,24 @@ app.controller("loginController", function ($scope, $http, $location) {
     //   });
 });
 
-app.controller("registerController", function ($scope, $http, $location) {
+app.controller("registerController", function ($scope, $http, $location, allUsername) {
     $scope.username = "";
     $scope.password = "";
     $scope.email = "";
     $scope.phone = "";
+
+    // check if username has already been used
+    $scope.allUsername = allUsername;
+    $scope.usernameCanUse = true;
+    $scope.pass = function () {
+        for (let name of $scope.allUsername){
+            if (name.account_name == $scope.username){
+                $scope.usernameCanUse = false;
+                return;
+            }
+        }
+        $scope.usernameCanUse = true; 
+    };
 
     $scope.signup = () => {
         if ($scope.password !== $scope.cm_password) {
@@ -423,7 +448,7 @@ app.controller("registerController", function ($scope, $http, $location) {
                 }
             })
             .error(function (data, status, header, config) {
-                alert(data);
+                alert(JSON.stringify(data));
             });
     };
 });
@@ -447,7 +472,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 $route.reload();
             })
             .error(function (data, status, header, config) {
-                alert(data);
+                alert(JSON.stringify(data));
             });
     }
 
@@ -463,7 +488,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 $route.reload();
             })
             .error(function (data, status, header, config) {
-                alert(data);
+                alert(JSON.stringify(data));
             });
     }
 
@@ -520,7 +545,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 $route.reload();
             })
             .error(function (data, status, header, config) {
-                alert(data);
+                alert(JSON.stringify(data));
             });
     };
 
@@ -530,7 +555,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 $route.reload();
             })
             .error(function (data, status, header, config) {
-                alert(data);
+                alert(JSON.stringify(data));
             });
     };
 
@@ -558,7 +583,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                     $route.reload();
                 })
                 .error(function (data, status, header, config) {
-                    alert(data);
+                    alert(JSON.stringify(data));
                 });;
         }
     };
@@ -570,7 +595,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 $route.reload();
             })
             .error(function (data, status, header, config) {
-                alert(data);
+                alert(JSON.stringify(data));
             });;
     };
 
@@ -599,7 +624,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 // TODO: set admin page visible only to admin user
             })
             .error(function (data, status, header, config) {
-                alert(data["message"]);
+                alert(JSON.stringify(data));
                 window.localStorage["token"] = "";
             });
     }
