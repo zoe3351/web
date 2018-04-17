@@ -1,7 +1,7 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
 // modify this later
-const SERVER = "http://bulubulu.ischool.uw.edu:4000/";
+const SERVER = "http://localhost:8080/";
 
 app.config(function config($routeProvider) {
     $routeProvider
@@ -194,12 +194,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
         }
     }
 
-    $scope.grade = function (pid) {
-        if (!$scope.userId) {
-            alert("Please Signin!");
-            return;
-        }
-
+    let gradeCallBack = function (pid) {
         let score1 = prompt("*Question2: Please grade proposal " + pid + " on Need at Location(from 0 to 10): ", "");
 
         if (score1 === null || score1 == "") return;
@@ -231,6 +226,27 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
         }
     }
 
+    $scope.grade = function (pid) {
+        if (!$scope.userId) {
+            alert("Please Signin!");
+            return;
+        }
+
+         // check if user has graded the same proposal
+         $http.get(SERVER + 'grade/check/' + $scope.userId)
+         .success((res, status, headers, config) => {
+             let gradedProposals = convert(res.data);
+             if (gradedProposals.includes(pid)) {
+                 alert("You have already graded this proposal!");
+                 return;
+             }
+             gradeCallBack(pid);
+         })
+         .error(function (data, status, header, config) {
+             alert(data);
+         });
+    }
+
     $scope.showNewProposal = false;
 
     $scope.showNewProposalTab = () => {
@@ -251,23 +267,42 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
     };
 
     $scope.newProposal = {
+        id: (new Date()).toISOString(),
         title: "",
         idea: "",
         location: "",
-        why: "",
-        benefit: ""
+        latitude: "0",
+        longitude: "0"
     };
 
     $scope.submitForm = function (isValid) {
         if (isValid) {
-            $scope.newProposal.id = Date.now();
-            $scope.newProposal = {
-                title: "",
-                idea: "",
-                location: "",
-                why: "",
-                benefit: ""
-            };
+            let body = {
+                draft_id: (new Date()).toISOString(),
+                proposal_title: $scope.newProposal.title,
+                proposal_idea: $scope.newProposal.idea,
+                proposal_latitude: $scope.newProposal.latitude,
+                proposal_longitude: $scope.newProposal.longitude,
+                project_location: $scope.newProposal.location,
+            }
+
+            $http.post(SERVER + 'draft/add', body)
+                .success(function (data, status, headers, config) {
+                    alert("Proposal Submitted!");
+                    $scope.newProposal = {
+                        id: (new Date()).toISOString(),
+                        title: "",
+                        idea: "",
+                        location: "",
+                        latitude: "0",
+                        longitude: "0"
+                    };
+                })
+                .error(function (data, status, header, config) {
+                    alert(data);
+                });
+
+
         }
     };
 
@@ -395,14 +430,6 @@ app.controller("registerController", function ($scope, $http, $location) {
 
 app.controller("profileController", function ($scope) {
     $scope.message = "profile";
-});
-
-app.controller("gradeController", function ($scope) {
-    $scope.message = "grade";
-});
-
-app.controller("voteController", function ($scope) {
-    $scope.message = "vote";
 });
 
 app.controller("displayController", function ($scope) {
