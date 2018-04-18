@@ -111,9 +111,8 @@ app.factory("DataService", function ($http) {
                     }
                 });
 
-                //TODO: select over table phase 2
             } else if (phase == 2) {
-                return $http.get(SERVER + 'final/all').then(function (response) {
+                return $http.get(SERVER + 'final/grade').then(function (response) {
                     let proposals = response.data.data;
                     return {
                         phase: phase,
@@ -121,16 +120,15 @@ app.factory("DataService", function ($http) {
                     }
                 });
 
-                //TODO: select over table phase 3
             } else if (phase == 3) {
-                return $http.get(SERVER + 'final/all').then(function (response) {
+                return $http.get(SERVER + 'final/vote').then(function (response) {
                     let proposals = response.data.data;
                     return {
                         phase: phase,
                         proposals: proposals
                     }
                 });
-                ////TODO: select over table phase 4
+                //TODO: select over table phase 4
             } else if (phase == 4) {
                 return $http.get(SERVER + 'final/all').then(function (response) {
                     let proposals = response.data.data;
