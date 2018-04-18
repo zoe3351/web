@@ -22,7 +22,7 @@ app.config(function config($routeProvider) {
             templateUrl: "pages/register.html",
             controller: "registerController",
             resolve: {
-                allUsername: function (DataService){
+                allUsername: function (DataService) {
                     return DataService.getAllUsername();
                 }
             }
@@ -411,13 +411,13 @@ app.controller("registerController", function ($scope, $http, $location, allUser
     $scope.allUsername = allUsername;
     $scope.usernameCanUse = true;
     $scope.pass = function () {
-        for (let name of $scope.allUsername){
-            if (name.account_name == $scope.username){
+        for (let name of $scope.allUsername) {
+            if (name.account_name == $scope.username) {
                 $scope.usernameCanUse = false;
                 return;
             }
         }
-        $scope.usernameCanUse = true; 
+        $scope.usernameCanUse = true;
     };
 
     $scope.signup = () => {
@@ -462,9 +462,141 @@ app.controller("displayController", function ($scope) {
 });
 
 app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, allUser, allDraft, allFinal, phase) {
-    // phase mgt part
+    $scope.allFinal = allFinal;
+    $scope.allDraft = allDraft;
+    $scope.allUser = allUser;
     $scope.originPhase = Number(phase.current_phase)
     $scope.phase = Number(phase.current_phase);
+
+    if (window.localStorage["token"]) {
+        $http
+            .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
+                headers: {
+                    "x-access-token": `${window.localStorage["token"]}`
+                }
+            })
+            .success(function (data, status, headers, config) {
+                // $scope.PostDataResponse = data;
+                console.log(data);
+                $scope.username = data[0]["username"];
+                // TODO: set admin page visible only to admin user
+            })
+            .error(function (data, status, header, config) {
+                alert(JSON.stringify(data));
+                window.localStorage["token"] = "";
+            });
+    }
+
+    $scope.gradePs = [];
+    $http.get(SERVER + 'stage/grade/p')
+        .success(function (res, status, headers, config) {
+            $scope.gradePs = (function () {
+                let ps = "";
+                for (let a of res.data) {
+                    ps += a.proposal_id + " ";
+                }
+                return ps;
+            }());
+        })
+        .error(function (data, status, header, config) {
+            alert(JSON.stringify(data));
+        });
+
+    $scope.submitGradeProposalForm = function (valid) {
+        if (valid) {
+            let ps = $scope.gradePs.trim().split(/\s+/g);
+
+            if (new Set(ps).size !== ps.length) {
+                alert("Contains Duplicate Proposals!");
+                return;
+            }
+
+            for (let p of ps) {
+                let f = false;
+                for (let pro of $scope.allFinal) {
+                    if (pro.proposal_id == p) {
+                        f = true;
+                    }
+                }
+                if (!f) {
+                    console.log(p);
+                    alert("Wrong proposal id!");
+                    return;
+                }
+            }
+
+            let body = {
+                ps: ps
+            };
+            $http.post(SERVER + 'stage/grade/p', body)
+                .success(function (data, status, headers, config) {
+                    alert("Proposals in Grade Updated!");
+                })
+                .error(function (data, status, header, config) {
+                    alert(JSON.stringify(data));
+                });
+        }
+    }
+
+
+    $scope.votePs = [];
+    $http.get(SERVER + 'stage/vote/p')
+        .success(function (res, status, headers, config) {
+            $scope.votePs = (function () {
+                let ps = "";
+                for (let a of res.data) {
+                    ps += a.proposal_id + " ";
+                }
+                return ps;
+            }());
+        })
+        .error(function (data, status, header, config) {
+            alert(JSON.stringify(data));
+        });
+
+    $scope.submitVoteProposalForm = function (valid) {
+        if (valid) {
+            let ps = $scope.votePs.trim().split(/\s+/g);
+
+            if (new Set(ps).size !== ps.length) {
+                alert("Contains Duplicate Proposals!");
+                return;
+            }
+
+            for (let p of ps) {
+                let f = false;
+                for (let pro of $scope.allFinal) {
+                    if (pro.proposal_id == p) {
+                        f = true;
+                    }
+                }
+                if (!f) {
+                    console.log(p);
+                    alert("Wrong proposal id!");
+                    return;
+                }
+            }
+
+            let body = {
+                ps: ps
+            };
+            $http.post(SERVER + 'stage/vote/p', body)
+                .success(function (data, status, headers, config) {
+                    alert("Proposals in Vote Updated!");
+                })
+                .error(function (data, status, header, config) {
+                    alert(JSON.stringify(data));
+                });
+        }
+    }
+
+    /* let gradeProposals = {ps: ["20180103073000", "20180113073000", "20180201073000"]};
+
+    $http.post(SERVER + 'stage/grade/p', gradeProposals)
+        .success((data, status, headers, config)=>{
+            alert("sent!");
+        }); */
+    // phase mgt part
 
     $scope.changePhase = function () {
         $http.post(SERVER + 'phase/editCurrentPhase/' + phase.current_phase + '&' + $scope.phase)
@@ -493,8 +625,6 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     }
 
     // final mgt part
-    $scope.allFinal = allFinal;
-
     $scope.open = function (id) {
         $window.open('#/proposalDetail/' + id, '_blank');
     }
@@ -526,10 +656,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
 
     }
 
-
     // draft mgt part
-    $scope.allDraft = allDraft;
-
     $scope.saveDraft = function (data, id) {
         let body = {
             draft_id: id,
@@ -560,8 +687,6 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     };
 
     // user mgt part
-    $scope.allUser = allUser;
-
     $scope.saveUser = function (data, id) {
         let body = {
             username: data.username,
@@ -609,25 +734,6 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
         };
         $scope.allUser.push($scope.inserted);
     };
-
-    if (window.localStorage["token"]) {
-        $http
-            .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
-                headers: {
-                    "x-access-token": `${window.localStorage["token"]}`
-                }
-            })
-            .success(function (data, status, headers, config) {
-                // $scope.PostDataResponse = data;
-                console.log(data);
-                $scope.username = data[0]["username"];
-                // TODO: set admin page visible only to admin user
-            })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-                window.localStorage["token"] = "";
-            });
-    }
 
     $scope.scrollTo = function (id) {
         $location.hash(id);

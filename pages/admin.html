@@ -1,5 +1,4 @@
 <div class="container">
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
         <ul class="navbar-nav">
             <li class="nav-item active">
@@ -22,72 +21,70 @@
         Export Drafts to Excel...
         <i class="fa fa-download"></i>
     </a>
-    <div class="row">
 
-        <table class="table table-bordered table-hover table-condensed">
-            <tr style="font-weight: bold">
-                <td style="width:10%">ID</td>
-                <td style="width:20%">Title</td>
-                <td style="width:20%">Idea</td>
-                <td style="width:20%">Location</td>
-                <td style="width:5%">LAT</td>
-                <td style="width:5%">LONG</td>
-                <td style="width:20%">Edit</td>
-            </tr>
-            <tr ng-repeat="draft in allDraft">
-                <td>
-                    <h5>
-                        {{ draft.draft_id}}
-                    </h5>
-                </td>
-                <td>
-                    <h5 editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
-                        {{draft.proposal_title}}
-                    </h5>
-                </td>
-                <td>
-                    <h5 editable-text="draft.proposal_idea" e-name="proposal_idea" e-form="rowform" onbeforesave="check($data)">
-                        {{draft.proposal_idea}}
-                    </h5>
-                </td>
-                <td>
-                    <h5 editable-text="draft.project_location" e-name="project_location" e-form="rowform" onbeforesave="check($data)">
-                        {{draft.project_location}}
-                    </h5>
-                </td>
-                <td>
-                    <h5 editable-text="draft.proposal_latitude" e-name="proposal_latitude" e-form="rowform" onbeforesave="check($data)">
-                        {{draft.proposal_latitude}}
-                    </h5>
-                </td>
-                <td>
-                    <h5 editable-text="draft.proposal_longitude" e-name="proposal_longitude" e-form="rowform" onbeforesave="check($data)">
-                        {{draft.proposal_longitude}}
-                    </h5>
-                </td>
-                <td style="white-space: nowrap">
-                    <!-- form -->
-                    <form editable-form name="rowform" onbeforesave="saveDraft($data, draft.draft_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
-                        shown="inserted == draft">
-                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-                            save
-                        </button>
-                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-                            cancel
-                        </button>
-                    </form>
-                    <div class="buttons" ng-show="!rowform.$visible">
-                        <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                        <button type="button" class="btn btn-danger" ng-click="removeDraft(draft.draft_id)">del</button>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <table class="table table-bordered table-hover table-condensed">
+        <tr style="font-weight: bold">
+            <td style="width:10%">ID</td>
+            <td style="width:20%">Title</td>
+            <td style="width:20%">Idea</td>
+            <td style="width:20%">Location</td>
+            <td style="width:5%">LAT</td>
+            <td style="width:5%">LONG</td>
+            <td style="width:20%">Edit</td>
+        </tr>
+        <tr ng-repeat="draft in allDraft">
+            <td>
+                <h5>
+                    {{ draft.draft_id}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
+                    {{draft.proposal_title}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="draft.proposal_idea" e-name="proposal_idea" e-form="rowform" onbeforesave="check($data)">
+                    {{draft.proposal_idea}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="draft.project_location" e-name="project_location" e-form="rowform" onbeforesave="check($data)">
+                    {{draft.project_location}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="draft.proposal_latitude" e-name="proposal_latitude" e-form="rowform" onbeforesave="check($data)">
+                    {{draft.proposal_latitude}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="draft.proposal_longitude" e-name="proposal_longitude" e-form="rowform" onbeforesave="check($data)">
+                    {{draft.proposal_longitude}}
+                </h5>
+            </td>
+            <td style="white-space: nowrap">
+                <!-- form -->
+                <form editable-form name="rowform" onbeforesave="saveDraft($data, draft.draft_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                    shown="inserted == draft">
+                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                        save
+                    </button>
+                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                        cancel
+                    </button>
+                </form>
+                <div class="buttons" ng-show="!rowform.$visible">
+                    <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                    <button type="button" class="btn btn-danger" ng-click="removeDraft(draft.draft_id)">del</button>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-    <h3 id="user">II. User Management</h3>
-    <div class="row" ng-show="allUser">
 
+    <h3 id="user" style="padding-top: 60px">II. User Management</h3>
+    <div ng-show="allUser">
         <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">
                 <td style="width:10%">ID</td>
@@ -141,67 +138,56 @@
         <button type="button" class="btn btn-warning" ng-click="addUser()">Add User</button>
     </div>
 
-    <h3 id="proposal">III. Proposal Management</h3>
-    <div class="row">
-        <div class="collapse" id="collapseOne">
-            <div class="col-12" ng-model="proposal">
-                {{proposal.idea}}
-            </div>
-        </div>
-    </div>
+    <h3 id="proposal" style="padding-top: 60px">III. Proposal Management</h3>
+    <table class="table table-bordered table-hover table-condensed">
+        <tr style="font-weight: bold">
+            <td style="width:15%">ID</td>
+            <td style="width:35%">Title</td>
+            <td style="width:25%">Location</td>
+            <td style="width:25%">Edit</td>
+        </tr>
+        <tr ng-repeat="final in allFinal">
+            <td>
+                <!-- editable username (text with validation) -->
+                <h5 editable-text="final.proposal_id" e-name="id" e-form="rowform">
+                    {{ final.proposal_id || 'empty' }}
+                </h5>
+            </td>
+            <td>
+                <!-- editable status (select-local) -->
+                <h5 editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
+                    {{ final.final_proposal_title || "empty" }}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-select="final.final_project_location" e-name="location" e-form="rowform">
+                    {{ final.final_project_location || "empty" }}
+                </h5>
+            </td>
+            <td style="white-space: nowrap">
+                <!-- form -->
+                <form editable-form name="rowform" onbeforesave="saveUser($data, final.no)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                    shown="inserted == final">
+                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                        save
+                    </button>
+                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                        cancel
+                    </button>
+                </form>
+                <div class="buttons" ng-show="!rowform.$visible">
+                    <button type="button" class="btn btn-primary" ng-click="open(final.proposal_id)">
+                        <i class="fa fa-external-link-square-alt"></i>
+                        edit</button>
+                    <button type="button" class="btn btn-danger" ng-click="removeFinal(final.proposal_id)">del</button>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-
-    <div class="row">
-        <table class="table table-bordered table-hover table-condensed">
-            <tr style="font-weight: bold">
-                <td style="width:15%">ID</td>
-                <td style="width:35%">Title</td>
-                <td style="width:25%">Location</td>
-                <td style="width:25%">Edit</td>
-            </tr>
-            <tr ng-repeat="final in allFinal">
-                <td>
-                    <!-- editable username (text with validation) -->
-                    <h5 editable-text="final.proposal_id" e-name="id" e-form="rowform">
-                        {{ final.proposal_id || 'empty' }}
-                    </h5>
-                </td>
-                <td>
-                    <!-- editable status (select-local) -->
-                    <h5 editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
-                        {{ final.final_proposal_title || "empty" }}
-                    </h5>
-                </td>
-                <td>
-                    <h5 editable-select="final.final_project_location" e-name="location" e-form="rowform">
-                        {{ final.final_project_location || "empty" }}
-                    </h5>
-                </td>
-                <td style="white-space: nowrap">
-                    <!-- form -->
-                    <form editable-form name="rowform" onbeforesave="saveUser($data, final.no)" ng-show="rowform.$visible" class="form-buttons form-inline"
-                        shown="inserted == final">
-                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-                            save
-                        </button>
-                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-                            cancel
-                        </button>
-                    </form>
-                    <div class="buttons" ng-show="!rowform.$visible">
-                        <button type="button" class="btn btn-primary" ng-click="open(final.proposal_id)">
-                            <i class="fa fa-external-link-square-alt"></i>
-                            edit</button>
-                        <button type="button" class="btn btn-danger" ng-click="removeFinal(final.proposal_id)">del</button>
-                    </div>
-                </td>
-            </tr>
-
-        </table>
-    </div>
 
     <h4>Import Excel as Final Proposal</h4>
-    <div class="row justify-content-md-center">
+    <div class="justify-content-md-center">
         <form name="finalForm" ng-submit="upload()" novalidate>
             <button type="submit" class="btn btn-danger" ng-disabled="!finalForm.uploadInput.$touched">Upload</button>
             <input type="file" id="uploadInput" name="uploadInput" data-ng-click="finalForm.uploadInput.$touched=true">
@@ -209,69 +195,80 @@
     </div>
 
 
-    <h3 id="phase">IV. Phase Management</h3>
-    <div class="row justify-content-md-start">
-        <form name="phaseForm" ng-submit="changePhase()" novalidate>
-            <div class="row">
-                <div class="input-group form-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Current Phase</label>
-                    </div>
-                    <select class="custom-select" id="inputGroupSelect01" ng-model="phase">
-                        <option value="1" ng-selected="phase==1">Draft Proposal</option>
-                        <option value="2" ng-selected="phase==2">Grade Proposal</option>
-                        <option value="3" ng-selected="phase==3">Vote</option>
-                        <option value="4" ng-selected="phase==4">Display</option>
-                    </select>
-                    <button type="submit" class="btn btn-danger" ng-disabled="phaseForm.$pristine">Change Phase</button>
-                </div>
+    <h3 id="phase" style="padding-top: 60px">IV. Phase Management</h3>
 
-        </form>
+    <form name="phaseForm" ng-submit="changePhase()" novalidate>
+        <div class="input-group form-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Current Phase</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" ng-model="phase">
+                <option value="1" ng-selected="phase==1">Draft Proposal</option>
+                <option value="2" ng-selected="phase==2">Grade Proposal</option>
+                <option value="3" ng-selected="phase==3">Vote</option>
+                <option value="4" ng-selected="phase==4">Display</option>
+            </select>
+            <button type="submit" class="btn btn-danger" ng-disabled="phaseForm.$pristine">Change Phase</button>
         </div>
-    </div>
+    </form>
 
-    <div class="row">
+    <table class="table table-bordered table-hover table-condensed">
+        <tr style="font-weight: bold">
+            <td style="width:25%">Draft End</td>
+            <td style="width:25%">Grade End</td>
+            <td style="width:25%">Vote End</td>
+            <td style="width:20%">Edit</td>
+        </tr>
+        <tr ng-repeat="end in endDates">
+            <td>
+                <h5 editable-text="end.phase1_end" e-name="phase1_end" e-form="rowform" onbeforesave="check($data)">
+                    {{end.phase1_end}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="end.phase2_end" e-name="phase2_end" e-form="rowform" onbeforesave="check($data)">
+                    {{end.phase2_end}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="end.phase3_end" e-name="phase3_end" e-form="rowform" onbeforesave="check($data)">
+                    {{end.phase3_end}}
+                </h5>
+            </td>
+            <td style="white-space: nowrap">
+                <!-- form -->
+                <form editable-form name="rowform" onbeforesave="saveDate($data)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                    shown="inserted == end">
+                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                        save
+                    </button>
+                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                        cancel
+                    </button>
+                </form>
+                <div class="buttons" ng-show="!rowform.$visible">
+                    <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-        <table class="table table-bordered table-hover table-condensed">
-            <tr style="font-weight: bold">
-                <td style="width:25%">Draft End</td>
-                <td style="width:25%">Grade End</td>
-                <td style="width:25%">Vote End</td>
-                <td style="width:20%">Edit</td>
-            </tr>
-            <tr ng-repeat="end in endDates">
-                <td>
-                    <h5 editable-text="end.phase1_end" e-name="phase1_end" e-form="rowform" onbeforesave="check($data)">
-                        {{end.phase1_end}}
-                    </h5>
-                </td>
-                <td>
-                    <h5 editable-text="end.phase2_end" e-name="phase2_end" e-form="rowform" onbeforesave="check($data)">
-                        {{end.phase2_end}}
-                    </h5>
-                </td>
-                <td>
-                    <h5 editable-text="end.phase3_end" e-name="phase3_end" e-form="rowform" onbeforesave="check($data)">
-                        {{end.phase3_end}}
-                    </h5>
-                </td>
-                <td style="white-space: nowrap">
-                    <!-- form -->
-                    <form editable-form name="rowform" onbeforesave="saveDate($data)" ng-show="rowform.$visible" class="form-buttons form-inline"
-                        shown="inserted == end">
-                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-                            save
-                        </button>
-                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-                            cancel
-                        </button>
-                    </form>
-                    <div class="buttons" ng-show="!rowform.$visible">
-                        <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <h4>Proposals in Grade</h4>
+    <form name="gradeProposalForm" ng-submit="submitGradeProposalForm(gradeProposalForm.$valid)" novalidate>
+        <div class="form-group">
+            <textarea style="height:200px;" ng-model="gradePs" name="gradePs" class="form-control" id="gradePs"></textarea>
+            <p class="help-block">Required: Proposal Ids seperated by space</p>
+        </div>
+        <button type="submit" class="btn btn-danger" ng-disabled="!gradeProposalForm.$valid">Update</button>
+    </form>
+
+    <h4 style="padding-top: 40px">Proposals in Vote</h4>
+    <form name="voteProposalForm" ng-submit="submitVoteProposalForm(voteProposalForm.$valid)" novalidate>
+        <div class="form-group">
+            <textarea style="height:200px;" ng-model="votePs" name="votePs" class="form-control" id="votePs"></textarea>
+            <p class="help-block">Required: Proposal Ids seperated by space</p>
+        </div>
+        <button type="submit" class="btn btn-danger" ng-disabled="!voteProposalForm.$valid">Update</button>
+    </form>
 
 </div>
