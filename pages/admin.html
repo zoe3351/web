@@ -130,7 +130,7 @@
                     </form>
                     <div class="buttons" ng-show="!rowform.$visible">
                         <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                        <button type="button" class="btn btn-danger" ng-click="removeUser(user.user_system_id)">del</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeUser(user.user_system_id)" ng-if="false">del</button>
                     </div>
                 </td>
             </tr>
@@ -221,17 +221,17 @@
         </tr>
         <tr ng-repeat="end in endDates">
             <td>
-                <h5 editable-text="end.phase1_end" e-name="phase1_end" e-form="rowform" onbeforesave="check($data)">
+                <h5 editable-text="end.phase1_end" e-name="phase1_end" e-form="rowform" onbeforesave="checkDate($data)">
                     {{end.phase1_end}}
                 </h5>
             </td>
             <td>
-                <h5 editable-text="end.phase2_end" e-name="phase2_end" e-form="rowform" onbeforesave="check($data)">
+                <h5 editable-text="end.phase2_end" e-name="phase2_end" e-form="rowform" onbeforesave="checkDate($data)">
                     {{end.phase2_end}}
                 </h5>
             </td>
             <td>
-                <h5 editable-text="end.phase3_end" e-name="phase3_end" e-form="rowform" onbeforesave="check($data)">
+                <h5 editable-text="end.phase3_end" e-name="phase3_end" e-form="rowform" onbeforesave="checkDate($data)">
                     {{end.phase3_end}}
                 </h5>
             </td>
@@ -252,8 +252,9 @@
             </td>
         </tr>
     </table>
+    <p class="help-block">Formate: yyyy-mm-dd</p>
 
-    <h4>Proposals in Grade</h4>
+    <h4 style="padding-top: 30px">Proposals in Grade</h4>
     <form name="gradeProposalForm" ng-submit="submitGradeProposalForm(gradeProposalForm.$valid)" novalidate>
         <div class="form-group">
             <textarea style="height:200px;" ng-model="gradePs" name="gradePs" class="form-control" id="gradePs"></textarea>
@@ -262,7 +263,7 @@
         <button type="submit" class="btn btn-danger" ng-disabled="!gradeProposalForm.$valid">Update</button>
     </form>
 
-    <h4 style="padding-top: 40px">Proposals in Vote</h4>
+    <h4 style="padding-top: 30px">Proposals in Vote</h4>
     <form name="voteProposalForm" ng-submit="submitVoteProposalForm(voteProposalForm.$valid)" novalidate>
         <div class="form-group">
             <textarea style="height:200px;" ng-model="votePs" name="votePs" class="form-control" id="votePs"></textarea>

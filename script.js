@@ -536,7 +536,6 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
         }
     }
 
-
     $scope.votePs = [];
     $http.get(SERVER + 'stage/vote/p')
         .success(function (res, status, headers, config) {
@@ -588,17 +587,10 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
         }
     }
 
-    /* let gradeProposals = {ps: ["20180103073000", "20180113073000", "20180201073000"]};
-
-    $http.post(SERVER + 'stage/grade/p', gradeProposals)
-        .success((data, status, headers, config)=>{
-            alert("sent!");
-        }); */
-    // phase mgt part
-
     $scope.changePhase = function () {
         $http.post(SERVER + 'phase/editCurrentPhase/' + phase.current_phase + '&' + $scope.phase)
             .success((data, status, headers, config) => {
+                alert("Phase change successful!");
                 $route.reload();
             })
             .error(function (data, status, header, config) {
@@ -607,9 +599,9 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     }
 
     $scope.endDates = [{
-        phase1_end: phase.phase1_end,
-        phase2_end: phase.phase2_end,
-        phase3_end: phase.phase3_end,
+        phase1_end: phase.phase1_end.split('T')[0],
+        phase2_end: phase.phase2_end.split('T')[0],
+        phase3_end: phase.phase3_end.split('T')[0],
     }];
 
     $scope.saveDate = function (data) {
@@ -713,13 +705,15 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
 
     // remove user
     $scope.removeUser = function (id) {
-        $http.post(SERVER + 'user/rm/' + id)
-            .success((data, status, headers, config) => {
-                $route.reload();
-            })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-            });;
+        if (confirm("Do you want to remove user ID: " + id)) {
+            $http.post(SERVER + 'user/rm/' + id)
+                .success((data, status, headers, config) => {
+                    $route.reload();
+                })
+                .error(function (data, status, header, config) {
+                    alert(JSON.stringify(data));
+                });;
+        }
     };
 
     // add new user
@@ -743,6 +737,12 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
             return "invalid!";
         }
     };
+
+    $scope.checkDate = function(date){
+        if (!date.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)){
+            return "invalid!";
+        }
+    }
 });
 
 app.run([
