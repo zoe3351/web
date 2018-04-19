@@ -1,7 +1,7 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
 // modify this later
-const SERVER = "http://bulubulu.ischool.uw.edu:4000/";
+const SERVER = "http://localhost:8080/";
 
 app.config(function config($routeProvider) {
     $routeProvider
@@ -135,7 +135,7 @@ app.factory("DataService", function ($http) {
 
 app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout) {
 
-    if (window.localStorage["token"]!== "") {
+    if (window.localStorage["token"] !== "") {
         $http
             .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
                 headers: {
@@ -157,7 +157,7 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
         $scope.username = $rootScope.username;
     }
 
-    $scope.signout = function(){
+    $scope.signout = function () {
         window.localStorage["token"] = "";
         $rootScope.username = null;
         $scope.username = null;
@@ -732,10 +732,13 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
             email: data.email
         }
 
-        if (id) {
-            $http.post(SERVER + 'user/add/', body)
+        if (!id) {
+            $http.post(SERVER + 'user/add', body)
                 .success((data, status, headers, config) => {
-                    $route.reload();
+                    DataService.getAllUser(function (response) {
+                        alert("user added!");
+                        $scope.allUser = response.data.data;
+                    }, errCallback);
                 })
                 .error(errCallback);;
         } else {
@@ -775,10 +778,36 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
         }
     };
 
-    $scope.checkDate = function (date) {
-        if (!date.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)) {
+    $scope.checkDate = function (data) {
+        if (!data.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)) {
+            return "invalid!";
+        }
+    }
+
+    /* DataService.getAllUsername(function (response) {
+        $scope.allUsername = response.data.data;
+    }, function (res) {
+        allert("can't get allusername!");
+    });
+
+    $scope.checkUsername = function (data) {
+        for (let name of $scope.allUsername) {
+            if (name.account_name == data) {
+                return "username already exist!";
+            }
+        }
+    } */
+
+    $scope.checkEmail = function (data) {
+        if (!data.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/)) {
+            return "invalid!";
+        }
+    }
+
+    $scope.checkPhone = function (data) {
+        data = String(data);
+        if (!data.match(/^[0-9]{1,45}$/)) {
             return "invalid!";
         }
     }
 });
-
