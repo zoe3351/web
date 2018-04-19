@@ -647,6 +647,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     $scope.changePhase = function () {
         $http.post(SERVER + 'phase/editCurrentPhase/' + $scope.originPhase + '&' + $scope.phase)
             .success((data, status, headers, config) => {
+                $scope.originPhase = $scope.phase;
                 alert("Phase changed!");
             })
             .error(errCallback);

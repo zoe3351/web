@@ -195,7 +195,7 @@
                 <option value="3" ng-selected="phase==3">Vote</option>
                 <option value="4" ng-selected="phase==4">Display</option>
             </select>
-            <button type="submit" class="btn btn-danger" ng-disabled="phaseForm.$pristine">Change Phase</button>
+            <button type="submit" class="btn btn-danger" ng-disabled="originPhase==phase">Change Phase</button>
         </div>
     </form>
 
