@@ -1,19 +1,14 @@
 <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-end">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" ng-click="scrollTo('draft')">Draft Proposal</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" ng-click="scrollTo('user')">User</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" ng-click="scrollTo('proposal')">Proposal</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" ng-click="scrollTo('phase')">Phase</a>
-            </li>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #F0F0F0;">
+        <h3 class="navbar-brand" href="#admin">Quick Jump</h3>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+            <div class="navbar-nav ">
+                <a href="#admin#draft" class="nav-item nav-link active" ng-click="scrollTo('draft')">Draft Proposal</a>
+                <a href="#admin#user" class="nav-item nav-link active" ng-click="scrollTo('user')">User</a>
+                <a href="#admin#proposal" class="nav-item nav-link active" ng-click="scrollTo('proposal')">Proposal</a>
+                <a href="#admin#phase" class="nav-item nav-link active" ng-click="scrollTo('phase')">Phase</a>
+            </div>
+        </div>
     </nav>
 
     <h3 id="draft">I.Draft Proposal Management</h3>
@@ -22,105 +17,52 @@
         <i class="fa fa-download"></i>
     </a>
 
-    <table class="table table-bordered table-hover table-condensed">
-        <tr style="font-weight: bold">
-            <td style="width:10%">ID</td>
-            <td style="width:20%">Title</td>
-            <td style="width:20%">Idea</td>
-            <td style="width:20%">Location</td>
-            <td style="width:5%">LAT</td>
-            <td style="width:5%">LONG</td>
-            <td style="width:20%">Edit</td>
-        </tr>
-        <tr ng-repeat="draft in allDraft">
-            <td>
-                <h5>
-                    {{ draft.draft_id}}
-                </h5>
-            </td>
-            <td>
-                <h5 editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
-                    {{draft.proposal_title}}
-                </h5>
-            </td>
-            <td>
-                <h5 editable-text="draft.proposal_idea" e-name="proposal_idea" e-form="rowform" onbeforesave="check($data)">
-                    {{draft.proposal_idea}}
-                </h5>
-            </td>
-            <td>
-                <h5 editable-text="draft.project_location" e-name="project_location" e-form="rowform" onbeforesave="check($data)">
-                    {{draft.project_location}}
-                </h5>
-            </td>
-            <td>
-                <h5 editable-text="draft.proposal_latitude" e-name="proposal_latitude" e-form="rowform" onbeforesave="check($data)">
-                    {{draft.proposal_latitude}}
-                </h5>
-            </td>
-            <td>
-                <h5 editable-text="draft.proposal_longitude" e-name="proposal_longitude" e-form="rowform" onbeforesave="check($data)">
-                    {{draft.proposal_longitude}}
-                </h5>
-            </td>
-            <td style="white-space: nowrap">
-                <!-- form -->
-                <form editable-form name="rowform" onbeforesave="saveDraft($data, draft.draft_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
-                    shown="inserted == draft">
-                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-                        save
-                    </button>
-                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-                        cancel
-                    </button>
-                </form>
-                <div class="buttons" ng-show="!rowform.$visible">
-                    <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                    <button type="button" class="btn btn-danger" ng-click="removeDraft(draft.draft_id)">del</button>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-
-    <h3 id="user" style="padding-top: 60px">II. User Management</h3>
-    <div ng-show="allUser">
+    <div style="overflow-y:scroll; max-height:800px; margin-top: 10px;">
         <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">
                 <td style="width:10%">ID</td>
-                <td style="width:20%">username</td>
-                <td style="width:20%">Email</td>
-                <td style="width:20%">Phone</td>
-                <td style="width:30%">Edit</td>
+                <td style="width:20%">Title</td>
+                <td style="width:20%">Idea</td>
+                <td style="width:20%">Location</td>
+                <td style="width:5%">LAT</td>
+                <td style="width:5%">LONG</td>
+                <td style="width:20%">Edit</td>
             </tr>
-            <tr ng-repeat="user in allUser">
+            <tr ng-repeat="draft in allDraft">
                 <td>
-                    <span>
-                        {{ user.user_system_id}}
-                    </span>
+                    <h5>
+                        {{ draft.draft_id}}
+                    </h5>
                 </td>
                 <td>
-                    <!-- editable username (text with validation) -->
-                    <span editable-text="user.account_name" e-name="username" e-form="rowform" onbeforesave="check($data)">
-                        {{ user.account_name}}
-                    </span>
+                    <h5 editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_title}}
+                    </h5>
                 </td>
                 <td>
-                    <!-- editable username (text with validation) -->
-                    <span editable-text="user.user_email" e-name="email" e-form="rowform" onbeforesave="check($data)">
-                        {{ user.user_email}}
-                    </span>
+                    <h5 editable-text="draft.proposal_idea" e-name="proposal_idea" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_idea}}
+                    </h5>
                 </td>
                 <td>
-                    <!-- editable username (text with validation) -->
-                    <span editable-text="user.user_phone_number" e-name="phone" e-form="rowform" onbeforesave="check($data)">
-                        {{ user.user_phone_number}}
-                    </span>
+                    <h5 editable-text="draft.project_location" e-name="project_location" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.project_location}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.proposal_latitude" e-name="proposal_latitude" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_latitude}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.proposal_longitude" e-name="proposal_longitude" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_longitude}}
+                    </h5>
                 </td>
                 <td style="white-space: nowrap">
                     <!-- form -->
-                    <form editable-form name="rowform" onbeforesave="saveUser($data, user.user_system_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
-                        shown="inserted == user">
+                    <form editable-form name="rowform" onbeforesave="saveDraft($data, draft.draft_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                        shown="inserted == draft">
                         <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
                             save
                         </button>
@@ -130,60 +72,121 @@
                     </form>
                     <div class="buttons" ng-show="!rowform.$visible">
                         <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-                        <button type="button" class="btn btn-danger" ng-click="removeUser(user.user_system_id)" ng-if="false">del</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeDraft(draft.draft_id)">del</button>
                     </div>
                 </td>
             </tr>
         </table>
-        <button type="button" class="btn btn-warning" ng-click="addUser()">Add User</button>
     </div>
 
+    <h3 id="user" style="padding-top: 60px">II. User Management</h3>
+
+    <div style="overflow-y:scroll; max-height:800px; margin-top: 10px;">
+        <div ng-show="allUser">
+            <table class="table table-bordered table-hover table-condensed">
+                <tr style="font-weight: bold">
+                    <td style="width:10%">ID</td>
+                    <td style="width:20%">username</td>
+                    <td style="width:20%">Email</td>
+                    <td style="width:20%">Phone</td>
+                    <td style="width:30%">Edit</td>
+                </tr>
+                <tr ng-repeat="user in allUser">
+                    <td>
+                        <span>
+                            {{ user.user_system_id}}
+                        </span>
+                    </td>
+                    <td>
+                        <!-- editable username (text with validation) -->
+                        <span editable-text="user.account_name" e-name="username" e-form="rowform" onbeforesave="check($data)">
+                            {{ user.account_name}}
+                        </span>
+                    </td>
+                    <td>
+                        <!-- editable username (text with validation) -->
+                        <span editable-text="user.user_email" e-name="email" e-form="rowform" onbeforesave="check($data)">
+                            {{ user.user_email}}
+                        </span>
+                    </td>
+                    <td>
+                        <!-- editable username (text with validation) -->
+                        <span editable-text="user.user_phone_number" e-name="phone" e-form="rowform" onbeforesave="check($data)">
+                            {{ user.user_phone_number}}
+                        </span>
+                    </td>
+                    <td style="white-space: nowrap">
+                        <!-- form -->
+                        <form editable-form name="rowform" onbeforesave="saveUser($data, user.user_system_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                            shown="inserted == user">
+                            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                save
+                            </button>
+                            <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                                cancel
+                            </button>
+                        </form>
+                        <div class="buttons" ng-show="!rowform.$visible">
+                            <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                            <button type="button" class="btn btn-danger" ng-click="removeUser(user.user_system_id)" ng-if="false">del</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    <button type="button" class="btn btn-warning" ng-click="addUser()">Add User</button>
+
     <h3 id="proposal" style="padding-top: 60px">III. Proposal Management</h3>
-    <table class="table table-bordered table-hover table-condensed">
-        <tr style="font-weight: bold">
-            <td style="width:15%">ID</td>
-            <td style="width:35%">Title</td>
-            <td style="width:25%">Location</td>
-            <td style="width:25%">Edit</td>
-        </tr>
-        <tr ng-repeat="final in allFinal">
-            <td>
-                <!-- editable username (text with validation) -->
-                <h5 editable-text="final.proposal_id" e-name="id" e-form="rowform">
-                    {{ final.proposal_id || 'empty' }}
-                </h5>
-            </td>
-            <td>
-                <!-- editable status (select-local) -->
-                <h5 editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
-                    {{ final.final_proposal_title || "empty" }}
-                </h5>
-            </td>
-            <td>
-                <h5 editable-select="final.final_project_location" e-name="location" e-form="rowform">
-                    {{ final.final_project_location || "empty" }}
-                </h5>
-            </td>
-            <td style="white-space: nowrap">
-                <!-- form -->
-                <form editable-form name="rowform" onbeforesave="saveUser($data, final.no)" ng-show="rowform.$visible" class="form-buttons form-inline"
-                    shown="inserted == final">
-                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-                        save
-                    </button>
-                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-                        cancel
-                    </button>
-                </form>
-                <div class="buttons" ng-show="!rowform.$visible">
-                    <button type="button" class="btn btn-primary" ng-click="open(final.proposal_id)">
-                        <i class="fa fa-external-link-square-alt"></i>
-                        edit</button>
-                    <button type="button" class="btn btn-danger" ng-click="removeFinal(final.proposal_id)">del</button>
-                </div>
-            </td>
-        </tr>
-    </table>
+
+    <div style="overflow-y:scroll; height:800px; margin-top: 10px;">
+        <table class="table table-bordered table-hover table-condensed">
+            <tr style="font-weight: bold">
+                <td style="width:15%">ID</td>
+                <td style="width:35%">Title</td>
+                <td style="width:25%">Location</td>
+                <td style="width:25%">Edit</td>
+            </tr>
+            <tr ng-repeat="final in allFinal">
+                <td>
+                    <!-- editable username (text with validation) -->
+                    <h5 editable-text="final.proposal_id" e-name="id" e-form="rowform">
+                        {{ final.proposal_id || 'empty' }}
+                    </h5>
+                </td>
+                <td>
+                    <!-- editable status (select-local) -->
+                    <h5 editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
+                        {{ final.final_proposal_title || "empty" }}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-select="final.final_project_location" e-name="location" e-form="rowform">
+                        {{ final.final_project_location || "empty" }}
+                    </h5>
+                </td>
+                <td style="white-space: nowrap">
+                    <!-- form -->
+                    <form editable-form name="rowform" onbeforesave="saveUser($data, final.no)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                        shown="inserted == final">
+                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                            save
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                            cancel
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button type="button" class="btn btn-primary" ng-click="open(final.proposal_id)">
+                            <i class="fa fa-external-link-square-alt"></i>
+                            edit</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeFinal(final.proposal_id)">del</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
 
     <h4>Import Excel as Final Proposal</h4>

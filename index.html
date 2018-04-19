@@ -27,35 +27,34 @@
 	<link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
 	<script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
 	<script src="script.js" type="text/javascript"></script>
+	<script src="bower_components/ngProgress/build/ngProgress.js"></script>
+	<link rel="stylesheet" href="bower_components/ngProgress/ngProgress.css">
 </head>
 
 <body ng-app="catApp">
-	<nav>
-		<div class="container">
-			<h1>Your Voice Your Choice</h1>
-			<div id="menu">
-				<ul class="toplinks">
-					<li>
-						<a href="#home">Home</a>
-					</li>
-					<li>
-						<a href="#login">Login</a>
-					</li>
-					<li>
-						<a href="#register">Register</a>
-					</li>
-					<li>
-						<a href="#profile">Profile</a>
-					</li>
-					<li>
-						<a href="#admin">Admin</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+	<nav class="nav justify-content-center" ng-controller="mainController">
+		<h1 style="margin-left:100px">Your Voice Your Choice</h1>
+		<ul class="toplinks">
+			<li>
+				<a href="#home">Home</a>
+			</li>
+			<li>
+				<a href="#login">Login</a>
+			</li>
+			<li>
+				<a href="#register">Register</a>
+			</li>
+			<li>
+				<a href="#profile">Profile</a>
+			</li>
+			<li>
+				<a href="#admin">Admin</a>
+			</li>
+			<li ng-if="username">
+				<a href="#">Hi {{username}}, Sign out</a>
+			</li>
+		</ul>
 	</nav>
-
-	<div class="float-right">Float right on all viewport sizes</div><br>
 
 	<div ng-view></div>
 

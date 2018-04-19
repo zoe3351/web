@@ -154,7 +154,33 @@ app.factory("DataService", function ($http) {
 
 });
 
-app.controller("mapController", function ($scope, $http, $route, phaseAndProposal) {
+app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout) {
+
+    /*
+    if (window.localStorage["token"]) {
+        $http
+            .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
+                headers: {
+                    "x-access-token": `${window.localStorage["token"]}`
+                }
+            })
+            .success(function (data, status, headers, config) {
+                // $scope.PostDataResponse = data;
+                $rootScope.username = data[0]["username"];
+                $rootScope.userId = data[0]["id"];
+            })
+            .error(function (data, status, header, config) {
+                alert(data["message"]);
+                window.localStorage["token"] = "";
+            });
+    }
+
+    if ($rootScope.username) {
+        $scope.username = $rootScope.username;
+    }*/
+});
+
+app.controller("mapController", function ($scope, $http, $route, $rootScope, phaseAndProposal) {
     $scope.phase = phaseAndProposal.phase;
 
     $scope.proposals = phaseAndProposal.proposals;
@@ -168,12 +194,12 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
     }
 
     $scope.vote = function (pid) {
-        if (!$scope.userId) {
+        if (!$rootScope.userId) {
             alert("Please Signin!");
             return;
         }
         // check if user has voted more than suggested times
-        $http.get(SERVER + 'vote/check/' + $scope.userId)
+        $http.get(SERVER + 'vote/check/' + $rootScope.userId)
             .success((res, status, headers, config) => {
                 let votedProposals = convert(res.data);
                 if (votedProposals.includes(pid)) {
@@ -193,7 +219,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
 
     let voteCallback = function (pid) {
         if (confirm("Do you want to vote for proposal " + pid + " ?")) {
-            $http.post(SERVER + 'vote/' + $scope.userId + '&' + pid)
+            $http.post(SERVER + 'vote/' + $rootScope.userId + '&' + pid)
                 .success((data, status, headers, config) => {
                     alert("Vote recorded, thank you!");
                     $route.reload();
@@ -219,7 +245,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
                     grade_Need_at_location: Number(score1),
                     grade_Community_Benefit: Number(score2)
                 }
-                $http.post(SERVER + 'grade/' + $scope.userId + '&' + pid, body)
+                $http.post(SERVER + 'grade/' + $rootScope.userId + '&' + pid, body)
                     .success((data, status, headers, config) => {
                         alert("Grade recorded, thank you!");
                         $route.reload();
@@ -237,13 +263,13 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
     }
 
     $scope.grade = function (pid) {
-        if (!$scope.userId) {
+        if (!$rootScope.userId) {
             alert("Please Signin!");
             return;
         }
 
         // check if user has graded the same proposal
-        $http.get(SERVER + 'grade/check/' + $scope.userId)
+        $http.get(SERVER + 'grade/check/' + $rootScope.userId)
             .success((res, status, headers, config) => {
                 let gradedProposals = convert(res.data);
                 if (gradedProposals.includes(pid)) {
@@ -316,6 +342,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
         }
     };
 
+    /*
     if (window.localStorage["token"]) {
         $http
             .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
@@ -334,7 +361,7 @@ app.controller("mapController", function ($scope, $http, $route, phaseAndProposa
                 alert(data["message"]);
                 window.localStorage["token"] = "";
             });
-    }
+    }*/
 });
 
 app.controller("proposalDetailController", function ($scope, $http, $routeParams, $route, proposal) {
@@ -364,7 +391,7 @@ app.controller("proposalDetailController", function ($scope, $http, $routeParams
 
 })
 
-app.controller("loginController", function ($scope, $http, $location) {
+app.controller("loginController", function ($scope, $http, $location, $route) {
     $scope.message = "login";
 
     $scope.login = () => {
@@ -385,7 +412,8 @@ app.controller("loginController", function ($scope, $http, $location) {
                 // $scope.PostDataResponse = data;
                 if (data["auth"]) {
                     window.localStorage["token"] = data["token"];
-                    $location.path("#/home");
+                    location.reload();
+                    $location.path("#home");
                 } else {
                     alert(data);
                 }
@@ -440,7 +468,8 @@ app.controller("registerController", function ($scope, $http, $location, allUser
                 // $scope.PostDataResponse = data;
                 if (data["auth"]) {
                     window.localStorage["token"] = data["token"];
-                    $location.path("#/home");
+                    location.reload();
+                    $location.path("#home");
                 } else {
                     alert(data);
                 }
@@ -455,35 +484,12 @@ app.controller("profileController", function ($scope) {
     $scope.message = "profile";
 });
 
-app.controller("displayController", function ($scope) {
-    $scope.message = "display";
-});
-
-app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, allUser, allDraft, allFinal, phase) {
+app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, $rootScope, allUser, allDraft, allFinal, phase) {
     $scope.allFinal = allFinal;
     $scope.allDraft = allDraft;
     $scope.allUser = allUser;
     $scope.originPhase = Number(phase.current_phase)
     $scope.phase = Number(phase.current_phase);
-
-    if (window.localStorage["token"]) {
-        $http
-            .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
-                headers: {
-                    "x-access-token": `${window.localStorage["token"]}`
-                }
-            })
-            .success(function (data, status, headers, config) {
-                // $scope.PostDataResponse = data;
-                console.log(data);
-                $scope.username = data[0]["username"];
-                // TODO: set admin page visible only to admin user
-            })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-                window.localStorage["token"] = "";
-            });
-    }
 
     $scope.gradePs = [];
     $http.get(SERVER + 'stage/grade/p')
@@ -738,16 +744,10 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
         }
     };
 
-    $scope.checkDate = function(date){
-        if (!date.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)){
+    $scope.checkDate = function (date) {
+        if (!date.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)) {
             return "invalid!";
         }
     }
 });
 
-app.run([
-    "editableOptions",
-    function (editableOptions) {
-        editableOptions.theme = "bs3"; // bootstrap3 theme. Can be also 'bs2', 'default'
-    }
-]);
