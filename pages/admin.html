@@ -1,15 +1,4 @@
 <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #F0F0F0;">
-        <h3 class="navbar-brand" href="#admin">Quick Jump</h3>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-            <div class="navbar-nav ">
-                <a href="#admin#draft" class="nav-item nav-link active" ng-click="scrollTo('draft')">Draft Proposal</a>
-                <a href="#admin#user" class="nav-item nav-link active" ng-click="scrollTo('user')">User</a>
-                <a href="#admin#proposal" class="nav-item nav-link active" ng-click="scrollTo('proposal')">Proposal</a>
-                <a href="#admin#phase" class="nav-item nav-link active" ng-click="scrollTo('phase')">Phase</a>
-            </div>
-        </div>
-    </nav>
 
     <h3 id="draft">I.Draft Proposal Management</h3>
     <a href="http://bulubulu.ischool.uw.edu:4000/draft/export" class="badge badge-primary" download="draft.xlsx">
@@ -273,6 +262,15 @@
             <p class="help-block">Required: Proposal Ids seperated by space</p>
         </div>
         <button type="submit" class="btn btn-danger" ng-disabled="!voteProposalForm.$valid">Update</button>
+    </form>
+
+    <h4 style="padding-top: 30px">Proposals in Final Display</h4>
+    <form name="displayProposalForm" ng-submit="submitDisplayProposalForm(displayProposalForm.$valid)" novalidate>
+        <div class="form-group">
+            <textarea style="height:200px;" ng-model="displayPs" name="displayPs" class="form-control" id="displayPs"></textarea>
+            <p class="help-block">Required: Proposal Ids seperated by space</p>
+        </div>
+        <button type="submit" class="btn btn-danger" ng-disabled="!displayProposalForm.$valid">Update</button>
     </form>
 
 </div>

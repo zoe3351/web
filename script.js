@@ -1,7 +1,7 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
 // modify this later
-const SERVER = "http://localhost:8080/";
+const SERVER = "http://bulubulu.ischool.uw.edu:4000/";
 
 app.config(function config($routeProvider) {
     $routeProvider
@@ -21,11 +21,6 @@ app.config(function config($routeProvider) {
         .when("/register", {
             templateUrl: "pages/register.html",
             controller: "registerController",
-            resolve: {
-                allUsername: function (DataService) {
-                    return DataService.getAllUsername();
-                }
-            }
         })
         .when("/profile", {
             templateUrl: "pages/profile.html",
@@ -34,69 +29,50 @@ app.config(function config($routeProvider) {
         .when("/proposalDetail/:pid", {
             templateUrl: "pages/proposalDetail.html",
             controller: "proposalDetailController",
-            resolve: {
-                proposal: function (DataService, $route) {
-                    return DataService.getProposal($route.current.params.pid);
-                },
-            }
         })
         .when("/admin", {
             templateUrl: "pages/admin.html",
             controller: "adminController",
-            resolve: {
-                allUser: function (DataService) {
-                    return DataService.getAllUser();
-                },
-                allDraft: function (DataService) {
-                    return DataService.getAllDraft();
-                },
-                allFinal: function (DataService) {
-                    return DataService.getAllFinal();
-                },
-                phase: function (DataService) {
-                    return DataService.getPhase();
-                }
-            }
         })
         .otherwise("/home");
 });
 
 
 app.factory("DataService", function ($http) {
-    function getAllUser() {
-        return $http.get(SERVER + 'user/all').then(function (response) {
-            return response.data.data;
-        });
+    function getAllUser(succCallback, errCallback) {
+        return $http.get(SERVER + 'user/all').then(succCallback, errCallback);
     };
 
-    function getAllDraft() {
-        return $http.get(SERVER + 'draft/all').then(function (response) {
-            return response.data.data;
-        });
+    function getAllDraft(succCallback, errCallback) {
+        return $http.get(SERVER + 'draft/all').then(succCallback, errCallback);
     }
 
-    function getAllFinal() {
-        return $http.get(SERVER + 'final/all').then(function (response) {
-            return response.data.data;
-        });
+    function getAllFinal(succCallback, errCallback) {
+        return $http.get(SERVER + 'final/all').then(succCallback, errCallback);
     }
 
-    function getProposal(pid) {
-        return $http.get(SERVER + 'final/' + pid).then(function (response) {
-            return response.data.data[0];
-        });
+    function getProposal(pid, succCallback, errCallback) {
+        return $http.get(SERVER + 'final/' + pid).then(succCallback, errCallback);
     }
 
-    function getPhase() {
-        return $http.get(SERVER + 'phase/all').then(function (response) {
-            return response.data.data[0];
-        });
+    function getPhase(succCallback, errCallback) {
+        return $http.get(SERVER + 'phase/all').then(succCallback, errCallback);
     }
 
-    function getAllUsername() {
-        return $http.get(SERVER + 'user/allUsername').then(function (response) {
-            return response.data.data;
-        });
+    function getGradeProposals(succCallback, errCallback) {
+        $http.get(SERVER + 'stage/grade/p').then(succCallback, errCallback);
+    }
+
+    function getVoteProposals(succCallback, errCallback) {
+        $http.get(SERVER + 'stage/vote/p').then(succCallback, errCallback);
+    }
+
+    function getDisplayProposals(succCallback, errCallback) {
+        $http.get(SERVER + 'stage/display/p').then(succCallback, errCallback);
+    }
+
+    function getAllUsername(succCallback, errCallback) {
+        return $http.get(SERVER + 'user/allUsername').then(succCallback, errCallback);
     }
 
     function getPhaseThenProposal() {
@@ -149,15 +125,17 @@ app.factory("DataService", function ($http) {
         getProposal: getProposal,
         getPhase: getPhase,
         getPhaseThenProposal: getPhaseThenProposal,
-        getAllUsername: getAllUsername
+        getAllUsername: getAllUsername,
+        getGradeProposals: getGradeProposals,
+        getVoteProposals, getVoteProposals,
+        getDisplayProposals: getDisplayProposals
     };
 
 });
 
 app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout) {
 
-    /*
-    if (window.localStorage["token"]) {
+    if (window.localStorage["token"]!== "") {
         $http
             .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
                 headers: {
@@ -177,7 +155,14 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
 
     if ($rootScope.username) {
         $scope.username = $rootScope.username;
-    }*/
+    }
+
+    $scope.signout = function(){
+        window.localStorage["token"] = "";
+        $rootScope.username = null;
+        $scope.username = null;
+        location.reload();
+    }
 });
 
 app.controller("mapController", function ($scope, $http, $route, $rootScope, phaseAndProposal) {
@@ -364,9 +349,11 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, pha
     }*/
 });
 
-app.controller("proposalDetailController", function ($scope, $http, $routeParams, $route, proposal) {
+app.controller("proposalDetailController", function ($scope, $http, $routeParams, $route, DataService) {
     $scope.pid = $routeParams.pid;
-    $scope.proposal = proposal;
+    $scope.proposal = DataService.getProposal($scope.pid, function (response) {
+        $scope.proposal = response.data.data[0];
+    });
 
     $scope.editable = false;
 
@@ -427,14 +414,19 @@ app.controller("loginController", function ($scope, $http, $location, $route) {
     //   });
 });
 
-app.controller("registerController", function ($scope, $http, $location, allUsername) {
+app.controller("registerController", function ($scope, $http, $location, DataService) {
     $scope.username = "";
     $scope.password = "";
     $scope.email = "";
     $scope.phone = "";
 
     // check if username has already been used
-    $scope.allUsername = allUsername;
+    DataService.getAllUsername(function (response) {
+        $scope.allUsername = response.data.data;
+    }, function (res) {
+        allert("can't get allusername!");
+    });
+
     $scope.usernameCanUse = true;
     $scope.pass = function () {
         for (let name of $scope.allUsername) {
@@ -484,27 +476,72 @@ app.controller("profileController", function ($scope) {
     $scope.message = "profile";
 });
 
-app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, $rootScope, allUser, allDraft, allFinal, phase) {
-    $scope.allFinal = allFinal;
-    $scope.allDraft = allDraft;
-    $scope.allUser = allUser;
-    $scope.originPhase = Number(phase.current_phase)
-    $scope.phase = Number(phase.current_phase);
+app.controller("adminController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, $rootScope, DataService) {
+    $scope.allFinal = [];
+    $scope.allDraft = [];
+    $scope.allUser = [];
+    $scope.originPhase = 0;
+    $scope.phase = 0;
+
+    let errCallback = function (data, status, header, config) {
+        alert(JSON.stringify(data));
+    }
+
+    DataService.getAllDraft(function (response) {
+        $scope.allDraft = response.data.data;
+    }, errCallback);
+
+    DataService.getAllUser(function (response) {
+        $scope.allUser = response.data.data;
+    }, errCallback);
+
+    DataService.getAllFinal(function (response) {
+        $scope.allFinal = response.data.data;
+    }, errCallback);
+
+    DataService.getPhase(function (response) {
+        let phase = response.data.data[0];
+        $scope.originPhase = Number(phase.current_phase);
+        $scope.phase = Number(phase.current_phase);
+        $scope.endDates = [{
+            phase1_end: phase.phase1_end.split('T')[0],
+            phase2_end: phase.phase2_end.split('T')[0],
+            phase3_end: phase.phase3_end.split('T')[0],
+        }];
+    }, errCallback);
 
     $scope.gradePs = [];
-    $http.get(SERVER + 'stage/grade/p')
-        .success(function (res, status, headers, config) {
-            $scope.gradePs = (function () {
-                let ps = "";
-                for (let a of res.data) {
-                    ps += a.proposal_id + " ";
-                }
-                return ps;
-            }());
-        })
-        .error(function (data, status, header, config) {
-            alert(JSON.stringify(data));
-        });
+    DataService.getGradeProposals(function (res, status, headers, config) {
+        $scope.gradePs = (function () {
+            let ps = "";
+            for (let a of res.data.data) {
+                ps += a.proposal_id + " ";
+            }
+            return ps;
+        }());
+    }, errCallback);
+
+    $scope.votePs = [];
+    DataService.getVoteProposals(function (res, status, headers, config) {
+        $scope.votePs = (function () {
+            let ps = "";
+            for (let a of res.data.data) {
+                ps += a.proposal_id + " ";
+            }
+            return ps;
+        }());
+    }, errCallback);
+
+    $scope.displayPs = [];
+    DataService.getDisplayProposals(function (res, status, headers, config) {
+        $scope.displayPs = (function () {
+            let ps = "";
+            for (let a of res.data.data) {
+                ps += a.proposal_id + " ";
+            }
+            return ps;
+        }());
+    }, errCallback);
 
     $scope.submitGradeProposalForm = function (valid) {
         if (valid) {
@@ -523,7 +560,6 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                     }
                 }
                 if (!f) {
-                    console.log(p);
                     alert("Wrong proposal id!");
                     return;
                 }
@@ -536,26 +572,9 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 .success(function (data, status, headers, config) {
                     alert("Proposals in Grade Updated!");
                 })
-                .error(function (data, status, header, config) {
-                    alert(JSON.stringify(data));
-                });
+                .error(errCallback);
         }
     }
-
-    $scope.votePs = [];
-    $http.get(SERVER + 'stage/vote/p')
-        .success(function (res, status, headers, config) {
-            $scope.votePs = (function () {
-                let ps = "";
-                for (let a of res.data) {
-                    ps += a.proposal_id + " ";
-                }
-                return ps;
-            }());
-        })
-        .error(function (data, status, header, config) {
-            alert(JSON.stringify(data));
-        });
 
     $scope.submitVoteProposalForm = function (valid) {
         if (valid) {
@@ -587,37 +606,58 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 .success(function (data, status, headers, config) {
                     alert("Proposals in Vote Updated!");
                 })
-                .error(function (data, status, header, config) {
-                    alert(JSON.stringify(data));
-                });
+                .error(errCallback);
+        }
+    }
+
+    $scope.submitDisplayProposalForm = function (valid) {
+        if (valid) {
+            let ps = $scope.displayPs.trim().split(/\s+/g);
+
+            if (new Set(ps).size !== ps.length) {
+                alert("Contains Duplicate Proposals!");
+                return;
+            }
+
+            for (let p of ps) {
+                let f = false;
+                for (let pro of $scope.allFinal) {
+                    if (pro.proposal_id == p) {
+                        f = true;
+                    }
+                }
+                if (!f) {
+                    console.log(p);
+                    alert("Wrong proposal id!");
+                    return;
+                }
+            }
+
+            let body = {
+                ps: ps
+            };
+            $http.post(SERVER + 'stage/display/p', body)
+                .success(function (data, status, headers, config) {
+                    alert("Proposals in Display Updated!");
+                })
+                .error(errCallback);
         }
     }
 
     $scope.changePhase = function () {
-        $http.post(SERVER + 'phase/editCurrentPhase/' + phase.current_phase + '&' + $scope.phase)
+        $http.post(SERVER + 'phase/editCurrentPhase/' + $scope.originPhase + '&' + $scope.phase)
             .success((data, status, headers, config) => {
-                alert("Phase change successful!");
-                $route.reload();
+                alert("Phase changed!");
             })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-            });
+            .error(errCallback);
     }
 
-    $scope.endDates = [{
-        phase1_end: phase.phase1_end.split('T')[0],
-        phase2_end: phase.phase2_end.split('T')[0],
-        phase3_end: phase.phase3_end.split('T')[0],
-    }];
-
     $scope.saveDate = function (data) {
-        $http.post(SERVER + 'phase/editEndDates/' + phase.current_phase, data)
+        $http.post(SERVER + 'phase/editEndDates/' + $scope.originPhase, data)
             .success((data, status, headers, config) => {
-                $route.reload();
+                alert("Phase end dates changed!");
             })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-            });
+            .error(errCallback);
     }
 
     // final mgt part
@@ -626,13 +666,15 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     }
 
     $scope.removeFinal = function (id) {
+        if (!confirm("Do you want to DELETE proposal ID: " + id + "?")) return;
         $http.post(SERVER + 'final/rm/' + id)
             .success((data, status, headers, config) => {
-                $route.reload();
+                DataService.getAllFinal(function (response) {
+                    alert("Proposal Deleted!")
+                    $scope.allFinal = response.data.data;
+                })
             })
-            .error(function (data, status, header, config) {
-                alert(data);
-            });
+            .error(errCallback);
     };
 
     $scope.upload = function () {
@@ -665,21 +707,21 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
 
         $http.post(SERVER + 'draft/edit/' + id, body)
             .success((data, status, headers, config) => {
-                $route.reload();
+                alert("Draft updated!")
             })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-            });
+            .error(errCallback);
     };
 
     $scope.removeDraft = function (id) {
+        if (!confirm("Do you want to DELETE draft ID: " + id + "?")) return;
         $http.post(SERVER + 'draft/rm/' + id)
             .success((data, status, headers, config) => {
-                $route.reload();
+                alert("Draft Removed!")
+                $http.get(SERVER + 'draft/all').then(function (res) {
+                    $scope.allDraft = res.data.data;
+                });
             })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-            });
+            .error(errCallback);
     };
 
     // user mgt part
@@ -690,22 +732,18 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
             email: data.email
         }
 
-        if (!id) {
-            $http.post(SERVER + 'user/add/' + id, body)
+        if (id) {
+            $http.post(SERVER + 'user/add/', body)
                 .success((data, status, headers, config) => {
                     $route.reload();
                 })
-                .error(function (data, status, header, config) {
-                    alert(data);
-                });;
+                .error(errCallback);;
         } else {
             $http.post(SERVER + 'user/edit/' + id, body)
                 .success((data, status, headers, config) => {
-                    $route.reload();
+                    alert("user updated!");
                 })
-                .error(function (data, status, header, config) {
-                    alert(JSON.stringify(data));
-                });;
+                .error(errCallback);;
         }
     };
 
@@ -716,9 +754,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
                 .success((data, status, headers, config) => {
                     $route.reload();
                 })
-                .error(function (data, status, header, config) {
-                    alert(JSON.stringify(data));
-                });;
+                .error(errCallback);;
         }
     };
 
@@ -732,11 +768,6 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
         };
         $scope.allUser.push($scope.inserted);
     };
-
-    $scope.scrollTo = function (id) {
-        $location.hash(id);
-        $anchorScroll();
-    }
 
     $scope.check = function (data) {
         if (!data) {
