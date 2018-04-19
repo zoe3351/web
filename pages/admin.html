@@ -87,20 +87,17 @@
                         </span>
                     </td>
                     <td>
-                        <!-- editable username (text with validation) -->
                         <span editable-text="user.account_name" e-name="username" e-form="rowform" onbeforesave="check($data)">
                             {{ user.account_name}}
                         </span>
                     </td>
                     <td>
-                        <!-- editable username (text with validation) -->
-                        <span editable-text="user.user_email" e-name="email" e-form="rowform" onbeforesave="check($data)">
+                        <span editable-text="user.user_email" e-name="email" e-form="rowform" onbeforesave="checkEmail($data)">
                             {{ user.user_email}}
                         </span>
                     </td>
                     <td>
-                        <!-- editable username (text with validation) -->
-                        <span editable-text="user.user_phone_number" e-name="phone" e-form="rowform" onbeforesave="check($data)">
+                        <span editable-text="user.user_phone_number" e-name="phone" e-form="rowform" onbeforesave="checkPhone($data)">
                             {{ user.user_phone_number}}
                         </span>
                     </td>
@@ -139,13 +136,11 @@
             </tr>
             <tr ng-repeat="final in allFinal">
                 <td>
-                    <!-- editable username (text with validation) -->
                     <h5 editable-text="final.proposal_id" e-name="id" e-form="rowform">
                         {{ final.proposal_id || 'empty' }}
                     </h5>
                 </td>
                 <td>
-                    <!-- editable status (select-local) -->
                     <h5 editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
                         {{ final.final_proposal_title || "empty" }}
                     </h5>
@@ -200,7 +195,7 @@
                 <option value="3" ng-selected="phase==3">Vote</option>
                 <option value="4" ng-selected="phase==4">Display</option>
             </select>
-            <button type="submit" class="btn btn-danger" ng-disabled="phaseForm.$pristine">Change Phase</button>
+            <button type="submit" class="btn btn-danger" ng-disabled="originPhase==phase">Change Phase</button>
         </div>
     </form>
 
