@@ -1,7 +1,7 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
 // modify this later
-const SERVER = "http://localhost:8080/";
+const SERVER = "http://bulubulu.ischool.uw.edu:4000/";
 
 app.config(function config($routeProvider) {
     $routeProvider
@@ -216,12 +216,12 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, pha
     }
 
     let gradeCallBack = function (pid) {
-        let score1 = prompt("*Question2: Please grade proposal " + pid + " on Need at Location(from 0 to 10): ", "");
+        let score1 = prompt("*Question1: Please grade proposal " + pid + " on Community Benefit(from 0 to 10): ", "");
 
         if (score1 === null || score1 == "") return;
 
         if (Number(score1) <= 10 && Number(score1) >= 0) {
-            let score2 = prompt("*Question1: Please grade proposal " + pid + " on Community Benefit(from 0 to 10): ", "");
+            let score2 = prompt("*Question2: Please grade proposal " + pid + " on Need at Location(from 0 to 10): ", "");
 
             if (score2 === null || score2 == "") return;
 
