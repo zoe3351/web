@@ -1,0 +1,59 @@
+<div class="container">
+
+    <h3 id="proposal">III. Proposal Management</h3>
+
+    <div style="overflow-y:scroll; height:800px; margin-top: 10px;">
+        <table class="table table-bordered table-hover table-condensed">
+            <tr style="font-weight: bold">
+                <td style="width:15%">ID</td>
+                <td style="width:35%">Title</td>
+                <td style="width:25%">Location</td>
+                <td style="width:25%">Edit</td>
+            </tr>
+            <tr ng-repeat="final in allFinal">
+                <td>
+                    <h5 editable-text="final.proposal_id" e-name="id" e-form="rowform">
+                        {{ final.proposal_id || 'empty' }}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
+                        {{ final.final_proposal_title || "empty" }}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-select="final.final_project_location" e-name="location" e-form="rowform">
+                        {{ final.final_project_location || "empty" }}
+                    </h5>
+                </td>
+                <td style="white-space: nowrap">
+                    <!-- form -->
+                    <form editable-form name="rowform" onbeforesave="saveUser($data, final.no)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                        shown="inserted == final">
+                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                            save
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                            cancel
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button type="button" class="btn btn-primary" ng-click="open(final.proposal_id)">
+                            <i class="fa fa-external-link-square-alt"></i>
+                            edit</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeFinal(final.proposal_id)">del</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <h4 style="margin-top:20px">Import Excel as Final Proposal</h4>
+    <div class="justify-content-md-center">
+        <form name="finalForm" ng-submit="upload()" novalidate>
+            <button type="submit" class="btn btn-danger" ng-disabled="!finalForm.uploadInput.$touched">Upload</button>
+            <input type="file" id="uploadInput" name="uploadInput" data-ng-click="finalForm.uploadInput.$touched=true">
+        </form>
+    </div>
+</div>
