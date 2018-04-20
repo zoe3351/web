@@ -1,0 +1,70 @@
+<div class="container">
+
+    <h3 id="draft">Draft Proposal Management</h3>
+    <a href="http://bulubulu.ischool.uw.edu:4000/draft/export" class="badge badge-primary" download="draft.xlsx">
+        Export Drafts to Excel...
+        <i class="fa fa-download"></i>
+    </a>
+
+    <div style="overflow-y:scroll; max-height:800px; margin-top: 10px;">
+        <table class="table table-bordered table-hover table-condensed">
+            <tr style="font-weight: bold">
+                <td style="width:10%">ID</td>
+                <td style="width:20%">Title</td>
+                <td style="width:20%">Idea</td>
+                <td style="width:20%">Location</td>
+                <td style="width:5%">LAT</td>
+                <td style="width:5%">LONG</td>
+                <td style="width:20%">Edit</td>
+            </tr>
+            <tr ng-repeat="draft in allDraft">
+                <td>
+                    <h5>
+                        {{ draft.draft_id}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_title}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.proposal_idea" e-name="proposal_idea" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_idea}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.project_location" e-name="project_location" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.project_location}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.proposal_latitude" e-name="proposal_latitude" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_latitude}}
+                    </h5>
+                </td>
+                <td>
+                    <h5 editable-text="draft.proposal_longitude" e-name="proposal_longitude" e-form="rowform" onbeforesave="check($data)">
+                        {{draft.proposal_longitude}}
+                    </h5>
+                </td>
+                <td style="white-space: nowrap">
+                    <!-- form -->
+                    <form editable-form name="rowform" onbeforesave="saveDraft($data, draft.draft_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                        shown="inserted == draft">
+                        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                            save
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                            cancel
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                        <button type="button" class="btn btn-danger" ng-click="removeDraft(draft.draft_id)">del</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

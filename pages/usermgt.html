@@ -1,0 +1,58 @@
+<div class="container">
+    <h3 id="user">User Management</h3>
+
+    <div style="overflow-y:scroll; max-height:800px; margin-top: 10px;">
+        <div ng-show="allUser">
+            <table class="table table-bordered table-hover table-condensed">
+                <tr style="font-weight: bold">
+                    <td style="width:10%">ID</td>
+                    <td style="width:20%">username</td>
+                    <td style="width:20%">Email</td>
+                    <td style="width:20%">Phone</td>
+                    <td style="width:30%">Edit</td>
+                </tr>
+                <tr ng-repeat="user in allUser">
+                    <td>
+                        <span>
+                            {{ user.user_system_id}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-text="user.account_name" e-name="username" e-form="rowform" onbeforesave="check($data)">
+                            {{ user.account_name}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-text="user.user_email" e-name="email" e-form="rowform" onbeforesave="checkEmail($data)">
+                            {{ user.user_email}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-text="user.user_phone_number" e-name="phone" e-form="rowform" onbeforesave="checkPhone($data)">
+                            {{ user.user_phone_number}}
+                        </span>
+                    </td>
+                    <td style="white-space: nowrap">
+                        <!-- form -->
+                        <form editable-form name="rowform" onbeforesave="saveUser($data, user.user_system_id)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                            shown="inserted == user">
+                            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                save
+                            </button>
+                            <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                                cancel
+                            </button>
+                        </form>
+                        <div class="buttons" ng-show="!rowform.$visible">
+                            <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                            <button type="button" class="btn btn-danger" ng-click="removeUser(user.user_system_id)" ng-if="false">del</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    <button type="button" class="btn btn-warning" style="margin-top:20px" ng-click="addUser()">Add User</button>
+
+</div>

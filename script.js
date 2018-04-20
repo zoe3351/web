@@ -1,7 +1,7 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 
 // modify this later
-const SERVER = "http://bulubulu.ischool.uw.edu:4000/";
+const SERVER = "http://localhost:8080/";
 
 app.config(function config($routeProvider) {
     $routeProvider
@@ -37,6 +37,10 @@ app.config(function config($routeProvider) {
         .when("/draftmgt", {
             templateUrl: "pages/draftmgt.html",
             controller: "draftmgtController",
+        })
+        .when("/usermgt", {
+            templateUrl: "pages/usermgt.html",
+            controller: "usermgtController",
         })
         .otherwise("/home");
 });
@@ -817,7 +821,7 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     }
 });
 
-app.controller("draftmgtController", function ($scope, $filter, $http, $anchorScroll, $location, $route, $window, $rootScope, DataService) {
+app.controller("draftmgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, DataService) {
     $scope.allDraft = [];
 
     let errCallback = function (data, status, header, config) {
@@ -868,3 +872,84 @@ app.controller("draftmgtController", function ($scope, $filter, $http, $anchorSc
     
 
 });
+
+
+app.controller("usermgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, DataService) {
+
+    $scope.allUser = [];
+
+    let errCallback = function (data, status, header, config) {
+        alert(JSON.stringify(data));
+    }
+
+    DataService.getAllUser(function (response) {
+        $scope.allUser = response.data.data;
+    }, errCallback);
+
+    // user mgt part
+    $scope.saveUser = function (data, id) {
+        let body = {
+            username: data.username,
+            phone: data.phone,
+            email: data.email
+        }
+
+        if (!id) {
+            $http.post(SERVER + 'user/add', body)
+                .success((data, status, headers, config) => {
+                    DataService.getAllUser(function (response) {
+                        alert("user added!");
+                        $scope.allUser = response.data.data;
+                    }, errCallback);
+                })
+                .error(errCallback);;
+        } else {
+            $http.post(SERVER + 'user/edit/' + id, body)
+                .success((data, status, headers, config) => {
+                    alert("user updated!");
+                })
+                .error(errCallback);;
+        }
+    };
+
+    // remove user
+    $scope.removeUser = function (id) {
+        if (confirm("Do you want to remove user ID: " + id)) {
+            $http.post(SERVER + 'user/rm/' + id)
+                .success((data, status, headers, config) => {
+                    $route.reload();
+                })
+                .error(errCallback);;
+        }
+    };
+
+    // add new user
+    $scope.addUser = function () {
+        $scope.inserted = {
+            user_system_id: null,
+            account_name: "",
+            user_email: null,
+            user_phone_number: null
+        };
+        $scope.allUser.push($scope.inserted);
+    };
+
+    $scope.check = function (data) {
+        if (!data) {
+            return "invalid!";
+        }
+    };
+
+    $scope.checkEmail = function (data) {
+        if (data.length != 0 && !data.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/)) {
+            return "invalid!";
+        }
+    }
+
+    $scope.checkPhone = function (data) {
+        data = String(data);
+        if (data.length != 0 && !data.match(/^[0-9]{1,45}$/)) {
+            return "invalid!";
+        }
+    }
+})
