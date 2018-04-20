@@ -9,14 +9,14 @@
 	<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>Your Voice Your Choice Online Portol</title>
 	<link rel="alternate" type="application/rss+xml" title="egrappler.com" href="feed/index.html">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:700,300" rel="stylesheet" type="text/css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
-        crossorigin="anonymous"></script>
+	<link href="https://fonts.googleapis.com/css?family=Raleway:700,300" rel="stylesheet" type="text/css">
+	<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
+	 crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	 crossorigin="anonymous">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 	 crossorigin="anonymous"></script>
-	 <script src="bower_components/jquery/dist/jquery.slim.min.js"></script>
+	<script src="bower_components/jquery/dist/jquery.slim.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 	 crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="css/style.css">
@@ -29,28 +29,36 @@
 </head>
 
 <body ng-app="catApp">
-	<nav class="nav justify-content-center" ng-controller="mainController">
-		<h1 style="margin-left:100px">Your Voice Your Choice</h1>
-		<ul class="toplinks">
-			<li>
-				<a href="#home">Home</a>
-			</li>
-			<li>
-				<a href="#login">Login</a>
-			</li>
-			<li>
-				<a href="#register">Register</a>
-			</li>
-			<li>
-				<a href="#profile">Profile</a>
-			</li>
-			<li>
-				<a href="#admin">Admin</a>
-			</li>
-			<li ng-if="username">
-				<a href="#" ng-click="signout()">Hi {{username}}, Sign out</a>
-			</li>
-		</ul>
+	<nav class="nav navbar-expand-lg" ng-controller="mainController">
+		<h1 style=" margin-left: 20%" href="#home">Your Voice Your Choice</h1>
+		<div class="navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto style=" text-align: center; "">
+				<li class="nav-item active">
+					<a class="nav-link" href="#home">Home</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="#login">Login</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="#register">Register</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+					 aria-expanded="false">
+						Admin
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="#usermgt">User Mgt</a>
+						<a class="dropdown-item" href="#draftmgt">Draft Mgt</a>
+						<a class="dropdown-item" href="#finalmgt">Final Mgt</a>
+						<a class="dropdown-item" href="#phasemgt">Phase Mgt</a>
+					</div>
+				</li>
+				<li class="nav-item active" ng-if="username">
+					<a class="nav-link" href="#" ng-click="signout()">Hi {{username}}, Sign out</a>
+				</li>
+			</ul>
+		</div>
 	</nav>
 
 	<div ng-view></div>
