@@ -281,15 +281,6 @@ nav #menu-toggle {
     }
 }
 
-
-
-
-
-
-
-
-
-
 /* Content Styles */
 section { padding: 1em 0 3em; text-align: center; }
 section.vibrant { background: #222; color: #fff; }
@@ -338,35 +329,6 @@ input:focus {
     border-color: #007eb2;
     outline: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .docs-nav {
     background-color: #f5f5f5;
