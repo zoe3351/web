@@ -800,14 +800,14 @@ app.controller("adminController", function ($scope, $filter, $http, $anchorScrol
     } */
 
     $scope.checkEmail = function (data) {
-        if (!data.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/)) {
+        if (data.length != 0 && !data.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/)) {
             return "invalid!";
         }
     }
 
     $scope.checkPhone = function (data) {
         data = String(data);
-        if (!data.match(/^[0-9]{1,45}$/)) {
+        if (data.length != 0 && !data.match(/^[0-9]{1,45}$/)) {
             return "invalid!";
         }
     }
