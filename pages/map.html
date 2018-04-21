@@ -31,7 +31,6 @@
 
 			<div class="row col-sm-5" ng-show="!showNewProposal" style="overflow-y:scroll; height:1000px;width: 19rem;" id="style-1"
 			 ng-if="phase!=1">
-
 				<div class="card" ng-repeat="pro in proposals">
 					<div class="card-body" style="width: 18rem;">
 						<h4 class="card-title">{{pro.final_proposal_title}}</h4>
@@ -49,10 +48,11 @@
 							<button class="btn btn-primary btn-sm" ng-if="phase==2" ng-click="grade(pro.proposal_id)">Grade</a>
 					</div>
 				</div>
-
 			</div>
-
 		</div>
+
+
+		<div id="proposalMap"></div>
 
 
 		<div class="row col-sm-5" ng-show="showNewProposal">
