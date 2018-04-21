@@ -1,0 +1,98 @@
+<div class="container">
+
+
+    <h3 id="phase">IV. Phase Management</h3>
+
+    <form name="phaseForm" ng-submit="changePhase()" novalidate>
+        <div class="input-group form-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Current Phase</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" ng-model="phase">
+                <option value="1" ng-selected="phase==1">Draft Proposal</option>
+                <option value="2" ng-selected="phase==2">Grade Proposal</option>
+                <option value="3" ng-selected="phase==3">Vote</option>
+                <option value="4" ng-selected="phase==4">Display</option>
+            </select>
+            <button type="submit" class="btn btn-danger" ng-disabled="originPhase==phase">Change Phase</button>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-hover table-condensed">
+        <tr style="font-weight: bold">
+            <td style="width:25%">Draft End</td>
+            <td style="width:25%">Grade End</td>
+            <td style="width:25%">Vote End</td>
+            <td style="width:20%">Edit</td>
+        </tr>
+        <tr ng-repeat="end in endDates">
+            <td>
+                <h5 editable-text="end.phase1_end" e-name="phase1_end" e-form="rowform" onbeforesave="checkDate($data)">
+                    {{end.phase1_end}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="end.phase2_end" e-name="phase2_end" e-form="rowform" onbeforesave="checkDate($data)">
+                    {{end.phase2_end}}
+                </h5>
+            </td>
+            <td>
+                <h5 editable-text="end.phase3_end" e-name="phase3_end" e-form="rowform" onbeforesave="checkDate($data)">
+                    {{end.phase3_end}}
+                </h5>
+            </td>
+            <td style="white-space: nowrap">
+                <!-- form -->
+                <form editable-form name="rowform" onbeforesave="saveDate($data)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                    shown="inserted == end">
+                    <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                        save
+                    </button>
+                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                        cancel
+                    </button>
+                </form>
+                <div class="buttons" ng-show="!rowform.$visible">
+                    <button type="button" class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <p class="help-block">Formate: yyyy-mm-dd</p>
+
+    <h4 style="padding-top: 30px">Proposals in Grade</h4>
+    <a href="http://bulubulu.ischool.uw.edu:4000/grade/export" class="badge badge-primary" download="grades.xlsx">
+        Download results
+        <i class="fa fa-download"></i>
+    </a>
+    <form name="gradeProposalForm" ng-submit="submitGradeProposalForm(gradeProposalForm.$valid)" novalidate>
+        <div class="form-group">
+            <textarea style="height:200px;" ng-model="gradePs" name="gradePs" class="form-control" id="gradePs"></textarea>
+            <p class="help-block">Required: Proposal Ids seperated by space</p>
+        </div>
+        <button type="submit" class="btn btn-danger" ng-disabled="!gradeProposalForm.$valid">Update</button>
+    </form>
+
+    <h4 style="padding-top: 30px">Proposals in Vote</h4>
+    <a href="http://bulubulu.ischool.uw.edu:4000/vote/export" class="badge badge-primary" download="grades.xlsx">
+        Download results
+        <i class="fa fa-download"></i>
+    </a>
+    <form name="voteProposalForm" ng-submit="submitVoteProposalForm(voteProposalForm.$valid)" novalidate>
+        <div class="form-group">
+            <textarea style="height:200px;" ng-model="votePs" name="votePs" class="form-control" id="votePs"></textarea>
+            <p class="help-block">Required: Proposal Ids seperated by space</p>
+        </div>
+        <button type="submit" class="btn btn-danger" ng-disabled="!voteProposalForm.$valid">Update</button>
+    </form>
+
+    <h4 style="padding-top: 30px">Proposals in Final Display</h4>
+    <form name="displayProposalForm" ng-submit="submitDisplayProposalForm(displayProposalForm.$valid)" novalidate>
+        <div class="form-group">
+            <textarea style="height:200px;" ng-model="displayPs" name="displayPs" class="form-control" id="displayPs"></textarea>
+            <p class="help-block">Required: Proposal Ids seperated by space</p>
+        </div>
+        <button type="submit" class="btn btn-danger" ng-disabled="!displayProposalForm.$valid">Update</button>
+    </form>
+
+</div>

@@ -32,8 +32,8 @@
 				</div>
 				<div class="form-group">
 					<label for="phone">Phone</label>
-					<input type="number" ng-model="phone" name="phone" class="form-control" placeholder="For further contact only" ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$$/">
-					<p ng-show="registerForm.phone.$error.pattern" class="help-block" style="color:red">not a valid number</p>
+					<input type="number" ng-model="phone" name="phone" class="form-control" placeholder="For further contact only">
+					<p ng-show="registerForm.phone.$error.number" class="help-block" style="color:red">not a valid phone</p>
 				</div>
 
 				<button type="submit" class="btn btn-primary" ng-click="signup()" ng-disabled="!registerForm.$valid || !usernameCanUse">Sign Up</button>
