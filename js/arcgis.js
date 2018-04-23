@@ -3,9 +3,11 @@ require([
     "esri/views/MapView",
     "esri/layers/FeatureLayer",
     "esri/widgets/Legend",
+    "esri/Graphic",
+    "dojo/on",
     "dojo/domReady!"
   ], function(
-    Map, MapView, FeatureLayer, Legend
+    Map, MapView, FeatureLayer, Legend, Graphic, on
   ) {
     var defaultSymbol = {
       type: "simple-line",
