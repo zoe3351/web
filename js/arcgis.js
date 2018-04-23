@@ -125,7 +125,7 @@ require([
       // Create a symbol for drawing the point
       var markerSymbol = {
         type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
-        url: "./pin.png",
+        url: "./images/pin.png",
         width: "35px",
         height: "35px"
       };
