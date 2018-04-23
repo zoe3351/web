@@ -104,17 +104,70 @@ require([
       renderer: renderer
     });
 
-    var map = new Map({
-      basemap: "streets",
-      layers: [featureLayer]
-    });
+    /*************************
+       * Create a point graphic
+       *************************/
 
-    // map.addLayer(featureLayer);
+      // First create a point geometry (this is the location of the Titanic)
+      var point1 = {
+        type: "point", // autocasts as new Point()
+        longitude: -122.3321,
+        latitude: 47.6062
+      },
+      point2 = {
+        type: "point", // autocasts as new Point()
+        longitude: -122.3421,
+        latitude: 47.6162
+      };
 
-    var view = new MapView({
-      container: "proposalMap",
-      map: map,
-      zoom: 11,
-      center: [-122.3321, 47.6062], // longitude, latitude
-    });
+      // Create a symbol for drawing the point
+      var markerSymbol = {
+        type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+        url: "./pin.png",
+        width: "35px",
+        height: "35px"
+      };
+
+      // Create a graphic and add the geometry and symbol to it
+      var graphic1 = new Graphic({
+          geometry: point1,
+          symbol: markerSymbol,
+          attributes: {
+            id: "1",
+          }
+        }),
+      graphic2 = new Graphic({
+        geometry: point2,
+        symbol: markerSymbol,
+        attributes: {
+          id: "2",
+        }
+      });
+
+      var pointGraphics = [graphic1, graphic2];
+
+        var map = new Map({
+            basemap: "streets",
+            layers: [featureLayer]
+        });
+
+        var view = new MapView({
+            container: "proposalMap",
+            map: map,
+            zoom: 11,
+            center: [-122.3321, 47.6062], // longitude, latitude
+        });
+
+        view.graphics.addMany(pointGraphics);
+
+        view.on("click", event => {
+        view.hitTest(event.screenPoint)
+            .then(function(response){
+                // console.log(response);
+                var graphic = response.results[0].graphic;
+                if (graphic) {
+                alert(`ID: ${graphic.attributes['id']}`);
+                }
+            });
+        });
   });
