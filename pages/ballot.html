@@ -1,0 +1,38 @@
+<div class="container">
+    <h3 class="row justify-content-center">Enter Paper Ballot</h3>
+    <div class="row justify-content-center">
+        <form name="ballotForm" ng-submit="submitForm(ballotForm.$valid)" novalidate>
+            <div class="form-group">
+                <label for="firstname">First Name*</label>
+                <input type="text" ng-model="ballot.firstname" class="form-control" name="firstname" placeholder="{{ballot.firstname}}">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name*</label>
+                <input type="text" ng-model="ballot.lastname" class="form-control" name="lastname" placeholder="{{ballot.lastname}}">
+            </div>
+            <div class="form-group" style="margin-top:60px;" ng-class="{ 'has-error' :ballotForm.title.$invalid && !ballotForm.title.$pristine}">
+                <div class="form-group" ng-class="{ 'has-error' :ballotForm.title.$invalid && !ballotForm.title.$pristine}">
+                    <label for="grade">Grade Proposal ID</label>
+                    <input ng-model="ballot.grade" type="text" name="grade" class="form-control" id="grade" placeholder="{{ballot.grade}}" ng-disabled="ballot.vote.length != 0">
+                    <p class="help-block" style="color:red">Required: Only One ID permitted</p>
+                </div>
+                <div class="form-group">
+                    <label for="score1">Q1*</label>
+                    <input type="number" ng-model="ballot.score1" class="form-control" name="score1" placeholder="{{ballot.score1}}" ng-disabled="ballot.vote.length != 0">
+                </div>
+
+                <div class="form-group">
+                    <label for="score2">Q2*</label>
+                    <input type="number" ng-model="ballot.score2" class="form-control" name="score2" placeholder="{{ballot.score2}}" ng-disabled="ballot.vote.length != 0">
+                </div>
+
+                <div class="form-group" style="margin-top:60px;" ng-class="{ 'has-error' :ballotForm.title.$invalid && !ballotForm.title.$pristine}">
+                    <label for="vote">Vote Proposal IDs</label>
+                    <input ng-model="ballot.vote" type="text" name="vote" class="form-control" id="vote" placeholder="{{ballot.vote}}" ng-disabled="ballot.grade.length != 0">
+                    <p class="help-block" style="color:red">Required: Proposal Ids seperated by space</p>
+                </div>
+
+                <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter" ng-disabled="!ballotForm.$valid">Submit</button>
+        </form>
+        </div>
+    </div>

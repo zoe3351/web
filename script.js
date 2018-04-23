@@ -46,6 +46,10 @@ app.config(function config($routeProvider) {
             templateUrl: "pages/phasemgt.html",
             controller: "phasemgtController",
         })
+        .when("/ballot", {
+            templateUrl: "pages/ballot.html",
+            controller: "ballotController",
+        })
         .otherwise("/home");
 });
 
@@ -389,6 +393,67 @@ app.controller("proposalDetailController", function ($scope, $http, $routeParams
     }
 
 })
+
+app.controller("ballotController", function ($scope, $http, $routeParams, $route, DataService) {
+
+    let initBallot = function () {
+        $scope.ballot = {
+            firstname: "",
+            lastname: "",
+            grade: "",
+            score1: "",
+            score2: "",
+            vote: ""
+        };
+    }
+
+    initBallot();
+
+    let convertVote = function (data) {
+        if (data != "") {
+            data = data.trim().split(/\s+/g);
+            return data;
+        }
+        return [];
+    }
+
+    let checkGrade = function (body) {
+        if (body.firstname != "" && body.lastname != "" && body.grade != ""
+            && body.score1 >= 0 && body.score1 <= 10
+            && body.score2 >= 0 && body.score2 <= 10) return true;
+        return false;
+    }
+
+    let checkVote = function (body) {
+        if (body.firstname != "" && body.lastname != "" && body.vote != "") return true;
+        return false;
+    }
+
+    $scope.submitForm = function (valid) {
+        if (valid) {
+            var body = {
+                firstname: $scope.ballot.firstname,
+                lastname: $scope.ballot.lastname,
+                grade: $scope.ballot.grade,
+                score1: Number($scope.ballot.score1),
+                score2: Number($scope.ballot.score2),
+                vote: convertVote($scope.ballot.vote)
+            }
+
+            // TODO
+            if (checkGrade(body)) {
+                alert("send grade!");
+                initBallot();
+            } else if (checkVote(body)) {
+                alert("send vote!");
+                initBallot();
+            } else {
+                alert("Please check your input!");
+            }
+        }
+    }
+
+});
 
 app.controller("loginController", function ($scope, $http, $location, $route) {
     $scope.message = "login";
