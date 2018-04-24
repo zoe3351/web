@@ -3,39 +3,51 @@
 		<div class="col-sm-4">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item">
-					<a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" ng-click="showProposalListTab()">Proposals</a>
+					<a class="nav-link active btn" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" ng-click="showProposalListTab()">Proposals</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" ng-click="showNewProposalTab()"
+					<a class="nav-link btn" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" ng-click="showNewProposalTab()"
 					 ng-if="phase==1">New Proposal</a>
 				</li>
 			</ul>
 			<div ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; height:550px;width: 19rem;">
-				<div class="card" ng-repeat="pro in proposals">
-					<div class="card-body" style="width:18rem;">
-						<h4 class="card-title">{{pro.proposal_title}}</h4>
-						<h5 class="card-subtitle mb-2 text-muted">ID: {{pro.draft_id}}</h5>
-						<h5 class="card-text">Idea: {{pro.proposal_idea}}</h5>
-						<h5 class="card-text">Location: {{pro.project_location}}</h5>
+				<div class="list-group">
+					<div class="list-group-item list-group-item-action card-header" ng-repeat="pro in proposals">
+						<a class="btn" data-toggle="collapse" data-target="#{{pro.draft_id}}" aria-expanded="false" aria-controls="{{pro.draft_id}}">
+							{{pro.proposal_title}}
+						</a>
+						<div id="{{pro.draft_id}}" class="collapse hide " aria-labelledby="headingOne" data-parent="#accordion">
+							<div class="card-body">
+								<h5 class="card-subtitle mb-2 text-muted">ID: {{pro.draft_id}}</h5>
+								<h5 class="card-text">Idea: {{pro.proposal_idea}}</h5>
+								<h5 class="card-text">Location: {{pro.project_location}}</h5>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div ng-show="!showNewProposal" style="overflow-y:scroll; height:1000px;width:19rem;" id="style-1" ng-if="phase!=1">
-				<div class="card" ng-repeat="pro in proposals">
-					<div class="card-body" style="width: 18rem;">
-						<h4 class="card-title">{{pro.final_proposal_title}}</h4>
-						<h5 class="card-subtitle mb-2 text-muted">ID: {{pro.proposal_id}}</h5>
-						<h5 class="card-text">Idea: {{pro.final_proposal_idea}}</h5>
-						<h5 class="card-text">Location: {{pro.final_project_location}} </h5>
-						<h5 class="card-text">Need: {{pro.proposal_need}} </h5>
-						<h5 class="card-text">Neighborhood: {{pro.neihborhood}}</h5>
-						<h5 class="card-text">Dist: {{pro.council_district}} </h5>
-						<h5 class="card-text">Dept: {{pro.department}} </h5>
-						<h5 class="card-text">Benefits: {{pro.who_benefits}} </h5>
-						<h5 class="card-text">Cost: {{pro.cost}} </h5>
-						<h5 class="card-text">Type: {{pro.project_type}}</h5>
-						<button class="btn btn-primary btn-sm" ng-if="phase==3" ng-click="vote(pro.proposal_id)">Vote</a>
-							<button class="btn btn-primary btn-sm" ng-if="phase==2" ng-click="grade(pro.proposal_id)">Grade</a>
+			<div ng-show="!showNewProposal" ng-if="phase!=1" style="overflow-y:scroll; height:1000px;width:19rem;">
+				<div class="list-group">
+					<div class="list-group-item list-group-item-action card-header" ng-repeat="pro in proposals">
+						<a class="btn" data-toggle="collapse" data-target="#{{pro.proposal_id}}" aria-expanded="false" aria-controls="{{pro.proposal_id}}">
+							{{pro.final_proposal_title}}
+						</a>
+						<div id="{{pro.proposal_id}}" class="collapse hide " aria-labelledby="headingOne" data-parent="#accordion">
+							<div class="card-body">
+								<h5 class="card-subtitle mb-2 text-muted">ID: {{pro.proposal_id}}</h5>
+								<h5 class="card-text">Idea: {{pro.final_proposal_idea}}</h5>
+								<h5 class="card-text">Location: {{pro.final_project_location}} </h5>
+								<h5 class="card-text">Need: {{pro.proposal_need}} </h5>
+								<h5 class="card-text">Neighborhood: {{pro.neihborhood}}</h5>
+								<h5 class="card-text">Dist: {{pro.council_district}} </h5>
+								<h5 class="card-text">Dept: {{pro.department}} </h5>
+								<h5 class="card-text">Benefits: {{pro.who_benefits}} </h5>
+								<h5 class="card-text">Cost: {{pro.cost}} </h5>
+								<h5 class="card-text">Type: {{pro.project_type}}</h5>
+								<button class="btn btn-primary btn-sm" ng-if="phase==3" ng-click="vote(pro.proposal_id)">Vote</button>
+								<button class="btn btn-primary btn-sm" ng-if="phase==2" ng-click="grade(pro.proposal_id)">Grade</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
