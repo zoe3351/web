@@ -93,7 +93,7 @@ app.factory("DataService", function ($http) {
 
     function getPhaseThenProposal() {
         return $http.get(SERVER + 'phase/all').then(function (response) {
-            let phase = Number(response.data.data[0].current_phase);
+            let phase = Number(response.data.data[0].current_phase || -1);
             if (phase == 1) {
                 return $http.get(SERVER + 'draft/all').then(function (response) {
                     let proposals = response.data.data;
@@ -129,7 +129,8 @@ app.factory("DataService", function ($http) {
                         proposals: proposals
                     }
                 });
-
+            } else {
+                return;
             }
         });
     }

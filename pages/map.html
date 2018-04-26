@@ -7,7 +7,7 @@
 				</li>
 				<li class="nav-item">
 					<a class="nav-link btn" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" ng-click="showNewProposalTab()"
-					 ng-if="phase==1">New Proposal</a>
+					ng-if="phase==1">New Proposal</a>
 				</li>
 			</ul>
 			<div ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; height:550px;width: 19rem;">
@@ -56,17 +56,17 @@
 					<div class="form-group" ng-class="{ 'has-error' :newProposalForm.title.$invalid && !newProposalForm.title.$pristine}">
 						<label for="title">Title*</label>
 						<input ng-model="newProposal.title" type="text" name="title" class="form-control" id="title" placeholder="Title" ng-minlength="1"
-						 required>
+						required>
 						<p ng-show="newProposalForm.title.$invalid && !newProposalForm.title.$pristine" class="help-block">Title is required.</p>
 					</div>
-
+					
 					<div class="form-group" ng-class="{ 'has-error' :newProposalForm.location.$invalid && !newProposalForm.location.$pristine}">
 						<label for="location">Location*</label>
 						<input ng-model="newProposal.location" type="text" name="location" class="form-control" id="title" placeholder="location"
-						 ng-minlength="1" required>
+						ng-minlength="1" required>
 						<p ng-show="newProposalForm.location.$invalid && !newProposalForm.location.$pristine" class="help-block">Location is required.</p>
 					</div>
-
+					
 					<div class="row">
 						<div class="col">
 							<label for="latitude">Latitude*</label>
@@ -77,11 +77,11 @@
 							<input type="text" ng-model="newProposal.longitude" class="form-control" name="longitude" placeholder="">
 						</div>
 					</div>
-
+					
 					<div class="form-group" ng-class="{ 'has-error' :newProposalForm.idea.$invalid && !newProposalForm.idea.$pristine}">
 						<label for="idea">Idea</label>
 						<textarea style="height:200px;" ng-model="newProposal.idea" name="idea" placeholder="a few sentences describing what the project involves"
-						 class="form-control" id="idea" ng-minlength="1" required></textarea>
+						class="form-control" id="idea" ng-minlength="1" required></textarea>
 						<p ng-show="newProposalForm.idea.$invalid && !newProposalForm.idea.$pristine" class="help-block">Idea is required.</p>
 					</div>
 					<button type="submit" class="btn btn-danger" ng-disabled="!newProposalForm.$valid">Submit</button>
@@ -91,7 +91,10 @@
 		<div id="map" class="col-sm-8">
 			<div id="proposalMap" style="width:600px; height:600px"></div>
 		</div>
-
+		
 		<div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 	</div>
+	<script>
+		initMap();
+	</script>
 </div>
