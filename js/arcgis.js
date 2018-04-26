@@ -130,6 +130,8 @@ function initMap() {require([
         symbol: markerSymbol,
         attributes: {
           id: element['draft_id'],
+          longitude: element['proposal_longitude'],
+          latitude: element['proposal_latitude']
         }
       });
 
@@ -182,12 +184,15 @@ function initMap() {require([
         view.graphics.addMany(graphics);
 
         view.on("click", event => {
-        view.hitTest(event.screenPoint)
+          view.hitTest(event.screenPoint)
             .then(function(response){
                 // console.log(response);
                 var graphic = response.results[0].graphic;
                 if (graphic) {
-                alert(`ID: ${graphic.attributes['id']}`);
+                  view.zoom = 18;
+                  // console.log(graphic.longitude + ',' + graphic.latitude);
+                  view.center = [graphic.attributes['longitude'], graphic.attributes['latitude']];
+                  alert(`ID: ${graphic.attributes['id']}`);
                 }
             });
         });
