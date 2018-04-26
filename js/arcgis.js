@@ -155,17 +155,44 @@ function initMap() {require([
 
         view.graphics.addMany(graphics);
 
+        let newProposalGraphic;
+
+        let blueMarkerSymbol = {
+          type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+          url: "./images/bluepin.png",
+          width: "35px",
+          height: "35px"
+        };
+
         view.on("click", event => {
+          let tab = $('#myTab > li.nav-item > a.active').html()
           view.hitTest(event.screenPoint)
             .then(function(response){
-                // console.log(response);
+              if (tab === "Proposals") {
                 var graphic = response.results[0].graphic;
                 if (graphic) {
                   view.zoom = 18;
-                  // console.log(graphic.longitude + ',' + graphic.latitude);
                   view.center = [graphic.attributes['longitude'], graphic.attributes['latitude']];
                   alert(`ID: ${graphic.attributes['id']}`);
                 }
+              } else if (tab === "New Proposal") {
+                view.graphics.remove(newProposalGraphic);
+                
+                let mapPoint = view.toMap(event.screenPoint);
+                view.zoom = 16;
+                view.center = [mapPoint.longitude, mapPoint.latitude];
+                $('[name="newProposalForm"]').find('input[name="latitude"]').val(mapPoint.latitude);
+                $('[name="newProposalForm"]').find('input[name="longitude"]').val(mapPoint.longitude);
+                
+                // newProposalGraphic["geometry"] = mapPoint;
+                // newProposalGraphic["symbol"] = blueMarkerSymbol;
+                // console.log(newProposalGraphic);
+                newProposalGraphic = new Graphic({
+                  geometry: mapPoint,
+                  symbol: blueMarkerSymbol
+                });
+                view.graphics.add(newProposalGraphic);
+              }
             });
         });
 
