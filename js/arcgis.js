@@ -4,10 +4,11 @@ function initMap() {require([
     "esri/layers/FeatureLayer",
     "esri/widgets/Legend",
     "esri/Graphic",
+    "esri/geometry/Point",
     "dojo/on",
     "dojo/domReady!"
   ], function(
-    Map, MapView, FeatureLayer, Legend, Graphic, on
+    Map, MapView, FeatureLayer, Legend, Graphic, Point, on
   ) {
     
     var defaultSymbol = {
@@ -138,36 +139,7 @@ function initMap() {require([
       graphics.push(graphic)
     });
 
-      // // First create a point geometry (this is the location of the Titanic)
-      // var point1 = {
-      //   type: "point", // autocasts as new Point()
-      //   longitude: -122.3321,
-      //   latitude: 47.6062
-      // },
-      // point2 = {
-      //   type: "point", // autocasts as new Point()
-      //   longitude: -122.3421,
-      //   latitude: 47.6162
-      // };
-
-
-      // Create a graphic and add the geometry and symbol to it
-      // var graphic1 = new Graphic({
-      //     geometry: point1,
-      //     symbol: markerSymbol,
-      //     attributes: {
-      //       id: "1",
-      //     }
-      //   }),
-      // graphic2 = new Graphic({
-      //   geometry: point2,
-      //   symbol: markerSymbol,
-      //   attributes: {
-      //     id: "2",
-      //   }
-      // });
-
-      // var pointGraphics = [graphic1, graphic2];
+        // var pointGraphics = [graphic1, graphic2];
 
         var map = new Map({
             basemap: "streets",
@@ -183,18 +155,58 @@ function initMap() {require([
 
         view.graphics.addMany(graphics);
 
+        let newProposalGraphic;
+
+        let blueMarkerSymbol = {
+          type: "picture-marker",  // autocasts as new PictureMarkerSymbol()
+          url: "./images/bluepin.png",
+          width: "35px",
+          height: "35px"
+        };
+
         view.on("click", event => {
+          let tab = $('#myTab > li.nav-item > a.active').html()
           view.hitTest(event.screenPoint)
             .then(function(response){
-                // console.log(response);
+              if (tab === "Proposals") {
                 var graphic = response.results[0].graphic;
                 if (graphic) {
                   view.zoom = 18;
-                  // console.log(graphic.longitude + ',' + graphic.latitude);
                   view.center = [graphic.attributes['longitude'], graphic.attributes['latitude']];
                   alert(`ID: ${graphic.attributes['id']}`);
                 }
+              } else if (tab === "New Proposal") {
+                view.graphics.remove(newProposalGraphic);
+                
+                let mapPoint = view.toMap(event.screenPoint);
+                view.zoom = 16;
+                view.center = [mapPoint.longitude, mapPoint.latitude];
+                $('[name="newProposalForm"]').find('input[name="latitude"]').val(mapPoint.latitude);
+                $('[name="newProposalForm"]').find('input[name="longitude"]').val(mapPoint.longitude);
+                
+                // newProposalGraphic["geometry"] = mapPoint;
+                // newProposalGraphic["symbol"] = blueMarkerSymbol;
+                // console.log(newProposalGraphic);
+                newProposalGraphic = new Graphic({
+                  geometry: mapPoint,
+                  symbol: blueMarkerSymbol
+                });
+                view.graphics.add(newProposalGraphic);
+              }
             });
+        });
+
+        let proposal = $('[ng-repeat="pro in proposals"] > a');
+        proposal.each(index => {
+          proposal[index].addEventListener("click", function(){
+            view.goTo({
+              target: new Point({
+                        latitude: this.getAttribute('latitude'),
+                        longitude: this.getAttribute('longitude')
+                      }),
+              zoom: 18
+            });
+          });
         });
   });
 }
