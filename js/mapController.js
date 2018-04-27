@@ -3,6 +3,8 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
 
     $scope.proposals = phaseAndProposal.proposals;
 
+    initMap();
+
     // choose one proposal to render at the top of list
     $timeout(() => {
         let parent = document.getElementById("scrollbody");
