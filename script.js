@@ -182,10 +182,18 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
     }
 });
 
-app.controller("mapController", function ($scope, $http, $route, $rootScope, phaseAndProposal) {
+app.controller("mapController", function ($scope, $http, $route, $rootScope, $timeout, phaseAndProposal) {
     $scope.phase = phaseAndProposal.phase;
 
     $scope.proposals = phaseAndProposal.proposals;
+
+    // choose one proposal to render at the top of list
+    $timeout(() => {
+        let parent = document.getElementById("scrollbody");
+        let someElement = document.getElementById("p17-044");
+        parent.scrollTop += someElement.offsetTop - someElement.offsetHeight;
+        someElement.children[1].classList.add('show');
+    }, 1000);
 
     let convert = function (data) {
         let proposals = []
@@ -899,4 +907,8 @@ app.controller("phasemgtController", function ($scope, $filter, $http, $location
             return "invalid!";
         }
     }
+
+    $scope.openballot = function () {
+        $window.open('#ballot');
+    };
 });

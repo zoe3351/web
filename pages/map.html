@@ -10,9 +10,9 @@
 					ng-if="phase==1">New Proposal</a>
 				</li>
 			</ul>
-			<div ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; height:550px;width: 19rem;">
+			<div ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; height:550px;width: 19rem;" id="scrollbody">
 				<div class="list-group">
-					<div class="list-group-item list-group-item-action card-header" ng-repeat="pro in proposals">
+					<div class="list-group-item list-group-item-action card-header" ng-repeat="pro in proposals" id="{{'p' + pro.draft_id}}">
 						<a class="btn" data-toggle="collapse" data-target="#{{pro.draft_id}}" aria-expanded="false" aria-controls="{{pro.draft_id}}">
 							{{pro.proposal_title}}
 						</a>
@@ -26,9 +26,9 @@
 					</div>
 				</div>
 			</div>
-			<div ng-show="!showNewProposal" ng-if="phase!=1" style="overflow-y:scroll; height:1000px;width:19rem;">
+			<div ng-show="!showNewProposal" ng-if="phase!=1" style="overflow-y:scroll; height:1000px;width:19rem;" id="scrollbody">
 				<div class="list-group">
-					<div class="list-group-item list-group-item-action card-header" ng-repeat="pro in proposals">
+					<div class="list-group-item list-group-item-action card-header" ng-repeat="pro in proposals" id="{{'p' + pro.draft_id}}">
 						<a class="btn" data-toggle="collapse" data-target="#{{pro.proposal_id}}" aria-expanded="false" aria-controls="{{pro.proposal_id}}">
 							{{pro.final_proposal_title}}
 						</a>
