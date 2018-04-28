@@ -177,7 +177,8 @@ function initMap() {require([
                   if(graphic.attributes['id']) {
                     let parent = document.getElementById("scrollbody");
                     let someElement = document.getElementById(`p${graphic.attributes['id']}`);
-                    parent.scrollTop += someElement.offsetTop - someElement.offsetHeight;
+                    parent.scrollTop -= parent.scrollHeight;
+                    parent.scrollTop += someElement.offsetTop - 2* someElement.offsetHeight;
                     someElement.children[1].classList.add('show');
                   }
                   // alert(`ID: ${}`);
