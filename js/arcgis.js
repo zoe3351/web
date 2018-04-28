@@ -173,7 +173,14 @@ function initMap() {require([
                 if (graphic) {
                   view.zoom = 18;
                   view.center = [graphic.attributes['longitude'], graphic.attributes['latitude']];
-                  alert(`ID: ${graphic.attributes['id']}`);
+
+                  if(graphic.attributes['id']) {
+                    let parent = document.getElementById("scrollbody");
+                    let someElement = document.getElementById(`p${graphic.attributes['id']}`);
+                    parent.scrollTop += someElement.offsetTop - someElement.offsetHeight;
+                    someElement.children[1].classList.add('show');
+                  }
+                  // alert(`ID: ${}`);
                 }
               } else if (tab === "New Proposal") {
                 view.graphics.remove(newProposalGraphic);
