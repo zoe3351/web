@@ -5,6 +5,22 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
 
     initMap();
 
+    $scope.keyword = "";
+
+    $scope.timeout = function(){
+        $timeout(function () {
+            $scope.search();
+        }, 500);
+    }
+
+    $scope.search = function () {
+        if ($scope.keyword != ""){
+            $scope.proposals = $scope.proposals.filter(pro => JSON.stringify(pro).includes($scope.keyword));
+        } else {
+            $scope.proposals = phaseAndProposal.proposals;
+        }
+    }
+
     let convert = function (data) {
         let proposals = []
         for (var d of data) {
