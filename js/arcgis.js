@@ -123,7 +123,7 @@ function initMap() {require([
       var point = {
         type: "point", // autocasts as new Point()
         longitude: element['proposal_longitude'] || element['final_proposal_longitude'],
-        latitude: element['proposal_latitude'] || element['final_proposal_longitude']
+        latitude: element['proposal_latitude'] || element['final_proposal_latitude']
       };
 
       var graphic = new Graphic({
@@ -132,7 +132,7 @@ function initMap() {require([
         attributes: {
           id: element['draft_id'] || element['proposal_id'],
           longitude: element['proposal_longitude'] || element['final_proposal_longitude'],
-          latitude: element['proposal_latitude'] || element['final_proposal_longitude']
+          latitude: element['proposal_latitude'] || element['final_proposal_latitude']
         }
       });
 
