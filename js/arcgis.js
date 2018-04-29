@@ -5,10 +5,11 @@ function initMap() {require([
     "esri/widgets/Legend",
     "esri/Graphic",
     "esri/geometry/Point",
+    "esri/widgets/Search",
     "dojo/on",
     "dojo/domReady!"
   ], function(
-    Map, MapView, FeatureLayer, Legend, Graphic, Point, on
+    Map, MapView, FeatureLayer, Legend, Graphic, Point, Search, on
   ) {
     
     var defaultSymbol = {
@@ -154,6 +155,16 @@ function initMap() {require([
         });
 
         view.graphics.addMany(graphics);
+
+        // Adds the search widget below other elements in
+        // the top left corner of the view
+        var searchWidget = new Search({
+          view: view
+        });
+
+        view.ui.add(searchWidget, {
+          position: "top-right"
+        });
 
         let newProposalGraphic;
 
