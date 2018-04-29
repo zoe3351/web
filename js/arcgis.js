@@ -122,17 +122,17 @@ function initMap() {require([
     proposals.forEach(element => {
       var point = {
         type: "point", // autocasts as new Point()
-        longitude: element['proposal_longitude'],
-        latitude: element['proposal_latitude']
+        longitude: element['proposal_longitude'] || element['final_proposal_longitude'],
+        latitude: element['proposal_latitude'] || element['final_proposal_longitude']
       };
 
       var graphic = new Graphic({
         geometry: point,
         symbol: markerSymbol,
         attributes: {
-          id: element['draft_id'],
-          longitude: element['proposal_longitude'],
-          latitude: element['proposal_latitude']
+          id: element['draft_id'] || element['proposal_id'],
+          longitude: element['proposal_longitude'] || element['final_proposal_longitude'],
+          latitude: element['proposal_latitude'] || element['final_proposal_longitude']
         }
       });
 
