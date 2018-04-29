@@ -6,10 +6,11 @@ function initMap() {require([
     "esri/Graphic",
     "esri/geometry/Point",
     "esri/widgets/Search",
+    "esri/tasks/Locator",
     "dojo/on",
     "dojo/domReady!"
   ], function(
-    Map, MapView, FeatureLayer, Legend, Graphic, Point, Search, on
+    Map, MapView, FeatureLayer, Legend, Graphic, Point, Search, Locator, on
   ) {
     
     var defaultSymbol = {
@@ -202,6 +203,9 @@ function initMap() {require([
                 view.center = [mapPoint.longitude, mapPoint.latitude];
                 $('[name="newProposalForm"]').find('input[name="latitude"]').val(mapPoint.latitude);
                 $('[name="newProposalForm"]').find('input[name="longitude"]').val(mapPoint.longitude);
+
+                let locator = new Locator({url: "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"});
+                locator.locationToAddress(mapPoint).then(data => $('#location').val(data.address));
                 
                 // newProposalGraphic["geometry"] = mapPoint;
                 // newProposalGraphic["symbol"] = blueMarkerSymbol;

@@ -71,7 +71,7 @@
 
 					<div class="form-group" ng-class="{ 'has-error' :newProposalForm.location.$invalid && !newProposalForm.location.$pristine}">
 						<label for="location">Location*</label>
-						<input ng-model="newProposal.location" type="text" name="location" class="form-control" id="title" placeholder="location"
+						<input ng-model="newProposal.location" type="text" name="location" class="form-control" id="location" placeholder="location"
 						 ng-minlength="1" required>
 						<p ng-show="newProposalForm.location.$invalid && !newProposalForm.location.$pristine" class="help-block">Location is required.</p>
 					</div>
@@ -79,11 +79,11 @@
 					<div class="row">
 						<div class="col">
 							<label for="latitude">Latitude*</label>
-							<input type="text" ng-model="newProposal.latitude" class="form-control" name="latitude" id="newProposalLa">
+							<input type="text" ng-model="newProposal.latitude" class="form-control" name="latitude" id="newProposalLa" readonly>
 						</div>
 						<div class="col">
 							<label for="latitude">Longitude*</label>
-							<input type="text" ng-model="newProposal.longitude" class="form-control" name="longitude" id="newProposalLo">
+							<input type="text" ng-model="newProposal.longitude" class="form-control" name="longitude" id="newProposalLo" readonly>
 						</div>
 					</div>
 
