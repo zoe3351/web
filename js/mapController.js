@@ -7,14 +7,14 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
 
     $scope.keyword = "";
 
-    $scope.timeout = function(){
+    $scope.timeout = function () {
         $timeout(function () {
             $scope.search();
         }, 500);
     }
 
     $scope.search = function () {
-        if ($scope.keyword != ""){
+        if ($scope.keyword != "") {
             $scope.proposals = $scope.proposals.filter(pro => JSON.stringify(pro).includes($scope.keyword));
         } else {
             $scope.proposals = phaseAndProposal.proposals;
@@ -143,8 +143,8 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
         title: "",
         idea: "",
         location: "",
-        latitude: "0",
-        longitude: "0"
+        latitude: 0,
+        longitude: 0
     };
 
     $scope.submitForm = function (isValid) {
@@ -153,22 +153,15 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
                 draft_id: (new Date()).toISOString(),
                 proposal_title: $scope.newProposal.title,
                 proposal_idea: $scope.newProposal.idea,
-                proposal_latitude: $scope.newProposal.latitude,
-                proposal_longitude: $scope.newProposal.longitude,
+                proposal_latitude: document.getElementById("newProposalLa").value,
+                proposal_longitude: document.getElementById("newProposalLo").value,
                 project_location: $scope.newProposal.location,
             }
 
             $http.post(SERVER + 'draft/add', body)
                 .success(function (data, status, headers, config) {
                     alert("Proposal Submitted!");
-                    $scope.newProposal = {
-                        id: (new Date()).toISOString(),
-                        title: "",
-                        idea: "",
-                        location: "",
-                        latitude: "0",
-                        longitude: "0"
-                    };
+                    $route.reload();
                 })
                 .error(function (data, status, header, config) {
                     alert(JSON.stringify(data));
