@@ -1,3 +1,33 @@
-<p>
-    {{message}}
-</p>
+<div class="container" ng-if="userId">
+    <div class="card">
+        <div class="card-header ">
+            <h3>Profile
+                <button class="btn btn-primary" ng-click="edit()">Edit</button>
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <form class="col-sm-5" name="editprofileForm" ng-submit="submitForm(editprofileForm.$valid)" novalidate>
+                    <div class="form-group">
+                        <label for="username">Username: {{profile.account_name}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input ng-model="profile.user_email" type="email" id="email" name="email" class="form-control" placeholder="{{profile.user_email}}"
+                            ng-disabled="!editable">
+                        <p ng-show="editprofileForm.email.$error.email" class="help-block" style="color:red">not a valid email</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_phone_number">Phone</label>
+                        <input ng-model="profile.user_phone_number" type="number" id="user_phone_number" name="phone" class="form-control" placeholder="{{profile.neihborhood}}"
+                            ng-disabled="!editable">
+                        <p ng-show="registerForm.phone.$error.number" class="help-block" style="color:red">not a valid phone</p>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter" ng-disabled="!editprofileForm.$valid">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

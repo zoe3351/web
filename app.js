@@ -22,7 +22,7 @@ app.config(function config($routeProvider) {
             templateUrl: "pages/register.html",
             controller: "registerController",
         })
-        .when("/profile", {
+        .when("/profile/:uid", {
             templateUrl: "pages/profile.html",
             controller: "profileController"
         })
@@ -57,6 +57,10 @@ app.config(function config($routeProvider) {
 app.factory("DataService", function ($http) {
     function getAllUser(succCallback, errCallback) {
         return $http.get(SERVER + 'user/all').then(succCallback, errCallback);
+    };
+
+    function getUser(uid, succCallback, errCallback) {
+        return $http.get(SERVER + 'user/' + uid).then(succCallback, errCallback);
     };
 
     function getAllDraft(succCallback, errCallback) {
@@ -137,6 +141,7 @@ app.factory("DataService", function ($http) {
 
     return {
         getAllUser: getAllUser,
+        getUser: getUser,
         getAllDraft: getAllDraft,
         getAllFinal: getAllFinal,
         getProposal: getProposal,
@@ -172,6 +177,7 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
 
     if ($rootScope.username) {
         $scope.username = $rootScope.username;
+        $scope.userId = $rootScope.userId;
     }
 
     $scope.signout = function () {
