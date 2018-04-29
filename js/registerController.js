@@ -36,6 +36,8 @@ app.controller("registerController", function ($scope, $http, $location, DataSer
             data: {
                 username: $scope.username,
                 password: $scope.password,
+                email: $scope.email,
+                phone: $scope.phone
             }
         };
         // alert("start login!");
