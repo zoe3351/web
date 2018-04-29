@@ -170,7 +170,7 @@ function initMap() {require([
             .then(function(response){
               if (tab === "Proposals") {
                 var graphic = response.results[0].graphic;
-                if (graphic) {
+                if (graphic && graphic.attributes['longitude']) {
                   view.zoom = 18;
                   view.center = [graphic.attributes['longitude'], graphic.attributes['latitude']];
 
