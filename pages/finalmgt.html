@@ -56,9 +56,38 @@
 
     <h4 style="margin-top:20px">Import Excel as Final Proposal</h4>
     <div class="justify-content-md-center">
-        <form name="finalForm" ng-submit="upload()" novalidate>
-            <button type="submit" class="btn btn-danger" ng-disabled="!finalForm.uploadInput.$touched">Upload</button>
-            <input type="file" id="uploadInput" name="uploadInput" data-ng-click="finalForm.uploadInput.$touched=true">
+        <form id="frmUploader" enctype="multipart/form-data" action="http://bulubulu.ischool.uw.edu:4000/final/import" method="post">
+            <input type="file" name="excelUploader" multiple />
+            <input type="submit" name="submit" id="btnSubmit" value="Upload" />
         </form>
     </div>
 </div>
+
+<script src="Scripts/jquery-3.1.1.min.js"></script>
+<script src="Scripts/jquery.form.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var options = {
+            beforeSubmit: showRequest,  // pre-submit callback
+            success: showResponse  // post-submit callback
+        };
+
+        // bind to the form's submit event
+        $('#frmUploader').submit(function () {
+            $(this).ajaxSubmit(options);
+            // always return false to prevent standard browser submit and page navigation
+            return false;
+        });
+    });
+
+    // pre-submit callback
+    function showRequest(formData, jqForm, options) {
+        alert('Uploading is starting.');
+        return true;
+    }
+
+    // post-submit callback
+    function showResponse(responseText, statusText, xhr, $form) {
+        alert('status: ' + statusText + '\n\nresponseText: \n' + responseText);
+    }
+</script>
