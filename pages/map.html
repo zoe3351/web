@@ -16,14 +16,14 @@
 					<button class="btn btn-outline-secondary" type="button" ng-click="search()">Search</button>
 				</div>
 			</div>
-			<div class="border-top" ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; max-height:550px; margin-top:10px"
+			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; max-height:550px; margin-top:10px"
 			 id="scrollbody">
 				<div class="list-group">
-					<div class="list-group-item list-group-item-action card-header" ng-repeat="pro in proposals" id="{{'p' + pro.draft_id}}">
-						<a class="btn" data-toggle="collapse" data-target="#{{pro.draft_id}}" aria-expanded="false" aria-controls="{{pro.draft_id}}"
-						 latitude="{{pro.proposal_latitude}}" longitude="{{pro.proposal_longitude}}">
-							{{pro.proposal_title}}
-						</a>
+					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.draft_id}}">
+						<div>
+							<a href="" style="word-wrap: break-word;" data-toggle="collapse" data-target="#{{pro.draft_id}}" aria-expanded="false" aria-controls="{{pro.draft_id}}"
+							 latitude="{{pro.proposal_latitude}}" longitude="{{pro.proposal_longitude}}">{{pro.proposal_title}}</a>
+						</div>
 						<div id="{{pro.draft_id}}" class="collapse hide " aria-labelledby="headingOne" data-parent="#accordion">
 							<div class="card-body">
 								<h5 class="card-subtitle mb-2 text-muted">ID: {{pro.draft_id}}</h5>
