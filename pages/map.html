@@ -59,48 +59,42 @@
 				</div>
 			</div>
 			<div ng-show="showNewProposal">
-				<form name="newProposalForm" ng-submit="submitForm(newProposalForm.$valid)" novalidate>
-					<div class="form-group" ng-class="{ 'has-error' :newProposalForm.title.$invalid && !newProposalForm.title.$pristine}">
+				<form style="padding-top:20px" name="newProposalForm" ng-submit="submitForm(newProposalForm.$valid)" novalidate>
+					<div class="col">
 						<label for="title">Title*</label>
 						<input ng-model="newProposal.title" type="text" name="title" class="form-control" id="title" placeholder="Title" ng-minlength="1"
 						 required>
 						<p ng-show="newProposalForm.title.$invalid && !newProposalForm.title.$pristine" style="color:red" class="help-block">Title is required.</p>
 					</div>
-
-					<div class="form-group" ng-class="{ 'has-error' :newProposalForm.location.$invalid && !newProposalForm.location.$pristine}">
+					<div class="col" ng-class="{ 'has-error' :newProposalForm.location.$invalid && !newProposalForm.location.$pristine}">
 						<label for="location">Location*</label>
 						<input ng-model="newProposal.location" type="text" name="location" class="form-control" id="location" placeholder="location">
 					</div>
-
-					<div class="row">
-						<div class="col">
-							<label for="latitude">Latitude*</label>
-							<input type="text" ng-model="newProposal.latitude" class="form-control" name="latitude" id="newProposalLa" readonly>
-						</div>
-						<div class="col">
-							<label for="latitude">Longitude*</label>
-							<input type="text" ng-model="newProposal.longitude" class="form-control" name="longitude" id="newProposalLo" readonly>
-						</div>
+					<div class="col-sm-5">
+						<label for="latitude">Latitude*</label>
+						<input type="text" ng-model="newProposal.latitude" class="form-control" name="latitude" id="newProposalLa" readonly>
+						<label for="latitude">Longitude*</label>
+						<input type="text" ng-model="newProposal.longitude" class="form-control" name="longitude" id="newProposalLo" readonly>
 					</div>
-
-					<div class="form-group" ng-class="{ 'has-error' :newProposalForm.idea.$invalid && !newProposalForm.idea.$pristine}">
+					<div class="col" ng-class="{ 'has-error' :newProposalForm.idea.$invalid && !newProposalForm.idea.$pristine}">
 						<label for="idea">Idea</label>
 						<textarea style="height:200px;" ng-model="newProposal.idea" name="idea" placeholder="a few sentences describing what the project involves"
 						 class="form-control" id="idea" ng-minlength="1" required></textarea>
 						<p ng-show="newProposalForm.idea.$invalid && !newProposalForm.idea.$pristine" style="color:red" class="help-block">Idea is required.</p>
 					</div>
-					<button type="submit" class="btn btn-danger" ng-disabled="!newProposalForm.$valid">Submit</button>
+					<div class="col" style="padding-top:20px">
+						<button type="submit" class="btn btn-danger" ng-disabled="!newProposalForm.$valid">Submit</button>
+					</div>
 				</form>
 			</div>
 		</div>
 		<div id="map" class="col-sm-8">
 			<div id="proposalMap" style="width:100%; height:100%"></div>
-		</div>
-
-		<div>Icons made by
-			<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from
-			<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
-			<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+			<div>Icons made by
+				<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from
+				<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
+				<a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+			</div>
 		</div>
 	</div>
 	<script>
