@@ -7,73 +7,73 @@
         </div>
         <div class="card-body">
             <div class="row justify-content-center">
-                <form class="col-sm-12" name="editProposalForm" ng-submit="submitForm(editProposalForm.$valid)" novalidate>
+                <form class="col-sm-5" name="editProposalForm" ng-submit="submitForm(editProposalForm.$valid)" novalidate>
                     <div class="form-group">
                         <label for="id">ID: {{proposal.proposal_id}}</label>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' :editProposalForm.title.$invalid && !editProposalForm.title.$pristine}">
                         <label for="title">Title*</label>
-                        <input ng-model="proposal.final_proposal_title" type="text" id="title" class="form-control" id="title" placeholder="{{proposal.final_proposal_title}}"
+                        <input ng-model="proposal.final_proposal_title" type="text" name="title" class="form-control" id="title" placeholder="{{proposal.final_proposal_title}}"
                             ng-disabled="!editable" ng-minlength="1" required>
                         <p ng-show="editProposalForm.title.$invalid && !editProposalForm.title.$pristine" class="help-block">Title is required.</p>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' :editProposalForm.location.$invalid && !editProposalForm.location.$pristine}">
                         <label for="location">Location*</label>
-                        <input ng-model="proposal.final_project_location" type="text" id="location" class="form-control" id="location" placeholder="{{proposal.final_project_location}}"
+                        <input ng-model="proposal.final_project_location" type="text" name="location" class="form-control" id="location" placeholder="{{proposal.final_project_location}}"
                             ng-disabled="!editable" ng-minlength="1" required>
                         <p ng-show="editProposalForm.location.$invalid && !editProposalForm.location.$pristine" class="help-block">Location is required.</p>
                     </div>
                     <div class="form-group">
                         <label for="latitude">Latitude*</label>
-                        <input type="text" ng-model="proposal.final_proposal_latitude" class="form-control" id="latitude" placeholder="{{proposal.final_proposal_latitude}}"
+                        <input type="text" ng-model="proposal.final_proposal_latitude" class="form-control" name="latitude" id="latitude" placeholder="{{proposal.final_proposal_latitude}}"
                             ng-disabled="!editable">
                         <label for="latitude">Longitude*</label>
-                        <input type="text" ng-model="proposal.final_proposal_longitude" class="form-control" id="longitude" placeholder="{{proposal.final_proposal_longitude}}"
+                        <input type="text" ng-model="proposal.final_proposal_longitude" class="form-control" name="longitude" id="longitude" placeholder="{{proposal.final_proposal_longitude}}"
                             ng-disabled="!editable">
                     </div>
                     <div class="form-group">
                         <label for="cost">Cost</label>
-                        <input ng-model="proposal.cost" type="text" id="cost" class="form-control" id="cost" placeholder="{{proposal.cost}}" ng-disabled="!editable">
+                        <input ng-model="proposal.cost" type="text" name="cost" class="form-control" id="cost" placeholder="{{proposal.cost}}" ng-disabled="!editable">
                     </div>
                     <div class="form-group">
                         <label for="neighborhood">Neighborhood</label>
-                        <input ng-model="proposal.neihborhood" type="text" id="neighborhood" class="form-control" id="neighborhood" placeholder="{{proposal.neihborhood}}"
+                        <input ng-model="proposal.neihborhood" type="text" name="neighborhood" class="form-control" id="neighborhood" placeholder="{{proposal.neihborhood}}"
                             ng-disabled="!editable">
                     </div>
                     <div class="form-group">
                         <label for="type">Type</label>
-                        <input ng-model="proposal.project_type" type="text" id="type" class="form-control" id="type" placeholder="{{proposal.project_type}}"
+                        <input ng-model="proposal.project_type" type="text" id="type" class="form-control" name="type" placeholder="{{proposal.project_type}}"
                             ng-disabled="!editable">
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
-                        <input ng-model="proposal.department" type="text" id="department" class="form-control" id="department" placeholder="{{proposal.department}}"
+                        <input ng-model="proposal.department" type="text" id="department" class="form-control" name="department" placeholder="{{proposal.department}}"
                             ng-disabled="!editable">
                     </div>
                     <div class="form-group">
                         <label for="district">Council District</label>
-                        <input ng-model="proposal.district" type="text" id="district" class="form-control" id="district" placeholder="{{proposal.council_district}}"
+                        <input ng-model="proposal.district" type="text" name="district" class="form-control" id="district" placeholder="{{proposal.council_district}}"
                             ng-disabled="!editable">
                     </div>
                     <div class="form-group">
                         <label for="need">Need</label>
-                        <textarea style="height:200px;" ng-model="proposal.proposal_need" id="need" placeholder="proposal.proposal_need" class="form-control"
+                        <textarea style="height:200px;" ng-model="proposal.proposal_need" id="need" placeholder="proposal.proposal_need" class="form-control" name="need"
                             ng-minlength="1" ng-disabled="!editable" required></textarea>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' :editProposalForm.idea.$invalid && !editProposalForm.idea.$pristine}">
                         <label for="idea">Idea</label>
-                        <textarea style="height:200px;" ng-model="proposal.final_proposal_idea" id="idea" placeholder="proposal.final_proposal_idea"
+                        <textarea style="height:200px;" ng-model="proposal.final_proposal_idea" id="idea"  name="idea"  placeholder="proposal.final_proposal_idea"
                             class="form-control" ng-minlength="1" ng-disabled="!editable" required></textarea>
                         <p ng-show="editProposalForm.idea.$invalid && !editProposalForm.idea.$pristine" class="help-block">Idea is required.</p>
                     </div>
                     <div class="form-group">
                         <label for="benefit">Benefit</label>
-                        <textarea style="height:200px;" ng-model="proposal.who_benefits" id="need" placeholder="proposal.who_benefits" class="form-control"
+                        <textarea style="height:200px;" ng-model="proposal.who_benefits" id="benefit" name="benefit" placeholder="proposal.who_benefits" class="form-control"
                             ng-minlength="1" ng-disabled="!editable" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="comments">Comments</label>
-                        <input ng-model="proposal.comments" type="text" class="form-control" id="comments" placeholder="{{proposal.comments}}" ng-disabled="!editable">
+                        <input ng-model="proposal.comments" type="text" class="form-control" name="comments" id="comments" placeholder="{{proposal.comments}}" ng-disabled="!editable">
                     </div>
                     <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter" ng-disabled="!editProposalForm.$valid">Submit</button>
                 </form>
