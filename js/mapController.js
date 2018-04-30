@@ -15,7 +15,7 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
 
     $scope.search = function () {
         if ($scope.keyword != "") {
-            $scope.proposals = $scope.proposals.filter(pro => JSON.stringify(pro).includes($scope.keyword));
+            $scope.proposals = phaseAndProposal.proposals.filter(pro => JSON.stringify(pro).toLowerCase().includes($scope.keyword.toLowerCase()));
         } else {
             $scope.proposals = phaseAndProposal.proposals;
         }
