@@ -66,14 +66,12 @@
 						<label for="title">Title*</label>
 						<input ng-model="newProposal.title" type="text" name="title" class="form-control" id="title" placeholder="Title" ng-minlength="1"
 						 required>
-						<p ng-show="newProposalForm.title.$invalid && !newProposalForm.title.$pristine" class="help-block">Title is required.</p>
+						<p ng-show="newProposalForm.title.$invalid && !newProposalForm.title.$pristine" style="color:red" class="help-block">Title is required.</p>
 					</div>
 
 					<div class="form-group" ng-class="{ 'has-error' :newProposalForm.location.$invalid && !newProposalForm.location.$pristine}">
 						<label for="location">Location*</label>
-						<input ng-model="newProposal.location" type="text" name="location" class="form-control" id="location" placeholder="location"
-						 ng-minlength="1" required>
-						<p ng-show="newProposalForm.location.$invalid && !newProposalForm.location.$pristine" class="help-block">Location is required.</p>
+						<input ng-model="newProposal.location" type="text" name="location" class="form-control" id="location" placeholder="location">
 					</div>
 
 					<div class="row">
@@ -91,7 +89,7 @@
 						<label for="idea">Idea</label>
 						<textarea style="height:200px;" ng-model="newProposal.idea" name="idea" placeholder="a few sentences describing what the project involves"
 						 class="form-control" id="idea" ng-minlength="1" required></textarea>
-						<p ng-show="newProposalForm.idea.$invalid && !newProposalForm.idea.$pristine" class="help-block">Idea is required.</p>
+						<p ng-show="newProposalForm.idea.$invalid && !newProposalForm.idea.$pristine" style="color:red" class="help-block">Idea is required.</p>
 					</div>
 					<button type="submit" class="btn btn-danger" ng-disabled="!newProposalForm.$valid">Submit</button>
 				</form>

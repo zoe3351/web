@@ -155,7 +155,11 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
                 proposal_idea: $scope.newProposal.idea,
                 proposal_latitude: document.getElementById("newProposalLa").value,
                 proposal_longitude: document.getElementById("newProposalLo").value,
-                project_location: $scope.newProposal.location,
+                project_location: document.getElementById("location").value
+            }
+            if (body.project_location.length == 0) {
+                alert('Please specify a location!');
+                return;
             }
 
             $http.post(SERVER + 'draft/add', body)
