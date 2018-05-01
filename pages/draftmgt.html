@@ -1,11 +1,17 @@
 <div class="container">
-
     <h3 id="draft">Draft Proposal Management</h3>
-    <a href="http://bulubulu.ischool.uw.edu:4000/draft/export" class="badge badge-primary" download="draft.xlsx">
-        Export Drafts to Excel...
-        <i class="fa fa-download"></i>
-    </a>
-
+    <div class="row justify-content-between">
+        <a href="http://bulubulu.ischool.uw.edu:4000/draft/export" class="col-sm-4" download="draft.xlsx">
+            Export Drafts to Excel...
+            <i class="fa fa-download"></i>
+        </a>
+        <div class="input-group col-sm-4" style="width:40%; min-width:40%">
+            <input type="text" class="form-control" ng-model="keyword" placeholder="" aria-label="" aria-describedby="basic-addon2" ng-change="timeout()">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" ng-click="search()">Search</button>
+            </div>
+        </div>
+    </div>
     <div style="overflow-y:scroll; max-height:800px; margin-top: 10px;">
         <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">

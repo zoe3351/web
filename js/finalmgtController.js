@@ -1,5 +1,6 @@
-app.controller("finalmgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, DataService) {
+app.controller("finalmgtController", function ($scope, $filter, $http, $location, $timeout, $route, $window, $rootScope, DataService) {
 
+    $scope.ori = [];
     $scope.allFinal = [];
 
     let errCallback = function (data, status, header, config) {
@@ -7,8 +8,23 @@ app.controller("finalmgtController", function ($scope, $filter, $http, $location
     }
 
     DataService.getAllFinal(function (response) {
+        $scope.ori = response.data.data;
         $scope.allFinal = response.data.data;
     }, errCallback);
+
+    $scope.timeout = function () {
+        $timeout(function () {
+            $scope.search();
+        }, 500);
+    }
+
+    $scope.search = function () {
+        if ($scope.keyword != "") {
+            $scope.allFinal = $scope.ori.filter(pro => JSON.stringify(pro).toLowerCase().includes($scope.keyword.toLowerCase()));
+        } else {
+            $scope.allFinal = $scope.ori;
+        }
+    }
 
     // final mgt part
     $scope.open = function (id) {

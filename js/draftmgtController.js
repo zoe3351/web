@@ -1,4 +1,5 @@
-app.controller("draftmgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, DataService) {
+app.controller("draftmgtController", function ($scope, $filter, $http, $location, $timeout, $route, $window, $rootScope, DataService) {
+    $scope.ori = [];
     $scope.allDraft = [];
 
     let errCallback = function (data, status, header, config) {
@@ -6,8 +7,23 @@ app.controller("draftmgtController", function ($scope, $filter, $http, $location
     }
 
     DataService.getAllDraft(function (response) {
+        $scope.ori = response.data.data;
         $scope.allDraft = response.data.data;
     }, errCallback);
+
+    $scope.timeout = function () {
+        $timeout(function () {
+            $scope.search();
+        }, 500);
+    }
+
+    $scope.search = function () {
+        if ($scope.keyword != "") {
+            $scope.allDraft = $scope.ori.filter(pro => JSON.stringify(pro).toLowerCase().includes($scope.keyword.toLowerCase()));
+        } else {
+            $scope.allDraft = $scope.ori;
+        }
+    }
 
     // draft mgt part
     $scope.saveDraft = function (data, id) {
