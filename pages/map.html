@@ -82,14 +82,14 @@
 						 class="form-control" id="idea" ng-minlength="1" required></textarea>
 						<p ng-show="newProposalForm.idea.$invalid && !newProposalForm.idea.$pristine" style="color:red" class="help-block">Idea is required.</p>
 					</div>
-					<div class="col" style="padding-top:20px">
+					<div class="col" style="padding:20px">
 						<button type="submit" class="btn btn-danger" ng-disabled="!newProposalForm.$valid">Submit</button>
 					</div>
 				</form>
 			</div>
 		</div>
 		<div id="map" class="col-sm-8">
-			<div id="proposalMap" style="width:100%; height:100%"></div>
+			<div id="proposalMap" style="width:100%; height:100%; min-height:400px"></div>
 			<div>Icons made by
 				<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from
 				<a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
