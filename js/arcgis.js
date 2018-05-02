@@ -1,4 +1,5 @@
-function initMap() {require([
+function initMap($scope) {
+  require([
     "esri/Map",
     "esri/views/MapView",
     "esri/layers/FeatureLayer",
@@ -219,17 +220,27 @@ function initMap() {require([
             });
         });
 
-        let proposal = $('[ng-repeat="pro in proposals"] > a');
-        proposal.each(index => {
-          proposal[index].addEventListener("click", function(){
-            view.goTo({
-              target: new Point({
-                        latitude: this.getAttribute('latitude'),
-                        longitude: this.getAttribute('longitude')
-                      }),
-              zoom: 18
-            });
+        // let proposal = $('[ng-repeat="pro in proposals"] > a');
+        // proposal.each(index => {
+        //   proposal[index].addEventListener("click", function(){
+        //     view.goTo({
+        //       target: new Point({
+        //                 latitude: this.getAttribute('latitude'),
+        //                 longitude: this.getAttribute('longitude')
+        //               }),
+        //       zoom: 18
+        //     });
+        //   });
+        // });
+
+        $scope.viewPinOnMap = function(latitude, longitude) {
+          view.goTo({
+            target: new Point({
+                      latitude: latitude,
+                      longitude: longitude
+                    }),
+            zoom: 18
           });
-        });
+        };
   });
 }

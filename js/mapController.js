@@ -3,9 +3,9 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
 
     $scope.proposals = phaseAndProposal.proposals;
 
-    initMap();
-
     $scope.keyword = "";
+
+    var viewPin = initMap($scope);
 
     $scope.timeout = function () {
         $timeout(function () {

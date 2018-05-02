@@ -96,42 +96,35 @@ app.factory("DataService", function ($http) {
     }
 
     function getPhaseThenProposal() {
+
+        let proposalAndPhase = (proposals, phase) => {
+            // $scope.$broadcast('dataloaded');
+            return {
+                phase: phase,
+                proposals: proposals,
+            }
+        }
+
         return $http.get(SERVER + 'phase/all').then(function (response) {
             let phase = Number(response.data.data[0].current_phase || -1);
             if (phase == 1) {
                 return $http.get(SERVER + 'draft/all').then(function (response) {
-                    let proposals = response.data.data;
-                    return {
-                        phase: phase,
-                        proposals: proposals
-                    }
+                    return proposalAndPhase(response.data.data, phase)
                 });
 
             } else if (phase == 2) {
                 return $http.get(SERVER + 'final/grade').then(function (response) {
-                    let proposals = response.data.data;
-                    return {
-                        phase: phase,
-                        proposals: proposals
-                    }
+                    return proposalAndPhase(response.data.data, phase)
                 });
 
             } else if (phase == 3) {
                 return $http.get(SERVER + 'final/vote').then(function (response) {
-                    let proposals = response.data.data;
-                    return {
-                        phase: phase,
-                        proposals: proposals
-                    }
+                    return proposalAndPhase(response.data.data, phase)
                 });
                 //TODO: select over table phase 4
             } else if (phase == 4) {
                 return $http.get(SERVER + 'final/display').then(function (response) {
-                    let proposals = response.data.data;
-                    return {
-                        phase: phase,
-                        proposals: proposals
-                    }
+                    return proposalAndPhase(response.data.data, phase)
                 });
             } else {
                 return;
