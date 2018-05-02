@@ -20,7 +20,7 @@
 				<div class="list-group">
 					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.draft_id}}">
 						<a href="" style="word-wrap: break-word;" data-toggle="collapse" data-target="#{{pro.draft_id}}" aria-expanded="false" aria-controls="{{pro.draft_id}}"
-						 latitude="{{pro.proposal_latitude}}" longitude="{{pro.proposal_longitude}}">{{pro.proposal_title}}</a>
+						 ng-click="viewPinOnMap(pro.proposal_latitude, pro.proposal_longitude)">{{pro.proposal_title}}</a>
 						<div id="{{pro.draft_id}}" class="collapse hide " aria-labelledby="headingOne" data-parent="#accordion">
 							<div class="card-body">
 								<h5 class="card-subtitle mb-2 text-muted">ID: {{pro.draft_id}}</h5>
@@ -35,7 +35,7 @@
 				<div class="list-group">
 					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.proposal_id}}">
 						<a href="" style="word-wrap: break-word;" data-toggle="collapse" data-target="#{{pro.proposal_id}}" aria-expanded="false"
-						 aria-controls="{{pro.proposal_id}}" latitude="{{pro.final_proposal_latitude}}" longitude="{{pro.final_proposal_longitude}}">
+						 aria-controls="{{pro.proposal_id}}" ng-click="viewPinOnMap(pro.final_proposal_latitude, pro.final_proposal_longitude)">
 							{{pro.final_proposal_title}}
 						</a>
 						<div id="{{pro.proposal_id}}" class="collapse hide " aria-labelledby="headingOne" data-parent="#accordion">
