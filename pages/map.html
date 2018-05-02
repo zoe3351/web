@@ -16,8 +16,7 @@
 					<button class="btn btn-outline-secondary" type="button" ng-click="search()">Search</button>
 				</div>
 			</div>
-			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; max-height:550px; margin-top:10px"
-			 id="scrollbody">
+			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; max-height:800px; margin-top:10px" id="scrollbody">
 				<div class="list-group">
 					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.draft_id}}">
 						<a href="" style="word-wrap: break-word;" data-toggle="collapse" data-target="#{{pro.draft_id}}" aria-expanded="false" aria-controls="{{pro.draft_id}}"
@@ -32,9 +31,9 @@
 					</div>
 				</div>
 			</div>
-			<div ng-show="!showNewProposal" ng-if="phase!=1" style="overflow-y:scroll; max-height:100%;width:19rem;" id="scrollbody">
+			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase!=1" style="overflow-y:scroll; max-height:800px; margin-top:10px" id="scrollbody">
 				<div class="list-group">
-					<div class="list-group-item list-group-item-action card-header" ng-repeat="pro in proposals" id="{{'p' + pro.proposal_id}}">
+					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.proposal_id}}">
 						<a href="" style="word-wrap: break-word;" data-toggle="collapse" data-target="#{{pro.proposal_id}}" aria-expanded="false"
 						 aria-controls="{{pro.proposal_id}}" latitude="{{pro.final_proposal_latitude}}" longitude="{{pro.final_proposal_longitude}}">
 							{{pro.final_proposal_title}}
