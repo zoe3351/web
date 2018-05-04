@@ -1,4 +1,15 @@
-<div style="padding:50px">
+<div style="margin:20px">
+	<div style="margin-bottom:20px" class="progress">
+		<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width:25%" aria-valuenow="25" aria-valuemin="0"
+		 ng-if="phase==1" aria-valuemax="100">{{message}}</div>
+		<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width:50%" aria-valuenow="50" aria-valuemin="0"
+		 ng-if="phase==2" aria-valuemax="100">{{message}}</div>
+		<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width:75%" aria-valuenow="75" aria-valuemin="0"
+		 ng-if="phase==3" aria-valuemax="100">{{message}}</div>
+		<div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0"
+		 ng-if="phase==4" aria-valuemax="100">{{message}}</div>
+	</div>
+
 	<div class="row">
 		<div class="col-sm-4">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -16,7 +27,8 @@
 					<button class="btn btn-outline-secondary" type="button" ng-click="search()">Search</button>
 				</div>
 			</div>
-			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; max-height:800px; margin-top:10px" id="scrollbody">
+			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; max-height:800px; margin-top:10px"
+			 id="scrollbody">
 				<div class="list-group">
 					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.draft_id}}">
 						<a href="" style="word-wrap: break-word;" data-toggle="collapse" data-target="#{{pro.draft_id}}" aria-expanded="false" aria-controls="{{pro.draft_id}}"
@@ -31,7 +43,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase!=1" style="overflow-y:scroll; max-height:800px; margin-top:10px" id="scrollbody">
+			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase!=1" style="overflow-y:scroll; max-height:800px; margin-top:10px"
+			 id="scrollbody">
 				<div class="list-group">
 					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.proposal_id}}">
 						<a href="" style="word-wrap: break-word;" data-toggle="collapse" data-target="#{{pro.proposal_id}}" aria-expanded="false"
