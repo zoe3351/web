@@ -175,7 +175,7 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
                     });
             })
             .error(function (data, status, header, config) {
-                alert(data["message"]);
+                //alert(data["message"]);
                 window.localStorage["token"] = "";
             });
     }
