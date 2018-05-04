@@ -1,6 +1,6 @@
 <div class="container">
 
-    <h3 id="proposal">III. Proposal Management</h3>
+    <h2 id="proposal">Final Proposal Management</h2>
     <div class="row justify-content-between">
         <a href="http://bulubulu.ischool.uw.edu:4000/final/export" class="col-sm-4" download="final_proposals.xlsx">
             Export Final Proposals to Excel...
@@ -23,19 +23,19 @@
             </tr>
             <tr ng-repeat="final in allFinal">
                 <td>
-                    <h5 editable-text="final.proposal_id" e-name="id" e-form="rowform">
+                    <p editable-text="final.proposal_id" e-name="id" e-form="rowform">
                         {{ final.proposal_id || 'empty' }}
-                    </h5>
+                    </p>
                 </td>
                 <td>
-                    <h5 editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
+                    <p editable-select="final.final_proposal_title" e-name="title" e-form="rowform">
                         {{ final.final_proposal_title || "empty" }}
-                    </h5>
+                    </p>
                 </td>
                 <td>
-                    <h5 editable-select="final.final_project_location" e-name="location" e-form="rowform">
+                    <p editable-select="final.final_project_location" e-name="location" e-form="rowform">
                         {{ final.final_project_location || "empty" }}
-                    </h5>
+                    </p>
                 </td>
                 <td style="white-space: nowrap">
                     <!-- form -->

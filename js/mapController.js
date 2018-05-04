@@ -1,9 +1,6 @@
 app.controller("mapController", function ($scope, $http, $route, $location, $rootScope, $timeout, phaseAndProposal, DataService) {
     $scope.phase = phaseAndProposal.phase;
 
-    let messages = ['Draft Proposals', 'Grade Proposals', 'Vote Proposals', 'Display Proposals'];
-    $scope.message = messages[$scope.phase - 1];
-
     $scope.proposals = phaseAndProposal.proposals;
 
     $scope.keyword = "";

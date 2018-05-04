@@ -1,5 +1,5 @@
 <div class="container">
-    <h3 id="draft">Draft Proposal Management</h3>
+    <h2 id="draft">Draft Proposal Management</h2>
     <div class="row justify-content-between">
         <a href="http://bulubulu.ischool.uw.edu:4000/draft/export" class="col-sm-4" download="draft.xlsx">
             Export Drafts to Excel...
@@ -25,34 +25,34 @@
             </tr>
             <tr ng-repeat="draft in allDraft">
                 <td>
-                    <h5>
+                    <p>
                         {{ draft.draft_id}}
-                    </h5>
+                    </p>
                 </td>
                 <td>
-                    <h5 editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
+                    <p editable-text="draft.proposal_title" e-name="proposal_title" e-form="rowform" onbeforesave="check($data)">
                         {{draft.proposal_title}}
-                    </h5>
+                    </p>
                 </td>
                 <td>
-                    <h5 editable-text="draft.proposal_idea" e-name="proposal_idea" e-form="rowform" onbeforesave="check($data)">
+                    <p editable-text="draft.proposal_idea" e-name="proposal_idea" e-form="rowform" onbeforesave="check($data)">
                         {{draft.proposal_idea}}
-                    </h5>
+                    </p>
                 </td>
                 <td>
-                    <h5 editable-text="draft.project_location" e-name="project_location" e-form="rowform" onbeforesave="check($data)">
+                    <p editable-text="draft.project_location" e-name="project_location" e-form="rowform" onbeforesave="check($data)">
                         {{draft.project_location}}
-                    </h5>
+                    </p>
                 </td>
                 <td>
-                    <h5 editable-text="draft.proposal_latitude" e-name="proposal_latitude" e-form="rowform" onbeforesave="check($data)">
+                    <p editable-text="draft.proposal_latitude" e-name="proposal_latitude" e-form="rowform" onbeforesave="check($data)">
                         {{draft.proposal_latitude}}
-                    </h5>
+                    </p>
                 </td>
                 <td>
-                    <h5 editable-text="draft.proposal_longitude" e-name="proposal_longitude" e-form="rowform" onbeforesave="check($data)">
+                    <p editable-text="draft.proposal_longitude" e-name="proposal_longitude" e-form="rowform" onbeforesave="check($data)">
                         {{draft.proposal_longitude}}
-                    </h5>
+                    </p>
                 </td>
                 <td style="white-space: nowrap">
                     <!-- form -->

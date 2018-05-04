@@ -9,7 +9,7 @@
 				<a href="#login">Already have an account? Sign in!</a>
 			</div>
 			<div class="row justify-content-center">
-				<form class="form-horizontal" name="registerForm" ng-submit="submitForm((registerForm.$valid && usernameCanUse))" novalidate>
+				<form class="form-horizontal col-sm-5" name="registerForm" ng-submit="submitForm((registerForm.$valid && usernameCanUse))" novalidate>
 					<div class="form-group" ng-class="{ 'has-error' :registerForm.username.$invalid && !registerForm.username.$pristine}">
 						<label for="Username">Username*</label>
 						<input type="username" name="username" ng-model="username" ng-change="pass()" class="form-control" placeholder="Enter username"

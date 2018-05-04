@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             <div class="row justify-content-center">
-                <form name="ballotForm" ng-submit="submitForm(ballotForm.$valid)" novalidate>
+                <form class="col-sm-5" name="ballotForm" ng-submit="submitForm(ballotForm.$valid)" novalidate>
                     <div class="form-group">
                         <label for="firstname">First Name*</label>
                         <input type="text" ng-model="ballot.firstname" class="form-control" name="firstname" placeholder="{{ballot.firstname}}">

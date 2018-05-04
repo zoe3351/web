@@ -1,7 +1,5 @@
 <div class="container">
-
-
-    <h3 id="phase">IV. Phase Management</h3>
+    <h2 id="phase">Phase Management</h3>
 
     <form name="phaseForm" ng-submit="changePhase()" novalidate>
         <div class="input-group form-group mb-3">
@@ -27,19 +25,19 @@
         </tr>
         <tr ng-repeat="end in endDates">
             <td>
-                <h5 editable-text="end.phase1_end" e-name="phase1_end" e-form="rowform" onbeforesave="checkDate($data)">
+                <p editable-text="end.phase1_end" e-name="phase1_end" e-form="rowform" onbeforesave="checkDate($data)">
                     {{end.phase1_end}}
-                </h5>
+                </p>
             </td>
             <td>
-                <h5 editable-text="end.phase2_end" e-name="phase2_end" e-form="rowform" onbeforesave="checkDate($data)">
+                <p editable-text="end.phase2_end" e-name="phase2_end" e-form="rowform" onbeforesave="checkDate($data)">
                     {{end.phase2_end}}
-                </h5>
+                </p>
             </td>
             <td>
-                <h5 editable-text="end.phase3_end" e-name="phase3_end" e-form="rowform" onbeforesave="checkDate($data)">
+                <p editable-text="end.phase3_end" e-name="phase3_end" e-form="rowform" onbeforesave="checkDate($data)">
                     {{end.phase3_end}}
-                </h5>
+                </p>
             </td>
             <td style="white-space: nowrap">
                 <!-- form -->

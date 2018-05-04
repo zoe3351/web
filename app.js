@@ -153,7 +153,7 @@ app.factory("DataService", function ($http) {
 
 });
 
-app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout, DataService) {
+app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout, $anchorScroll, DataService) {
 
     if (window.localStorage["token"] !== "") {
         $http
@@ -191,4 +191,14 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
         $scope.username = null;
         location.reload();
     }
+
+    $scope.scrollTo = function (id) {
+        $anchorScroll(id);
+    }
+
+    DataService.getPhase((response) => {
+        $scope.phase = response.data.data[0].current_phase;
+        let messages = ['IDEA COLLECTION', 'PROJECT DEVELOPMENT', 'VOTING', 'FUND IMPLEMENT'];
+        $scope.message = messages[$scope.phase - 1];
+    });
 });
