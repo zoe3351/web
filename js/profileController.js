@@ -1,4 +1,4 @@
-app.controller("profileController", function ($scope, $route, $location, $rootScope, $routeParams, $http, DataService) {
+app.controller("profileController", function ($scope, $route, $location, $rootScope, $routeParams, $window, $http, DataService) {
     // if auth expires, jump back to home
     if (!$rootScope.userId) {
         $location.path("#home");
@@ -58,7 +58,7 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
             .success((data, status, headers, config) => {
                 $scope.originDistrict = $scope.district1;
                 alert("District Updated!")
-                $route.reload();
+                $window.location.reload();
             })
             .error(function (data, status, header, config) {
                 alert(JSON.stringify(data));

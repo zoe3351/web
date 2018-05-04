@@ -1,8 +1,8 @@
-app.controller("mapController", function ($scope, $http, $route, $rootScope, $timeout, phaseAndProposal) {
+app.controller("mapController", function ($scope, $http, $route, $location, $rootScope, $timeout, phaseAndProposal, DataService) {
     $scope.phase = phaseAndProposal.phase;
 
     let messages = ['Draft Proposals', 'Grade Proposals', 'Vote Proposals', 'Display Proposals'];
-    $scope.message = messages[$scope.phase-1];
+    $scope.message = messages[$scope.phase - 1];
 
     $scope.proposals = phaseAndProposal.proposals;
 
@@ -37,6 +37,13 @@ app.controller("mapController", function ($scope, $http, $route, $rootScope, $ti
             alert("Please Signin!");
             return;
         }
+
+        if (!$rootScope.district || $rootScope.district == 0) {
+            alert("Please First Choose District!");
+            $location.path(`/profile/${$rootScope.userId}`);
+            return;
+        }
+
         // check if user has voted more than suggested times
         $http.get(SERVER + 'vote/check/' + $rootScope.userId)
             .success((res, status, headers, config) => {

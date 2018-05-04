@@ -63,7 +63,7 @@ app.factory("DataService", function ($http) {
         return $http.get(SERVER + 'user/' + uid).then(succCallback, errCallback);
     };
 
-    function getUserDistrict(uid, succCallback, errCallback){
+    function getUserDistrict(uid, succCallback, errCallback) {
         return $http.get(SERVER + 'user/district/' + uid).then(succCallback, errCallback);
     }
 
@@ -153,7 +153,7 @@ app.factory("DataService", function ($http) {
 
 });
 
-app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout) {
+app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout, DataService) {
 
     if (window.localStorage["token"] !== "") {
         $http
@@ -166,6 +166,13 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
                 // $scope.PostDataResponse = data;
                 $rootScope.username = data[0]["username"];
                 $rootScope.userId = data[0]["id"];
+                DataService.getUserDistrict($rootScope.userId,
+                    (data) => {
+                        $rootScope.district = (data.data.data[0]) ? data.data.data[0].district_phase3 : 0;
+                    },
+                    (data) => {
+                        alert(data["message"]);
+                    });
             })
             .error(function (data, status, header, config) {
                 alert(data["message"]);
