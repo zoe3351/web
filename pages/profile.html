@@ -1,4 +1,4 @@
-<div class="container" ng-if="userId">
+<div class="container">
     <div class="card">
         <div class="card-header ">
             <h3>Profile
@@ -23,9 +23,19 @@
                             ng-disabled="!editable">
                         <p ng-show="registerForm.phone.$error.number" class="help-block" style="color:red">not a valid phone</p>
                     </div>
-
-
                     <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter" ng-disabled="!editprofileForm.$valid">Submit</button>
+                </form>
+            </div>
+            <div class="row justify-content-center" style="margin-top:50px">
+                <form class="col-sm-5" name="districtForm" ng-submit="changeDistrict()" novalidate>
+                    <div class="input-group form-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">District</label>
+                        </div>
+                        <select class="custom-select form-control" id="districtForm001" ng-model="district1" ng-change="onchange()" ng-options="i for i in [1, 2, 3, 4, 5, 6, 7]">
+                        </select>
+                        <button type="submit" class="btn btn-danger" ng-disabled="originDistrict==district1">Change District</button>
+                    </div>
                 </form>
             </div>
         </div>

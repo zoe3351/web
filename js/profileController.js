@@ -11,6 +11,15 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
         $scope.profile = response.data.data[0];
     });
 
+    $scope.district1 = 0;
+    $scope.originDistrict = 0;
+
+    DataService.getUserDistrict($scope.uid, function (response) {
+        let dis = (response.data.data[0]) ? response.data.data[0].district_phase3 : -1;
+        $scope.originDistrict = Number(dis);
+        $scope.district1 = Number(dis);
+    });
+
     $scope.editable = false;
 
     $scope.edit = function () {
@@ -35,5 +44,24 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
                     alert(JSON.stringify(data));
                 });
         }
+    }
+
+    $scope.changeDistrict = function () {
+        let url = SERVER + 'user/district/';
+        if ($scope.originDistrict == -1) {
+            url += 'add/'
+        } else {
+            url += 'edit/'
+        }
+
+        $http.post(url + $scope.uid + '&' + $scope.district1)
+            .success((data, status, headers, config) => {
+                $scope.originDistrict = $scope.district1;
+                alert("District Updated!")
+                $route.reload();
+            })
+            .error(function (data, status, header, config) {
+                alert(JSON.stringify(data));
+            });
     }
 });

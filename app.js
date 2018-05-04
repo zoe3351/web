@@ -63,6 +63,10 @@ app.factory("DataService", function ($http) {
         return $http.get(SERVER + 'user/' + uid).then(succCallback, errCallback);
     };
 
+    function getUserDistrict(uid, succCallback, errCallback){
+        return $http.get(SERVER + 'user/district/' + uid).then(succCallback, errCallback);
+    }
+
     function getAllDraft(succCallback, errCallback) {
         return $http.get(SERVER + 'draft/all').then(succCallback, errCallback);
     }
@@ -135,6 +139,7 @@ app.factory("DataService", function ($http) {
     return {
         getAllUser: getAllUser,
         getUser: getUser,
+        getUserDistrict: getUserDistrict,
         getAllDraft: getAllDraft,
         getAllFinal: getAllFinal,
         getProposal: getProposal,
