@@ -15,8 +15,8 @@ app.controller("phasemgtController", function ($scope, $filter, $http, $location
 
     DataService.getPhase(function (response) {
         let phase = response.data.data[0];
-        $scope.originPhase = Number(phase.current_phase);
-        $scope.phase = Number(phase.current_phase);
+        $scope.originPhase = (phase) ? Number(phase.current_phase) : 0;
+        $scope.phase = (phase) ? Number(phase.current_phase) : 0;
         $scope.endDates = [{
             phase1_end: phase.phase1_end.split('T')[0],
             phase2_end: phase.phase2_end.split('T')[0],

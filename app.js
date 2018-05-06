@@ -110,7 +110,7 @@ app.factory("DataService", function ($http) {
         }
 
         return $http.get(SERVER + 'phase/all').then(function (response) {
-            let phase = Number(response.data.data[0].current_phase || -1);
+            let phase = (response.data.data[0]) ? Number(response.data.data[0].current_phase) : 0;
             if (phase == 1) {
                 return $http.get(SERVER + 'draft/all').then(function (response) {
                     return proposalAndPhase(response.data.data, phase)
@@ -131,7 +131,7 @@ app.factory("DataService", function ($http) {
                     return proposalAndPhase(response.data.data, phase)
                 });
             } else {
-                return;
+                return proposalAndPhase([], phase);
             }
         });
     }
@@ -197,8 +197,8 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
     }
 
     DataService.getPhase((response) => {
-        $scope.phase = response.data.data[0].current_phase;
-        let messages = ['IDEA COLLECTION', 'PROJECT DEVELOPMENT', 'VOTING', 'FUND IMPLEMENT'];
-        $scope.message = messages[$scope.phase - 1];
+        $scope.phase = (response.data.data[0]) ? response.data.data[0].current_phase : 0;
+        let messages = ['PLEASE WAIT TO BEGIN', 'IDEA COLLECTION', 'PROJECT DEVELOPMENT', 'VOTING', 'FUND IMPLEMENT'];
+        $scope.message = messages[$scope.phase];
     });
 });
