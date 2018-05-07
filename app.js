@@ -22,6 +22,9 @@ app.config(function config($routeProvider) {
             templateUrl: "pages/register.html",
             controller: "registerController",
         })
+        .when("/forget", {
+            templateUrl: "pages/resetpassword.html",
+        })
         .when("/profile/:uid", {
             templateUrl: "pages/profile.html",
             controller: "profileController"

@@ -7,6 +7,7 @@
                 <label class="input-group-text" for="inputGroupSelect01">Current Phase</label>
             </div>
             <select class="custom-select" id="inputGroupSelect01" ng-model="phase">
+                <option value="0" ng-selected="phase==0">None</option>
                 <option value="1" ng-selected="phase==1">Draft Proposal</option>
                 <option value="2" ng-selected="phase==2">Grade Proposal</option>
                 <option value="3" ng-selected="phase==3">Vote</option>

@@ -17,11 +17,20 @@ app.controller("phasemgtController", function ($scope, $filter, $http, $location
         let phase = response.data.data[0];
         $scope.originPhase = (phase) ? Number(phase.current_phase) : 0;
         $scope.phase = (phase) ? Number(phase.current_phase) : 0;
-        $scope.endDates = [{
-            phase1_end: phase.phase1_end.split('T')[0],
-            phase2_end: phase.phase2_end.split('T')[0],
-            phase3_end: phase.phase3_end.split('T')[0],
-        }];
+        if ($scope.phase != 0) {
+            $scope.endDates = [{
+                phase1_end: phase.phase1_end.split('T')[0],
+                phase2_end: phase.phase2_end.split('T')[0],
+                phase3_end: phase.phase3_end.split('T')[0],
+            }];
+        } else {
+            $scope.endDates = [{
+                phase1_end: "",
+                phase2_end: "",
+                phase3_end: "",
+            }];
+        }
+
     }, errCallback);
 
     $scope.gradePs = [];
