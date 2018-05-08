@@ -128,7 +128,6 @@ app.factory("DataService", function ($http) {
                 return $http.get(SERVER + 'final/vote').then(function (response) {
                     return proposalAndPhase(response.data.data, phase)
                 });
-                //TODO: select over table phase 4
             } else if (phase == 4) {
                 return $http.get(SERVER + 'final/display').then(function (response) {
                     return proposalAndPhase(response.data.data, phase)

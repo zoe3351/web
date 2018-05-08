@@ -1,4 +1,4 @@
-app.controller("loginController", function ($scope, $http, $location, $route) {
+app.controller("loginController", function ($scope, $http, $location, $route, $window) {
     $scope.message = "login";
 
     $scope.login = () => {
@@ -19,7 +19,7 @@ app.controller("loginController", function ($scope, $http, $location, $route) {
                 // $scope.PostDataResponse = data;
                 if (data["auth"]) {
                     window.localStorage["token"] = data["token"];
-                    location.reload();
+                    $window.location.reload();
                     $location.path("#home");
                 } else {
                     alert(data);

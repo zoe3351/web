@@ -1,7 +1,14 @@
 app.controller("mapController", function ($scope, $http, $route, $location, $rootScope, $timeout, phaseAndProposal, DataService) {
     $scope.phase = phaseAndProposal.phase;
-
     $scope.proposals = phaseAndProposal.proposals;
+
+    // once $rootScope.distrct loads, filter the proposals list
+    $scope.$watch(function () {
+        return $rootScope.district;
+    }, function () {
+        $scope.district = $rootScope.district;
+        $scope.proposals = ($scope.phase === 3 && $scope.district > 0) ? phaseAndProposal.proposals.filter(pro => pro.council_district == $scope.district) : phaseAndProposal.proposals;
+    }, true);
 
     $scope.keyword = "";
 

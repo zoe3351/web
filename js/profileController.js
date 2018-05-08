@@ -15,7 +15,7 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
     $scope.originDistrict = 0;
 
     DataService.getUserDistrict($scope.uid, function (response) {
-        let dis = (response.data.data[0]) ? response.data.data[0].district_phase3 : -1;
+        let dis = (response.data.data[0]) ? response.data.data[0].district_phase3 : 0;
         $scope.originDistrict = Number(dis);
         $scope.district1 = Number(dis);
     });
@@ -47,8 +47,11 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
     }
 
     $scope.changeDistrict = function () {
+        if(!confirm("The district preference CANNOT be changed once set, set district?")){
+            return;
+        }
         let url = SERVER + 'user/district/';
-        if ($scope.originDistrict == -1) {
+        if ($scope.originDistrict === 0) {
             url += 'add/'
         } else {
             url += 'edit/'
