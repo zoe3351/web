@@ -1,16 +1,26 @@
 <div class="container">
     <h2 id="user">User Management</h2>
 
+    <div class="row justify-content-end">
+        <div class="col-sm-4 input-group" style="width:40%; min-width:40%">
+            <input type="text" class="form-control" ng-model="keyword" placeholder="" aria-label="" aria-describedby="basic-addon2" ng-change="timeout()">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" ng-click="search()">Search</button>
+            </div>
+        </div>
+    </div>
+
     <div style="overflow-y:scroll; max-height:800px; margin-top: 10px;">
         <div ng-show="allUser">
             <table class="table table-bordered table-hover table-condensed">
                 <tr style="font-weight: bold">
                     <td style="width:10%">ID</td>
-                    <td style="width:20%">Username</td>
+                    <td style="width:10%">Username</td>
                     <td style="width:10%">Firstname</td>
                     <td style="width:10%">Lastname</td>
                     <td style="width:20%">Email</td>
                     <td style="width:20%">Phone</td>
+                    <td style="width:10%">District</td>
                     <td style="width:10%">Edit</td>
                 </tr>
                 <tr ng-repeat="user in allUser">
@@ -42,6 +52,11 @@
                     <td>
                         <span editable-text="user.user_phone_number" e-name="phone" e-form="rowform" onbeforesave="checkPhone($data)">
                             {{ user.user_phone_number}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-text="user.district" e-name="district" e-form="rowform" onbeforesave="checkDistrict($data)">
+                            {{ user.district || ""}}
                         </span>
                     </td>
                     <td style="white-space: nowrap">

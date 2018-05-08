@@ -1,5 +1,6 @@
-app.controller("usermgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, DataService) {
+app.controller("usermgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, $timeout, DataService) {
 
+    $scope.ori = [];
     $scope.allUser = [];
 
     let errCallback = function (data, status, header, config) {
@@ -8,7 +9,38 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
 
     DataService.getAllUser(function (response) {
         $scope.allUser = response.data.data;
+        $scope.ori = response.data.data;
     }, errCallback);
+
+    DataService.getDistrict(function (response) {
+        $scope.allDistrict = response.data.data;
+        userDistrictJoin();
+    }, errCallback);
+
+    function userDistrictJoin() {
+        $scope.allDistrict.forEach(district => {
+            $scope.allUser = $scope.allUser.map(user => {
+                if (user.user_system_id == district.user_system_id) {
+                    user.district = district.district_phase3;
+                }
+                return user;
+            })
+        });
+    }
+
+    $scope.timeout = function () {
+        $timeout(function () {
+            $scope.search();
+        }, 500);
+    }
+
+    $scope.search = function () {
+        if ($scope.keyword != "") {
+            $scope.allUser = $scope.ori.filter(user => JSON.stringify(user).toLowerCase().includes($scope.keyword.toLowerCase()));
+        } else {
+            $scope.allUser = $scope.ori;
+        }
+    }
 
     // user mgt part
     $scope.saveUser = function (data, id) {
@@ -32,9 +64,27 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
         } else {
             $http.post(SERVER + 'user/edit/' + id, body)
                 .success((data, status, headers, config) => {
-                    alert("user updated!");
+                    alert("User updated!");
                 })
-                .error(errCallback);;
+                .error(errCallback);
+
+            if (data.district) {
+                if (user.distrct) {
+                    // if the user has selected district
+                    $http.post(SERVER + 'user/district/edit/' + id + '&' + data.district, body)
+                        .success((data, status, headers, config) => {
+                            alert("User district updated!");
+                        })
+                        .error(errCallback);
+                } else {
+                    // if the user haven't selected district yet
+                    $http.post(SERVER + 'user/district/add/' + id + '&' + data.district, body)
+                        .success((data, status, headers, config) => {
+                            alert("User district set!");
+                        })
+                        .error(errCallback);
+                }
+            }
         }
     };
 
@@ -64,6 +114,13 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
 
     $scope.check = function (data) {
         if (!data) {
+            return "invalid!";
+        }
+    };
+
+    $scope.checkDistrict = function (data) {
+        data = Number(data);
+        if (data && (data <= 0 || data >= 8)) {
             return "invalid!";
         }
     };
