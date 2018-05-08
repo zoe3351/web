@@ -10,22 +10,20 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
     DataService.getAllUser(function (response) {
         $scope.allUser = response.data.data;
         $scope.ori = response.data.data;
-    }, errCallback);
-
-    DataService.getDistrict(function (response) {
-        $scope.allDistrict = response.data.data;
-        userDistrictJoin();
+        DataService.getDistrict(function (response) {
+            $scope.allDistrict = response.data.data;
+            userDistrictJoin();
+        }, errCallback);
     }, errCallback);
 
     function userDistrictJoin() {
-        $scope.allDistrict.forEach(district => {
-            $scope.allUser = $scope.allUser.map(user => {
+        for (let user of $scope.allUser) {
+            for (let district of $scope.allDistrict) {
                 if (user.user_system_id == district.user_system_id) {
                     user.district = district.district_phase3;
                 }
-                return user;
-            })
-        });
+            }
+        }
     }
 
     $scope.timeout = function () {
@@ -49,8 +47,11 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
             phone: data.phone || 0,
             email: data.email,
             first_name: data.first_name,
-            last_name: data.last_name
+            last_name: data.last_name,
+            district: data.district
         }
+
+        let originDistrict = $scope.allDistrict.filter(dis => dis.user_system_id === id)[0];
 
         if (!id) {
             $http.post(SERVER + 'user/add', body)
@@ -68,23 +69,22 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
                 })
                 .error(errCallback);
 
-            if (data.district) {
-                if (user.distrct) {
-                    // if the user has selected district
-                    $http.post(SERVER + 'user/district/edit/' + id + '&' + data.district, body)
-                        .success((data, status, headers, config) => {
-                            alert("User district updated!");
-                        })
-                        .error(errCallback);
-                } else {
-                    // if the user haven't selected district yet
-                    $http.post(SERVER + 'user/district/add/' + id + '&' + data.district, body)
-                        .success((data, status, headers, config) => {
-                            alert("User district set!");
-                        })
-                        .error(errCallback);
-                }
+            if (originDistrict) {
+                // if the user has selected district
+                $http.post(SERVER + 'user/district/edit/' + id + '&' + body.district, body)
+                    .success((data, status, headers, config) => {
+                        alert("User district updated!");
+                    })
+                    .error(errCallback);
+            } else {
+                // if the user haven't selected district yet
+                $http.post(SERVER + 'user/district/add/' + id + '&' + body.district, body)
+                    .success((data, status, headers, config) => {
+                        alert("User district set!");
+                    })
+                    .error(errCallback);
             }
+
         }
     };
 
