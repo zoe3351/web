@@ -3,6 +3,8 @@ app.controller("registerController", function ($scope, $http, $location, DataSer
     $scope.password = "";
     $scope.email = "";
     $scope.phone = "";
+    $scope.firstname = "";
+    $scope.lastname = "";
 
     // check if username has already been used
     DataService.getAllUsername(function (response) {
@@ -37,7 +39,9 @@ app.controller("registerController", function ($scope, $http, $location, DataSer
                 username: $scope.username,
                 password: $scope.password,
                 email: $scope.email,
-                phone: $scope.phone
+                phone: $scope.phone,
+                firstname: $scope.firstname,
+                lastname: $scope.lastname
             }
         };
         // alert("start login!");

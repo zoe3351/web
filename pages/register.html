@@ -9,39 +9,59 @@
 				<a href="#login">Already have an account? Sign in!</a>
 			</div>
 			<div class="row justify-content-center">
-				<form class="form-horizontal col-sm-5" name="registerForm" ng-submit="submitForm((registerForm.$valid && usernameCanUse))" novalidate>
+				<form class="form-horizontal col-sm-5" name="registerForm" ng-submit="submitForm((registerForm.$valid && usernameCanUse))"
+				 novalidate>
+					<div class="form-group">
+						<label for="firstname">First Name*</label>
+						<input type="firstname" name="firstname" ng-model="firstname" class="form-control" placeholder="Enter first name"
+						 ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-maxlength="20" required>
+						<p ng-show="!registerForm.firstname.$pristine && registerForm.firstname.$error.required" class="help-block" style="color:red">First name required</p>
+						<p ng-show="registerForm.firstname.$error.maxlength" class="help-block" style="color:red">First name too long</p>
+						<p ng-show="registerForm.firstname.$error.pattern" class="help-block" style="color:red">Only number and characters allowed</p>
+					</div>
+					<div class="form-group">
+						<label for="lastname">Last Name*</label>
+						<input type="lastname" name="lastname" ng-model="lastname" class="form-control" placeholder="Enter last name"
+						 ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-maxlength="20" required>
+						<p ng-show="!registerForm.lastname.$pristine && registerForm.lastname.$error.required" class="help-block" style="color:red">Last Name required</p>
+						<p ng-show="registerForm.lastname.$error.maxlength" class="help-block" style="color:red">Last name too long</p>
+						<p ng-show="registerForm.lastname.$error.pattern" class="help-block" style="color:red">Only number and characters allowed</p>
+					</div>
 					<div class="form-group" ng-class="{ 'has-error' :registerForm.username.$invalid && !registerForm.username.$pristine}">
-						<label for="Username">Username*</label>
+						<label for="username">Username*</label>
 						<input type="username" name="username" ng-model="username" ng-change="pass()" class="form-control" placeholder="Enter username"
-						 ng-pattern="/^[a-zA-Z0-9_.-]*$/" required>
-						<p ng-show='!usernameCanUse' class="help-block" style="color:red">This username is already used!</p>
-						<p ng-show="registerForm.username.$error.required" class="help-block" style="color:red">username is required.</p>
-						<p ng-show="registerForm.username.$error.pattern" class="help-block" style="color:red">only number and characters allowed</p>
+						 ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-maxlength="20" required>
+						<p ng-show='!usernameCanUse' class="help-block" style="color:red">Username already used</p>
+						<p ng-show="!registerForm.username.$pristine && registerForm.username.$error.required" class="help-block" style="color:red">Username required</p>
+						<p ng-show="registerForm.username.$error.maxlength" class="help-block" style="color:red">Username too long</p>
+						<p ng-show="registerForm.username.$error.pattern" class="help-block" style="color:red">Only number and characters allowed</p>
 					</div>
 					<div class="form-group" ng-class="{ 'has-error' :registerForm.password.$invalid && !registerForm.password.$pristine}">
-						<label for="Password">Password*</label>
+						<label for="password">Password*</label>
 						<input type="password" name="password" class="form-control" ng-model="password" id="InputPassword1" placeholder="Password"
-						 ng-pattern="/^[a-zA-Z0-9_.-]*$/" required>
-						<p ng-show="registerForm.password.$error.required" class="help-block" style="color:red">password is required.</p>
-						<p ng-show="registerForm.password.$error.pattern" class="help-block" style="color:red">only number and characters allowed</p>
+						 ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-maxlength="20" required>
+						<p ng-show="!registerForm.password.$pristine && registerForm.password.$error.required" class="help-block" style="color:red">Password required</p>
+						<p ng-show="registerForm.password.$error.maxlength" class="help-block" style="color:red">Password too long</p>
+						<p ng-show="registerForm.password.$error.pattern" class="help-block" style="color:red">Only number and characters allowed</p>
 					</div>
 					<div class="form-group" ng-class="{ 'has-error' :registerForm.confirmpassword.$invalid && !registerForm.confirmpassword.$pristine}">
 						<label for="Confirm Password">Confirm Password*</label>
 						<input type="password" name="confirmpassword" class="form-control" ng-model="cm_password" id="InputPassword2" placeholder="Password"
-						 ng-pattern="/^[a-zA-Z0-9_.-]*$/" required>
-						<p ng-show="registerForm.confirmpassword.$error.required" class="help-block" style="color:red">confirm password is required.</p>
-						<p ng-show="registerForm.confirmpassword.$error.pattern" class="help-block" style="color:red">only number and characters allowed</p>
+						 ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-maxlength="20" required>
+						<p ng-show="!registerForm.confirmpassword.$pristine && registerForm.confirmpassword.$error.required" class="help-block" style="color:red">Confirm password required</p>
+						<p ng-show="registerForm.confirmpassword.$error.maxlength" class="help-block" style="color:red">Password too long</p>
+						<p ng-show="registerForm.confirmpassword.$error.pattern" class="help-block" style="color:red">Only number and characters allowed</p>
 					</div>
 					<div class="form-group">
-						<label for="email">Email</label>
-						<input type="email" ng-model="email" name="email" class="form-control" placeholder="For further contact only" required>
-						<p ng-show="registerForm.email.$error.email" class="help-block" style="color:red">not a valid email</p>
-						<p ng-show="registerForm.email.$error.required" class="help-block" style="color:red">Email is required.</p>
+						<label for="email">Email*</label>
+						<input type="email" ng-model="email" name="email" class="form-control" placeholder="example@example.com" required>
+						<p ng-show="registerForm.email.$error.email" class="help-block" style="color:red">Not a valid email</p>
+						<p ng-show="!registerForm.email.$pristine && registerForm.email.$error.required" class="help-block" style="color:red">Email required</p>
 					</div>
 					<div class="form-group">
 						<label for="phone">Phone</label>
-						<input type="number" ng-model="phone" name="phone" class="form-control" placeholder="For further contact only">
-						<p ng-show="registerForm.phone.$error.number" class="help-block" style="color:red">not a valid phone</p>
+						<input type="number" ng-model="phone" name="phone" class="form-control" placeholder="Phone">
+						<p ng-show="!registerForm.phone.$pristine && registerForm.phone.$error.number" class="help-block" style="color:red">Not a valid phone</p>
 					</div>
 
 					<button type="submit" class="btn btn-primary" ng-click="signup()" ng-disabled="!registerForm.$valid || !usernameCanUse">Sign Up</button>
