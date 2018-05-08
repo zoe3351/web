@@ -14,8 +14,10 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
     $scope.saveUser = function (data, id) {
         let body = {
             username: data.username,
-            phone: data.phone,
-            email: data.email
+            phone: data.phone || 0,
+            email: data.email,
+            first_name: data.first_name,
+            last_name: data.last_name
         }
 
         if (!id) {
@@ -52,8 +54,10 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
         $scope.inserted = {
             user_system_id: null,
             account_name: "",
-            user_email: null,
-            user_phone_number: null
+            user_email: "",
+            user_phone_number: 0,
+            first_name: "",
+            last_name: ""
         };
         $scope.allUser.push($scope.inserted);
     };
@@ -65,14 +69,14 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
     };
 
     $scope.checkEmail = function (data) {
-        if (data.length != 0 && !data.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/)) {
+        if (!data || !data.match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/)) {
             return "invalid!";
         }
     }
 
     $scope.checkPhone = function (data) {
         data = String(data);
-        if (data.length != 0 && !data.match(/^[0-9]{1,45}$/)) {
+        if (!data && !data.match(/^[0-9]{1,45}$/)) {
             return "invalid!";
         }
     }

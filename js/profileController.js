@@ -31,8 +31,9 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
             username: $scope.profile.account_name,
             phone: $scope.profile.user_phone_number,
             email: $scope.profile.user_email,
+            first_name: $scope.profile.first_name,
+            last_name: $scope.profile.last_name,
         };
-        //console.log(body);
         if (valid) {
             $http.post(SERVER + 'user/edit/' + $scope.uid
                 , body)

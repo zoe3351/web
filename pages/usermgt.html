@@ -6,10 +6,12 @@
             <table class="table table-bordered table-hover table-condensed">
                 <tr style="font-weight: bold">
                     <td style="width:10%">ID</td>
-                    <td style="width:20%">username</td>
+                    <td style="width:20%">Username</td>
+                    <td style="width:10%">Firstname</td>
+                    <td style="width:10%">Lastname</td>
                     <td style="width:20%">Email</td>
                     <td style="width:20%">Phone</td>
-                    <td style="width:30%">Edit</td>
+                    <td style="width:10%">Edit</td>
                 </tr>
                 <tr ng-repeat="user in allUser">
                     <td>
@@ -20,6 +22,16 @@
                     <td>
                         <span editable-text="user.account_name" e-name="username" e-form="rowform" onbeforesave="check($data)">
                             {{ user.account_name}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-text="user.first_name" e-name="first_name" e-form="rowform">
+                            {{ user.first_name}}
+                        </span>
+                    </td>
+                    <td>
+                        <span editable-text="user.last_name" e-name="last_name" e-form="rowform">
+                            {{ user.last_name}}
                         </span>
                     </td>
                     <td>

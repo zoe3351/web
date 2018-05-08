@@ -9,19 +9,36 @@
             <div class="row justify-content-center">
                 <form class="col-sm-5" name="editprofileForm" ng-submit="submitForm(editprofileForm.$valid)" novalidate>
                     <div class="form-group">
-                        <label for="username">Username: {{profile.account_name}}</label>
+                        <label for="username">Username*</label>
+                        <input type="username" id="username" name="username" class="form-control" placeholder="{{profile.account_name}}" required
+                            disabled>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="firstname">First Name*</label>
+                        <input ng-model="profile.first_name" type="firstname" id="firstname" name="firstname" class="form-control" placeholder="{{profile.first_name}}"
+                            ng-disabled="!editable" ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-maxlength="20" required>
+                        <p ng-show="!editprofileForm.firstname.$pristine && editprofileForm.firstname.$error.required" class="help-block" style="color:red">First name required</p>
+                        <p ng-show="editprofileForm.firstname.$error.maxlength" class="help-block" style="color:red">First name too long</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname">Last Name*</label>
+                        <input ng-model="profile.last_name" type="lastname" id="lastname" name="lastname" class="form-control" placeholder="{{profile.last_name}}"
+                            ng-disabled="!editable" ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-maxlength="20" required>
+                        <p ng-show="!editprofileForm.lastname.$pristine && editprofileForm.lastname.$error.required" class="help-block" style="color:red">Last name required</p>
+                        <p ng-show="editprofileForm.lastname.$error.maxlength" class="help-block" style="color:red">Last name too long</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email*</label>
                         <input ng-model="profile.user_email" type="email" id="email" name="email" class="form-control" placeholder="{{profile.user_email}}"
-                            ng-disabled="!editable">
-                        <p ng-show="editprofileForm.email.$error.email" class="help-block" style="color:red">not a valid email</p>
+                            ng-disabled="!editable" required>
+                        <p ng-show="!editprofileForm.email.$pristine && editprofileForm.email.$error.required" class="help-block" style="color:red">Email required</p>
+                        <p ng-show="editprofileForm.email.$error.email" class="help-block" style="color:red">Not a valid email</p>
                     </div>
                     <div class="form-group">
-                        <label for="user_phone_number">Phone</label>
-                        <input ng-model="profile.user_phone_number" type="number" id="user_phone_number" name="phone" class="form-control" placeholder="{{profile.neihborhood}}"
+                        <label for="phone">Phone</label>
+                        <input ng-model="profile.user_phone_number" type="number" id="phone" name="phone" class="form-control" placeholder="{{profile.user_phone_number}}"
                             ng-disabled="!editable">
-                        <p ng-show="registerForm.phone.$error.number" class="help-block" style="color:red">not a valid phone</p>
+                        <p ng-show="editprofileForm.phone.$error.number" class="help-block" style="color:red">Not a valid phone</p>
                     </div>
                     <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter" ng-disabled="!editprofileForm.$valid">Submit</button>
                 </form>
@@ -32,7 +49,8 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">District</label>
                         </div>
-                        <select class="custom-select form-control" id="districtForm001" ng-model="district1" ng-change="onchange()" ng-options="i for i in [1, 2, 3, 4, 5, 6, 7]" ng-disabled="originDistrict>0">
+                        <select class="custom-select form-control" id="districtForm001" ng-model="district1" ng-change="onchange()" ng-options="i for i in [1, 2, 3, 4, 5, 6, 7]"
+                            ng-disabled="originDistrict>0">
                         </select>
                         <button type="submit" class="btn btn-danger" ng-disabled="originDistrict>0">Change District</button>
                     </div>
