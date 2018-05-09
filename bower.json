@@ -1,0 +1,22 @@
+{
+  "name": "web",
+  "homepage": "https://github.com/zoe3351/web",
+  "authors": [
+    "dongjin <jd62@uw.edu>"
+  ],
+  "description": "front end for capstone YVYC",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-xeditable": "^0.8.1",
+    "bower": "*",
+    "jquery": "^3.3.1"
+  }
+}
