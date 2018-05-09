@@ -1,4 +1,4 @@
-<div style="margin:20px" ng-if="phase>0">
+<div style="margin:20px" ng-show="phase>0">
 	<div class="row justify-content-center">
 		<div class="col-sm-3">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -7,7 +7,7 @@
 				</li>
 				<li class="nav-item">
 					<a class="nav-link btn" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" ng-click="showNewProposalTab()"
-					 ng-if="phase==1">New Proposal</a>
+					 ng-show="phase==1">New Proposal</a>
 				</li>
 			</ul>
 			<div class="input-group" ng-show="!showNewProposal" style="margin-top:20px; margin-bottom:20px">
@@ -16,7 +16,7 @@
 					<button class="btn btn-outline-secondary" type="button" ng-click="search()">Search</button>
 				</div>
 			</div>
-			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase==1" style="overflow-y:scroll; max-height:800px; margin-top:10px"
+			<div class="border-top border-bottom" ng-show="!showNewProposal && phase==1" style="overflow-y:scroll; max-height:800px; margin-top:10px"
 			 id="scrollbody">
 				<div class="list-group">
 					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.draft_id}}">
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="border-top border-bottom" ng-show="!showNewProposal" ng-if="phase>1" style="overflow-y:scroll; max-height:800px; margin-top:10px"
+			<div class="border-top border-bottom" ng-show="!showNewProposal && phase>1" style="overflow-y:scroll; max-height:800px; margin-top:10px"
 			 id="scrollbody">
 				<div class="list-group">
 					<div class="list-group-item list-group-item-action" ng-repeat="pro in proposals" id="{{'p' + pro.proposal_id}}">
@@ -52,8 +52,8 @@
 								<p class="card-text">Benefits: {{pro.who_benefits}} </p>
 								<p class="card-text">Cost: {{pro.cost}} </p>
 								<p class="card-text">Type: {{pro.project_type}}</p>
-								<button class="btn btn-primary btn-sm" ng-if="phase==3" ng-click="vote(pro.proposal_id)">Vote</button>
-								<button class="btn btn-primary btn-sm" ng-if="phase==2" ng-click="grade(pro.proposal_id)">Grade</button>
+								<button class="btn btn-primary btn-sm" ng-show="phase==3" ng-click="vote(pro.proposal_id)">Vote</button>
+								<button class="btn btn-primary btn-sm" ng-show="phase==2" ng-click="grade(pro.proposal_id)">Grade</button>
 							</div>
 						</div>
 					</div>
