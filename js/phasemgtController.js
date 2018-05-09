@@ -115,6 +115,7 @@ app.controller("phasemgtController", function ($scope, $filter, $http, $location
             .success((data, status, headers, config) => {
                 $scope.originPhase = $scope.phase;
                 alert("Phase changed!");
+                $window.location.reload();
             })
             .error(errCallback);
     }
@@ -123,6 +124,7 @@ app.controller("phasemgtController", function ($scope, $filter, $http, $location
         $http.post(SERVER + 'phase/editEndDates/' + $scope.originPhase, data)
             .success((data, status, headers, config) => {
                 alert("Phase end dates changed!");
+                $window.location.reload();
             })
             .error(errCallback);
     }
