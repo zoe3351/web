@@ -143,15 +143,6 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
         $scope.showNewProposal = false;
     };
 
-    $scope.modal = false;
-    $scope.openModal = () => {
-        $scope.modal = true;
-    };
-
-    $scope.closeModal = () => {
-        $scope.modal = false;
-    };
-
     $scope.newProposal = {
         id: (new Date()).toISOString(),
         title: "",
