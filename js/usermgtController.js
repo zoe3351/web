@@ -70,7 +70,7 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
                 })
                 .error(errCallback);
 
-            if (originDistrict) {
+            if (originDistrict && body.district) {
                 // if the user has selected district
                 $http.post(SERVER + 'user/district/edit/' + id + '&' + body.district, body)
                     .success((data, status, headers, config) => {
@@ -78,11 +78,17 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
                         $window.location.reload();
                     })
                     .error(errCallback);
-            } else {
+            } else if(!originDistrict && body.district) {
                 // if the user haven't selected district yet
                 $http.post(SERVER + 'user/district/add/' + id + '&' + body.district, body)
                     .success((data, status, headers, config) => {
                         alert("User district set!");
+                    })
+                    .error(errCallback);
+            } else if (!body.district){
+                $http.post('http://localhost:8080/' + 'user/district/del/' + id)
+                    .success((data, status, headers, config) => {
+                        alert("User district deleted!");
                     })
                     .error(errCallback);
             }
