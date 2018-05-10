@@ -29,6 +29,9 @@ app.config(function config($routeProvider, $httpProvider) {
             templateUrl: "pages/profile.html",
             controller: "profileController"
         })
+        .when("/auth/reset_passoword/:token", {
+            templateUrl: "pages/reset.html",
+        })
         .when("/proposalDetail/:pid", {
             templateUrl: "pages/proposalDetail.html",
             controller: "proposalDetailController",
