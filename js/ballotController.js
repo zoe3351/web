@@ -38,19 +38,17 @@ app.controller("ballotController", function ($scope, $http, $routeParams, $locat
         let newUser = {
             username: "",
             phone: 0,
-            email: "admin@com",
+            email: "admin@admin.com",
             first_name: $scope.ballot.firstname,
             last_name: $scope.ballot.lastname
         };
 
         $http.post(SERVER + 'user/add', newUser)
             .success((data, status, headers, config) => {
-                console.log(data);
                 let uid = data.data[0].user_system_id;
                 callback(uid, body);
             })
             .error(function (data, status, header, config) {
-                console.log(data);
                 alert(JSON.stringify(data));
             });
     }
