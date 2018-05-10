@@ -41,7 +41,7 @@
 
     function resetPasswordClicked(event) {
         event.preventDefault();
-        var token = document.location.href.split('reset_passoword/')[1];
+        var token = document.location.href.split('reset/')[1];
         //console.log(token);
         var data = "newPassword=" + document.getElementById('newPassword').value + '&verifyPassword=' + document.getElementById('verifyPassword').value + '&token=' + token;
         ajaxCall(data, "http://bulubulu.ischool.uw.edu:4000/auth/reset_password", function (status, response) {
