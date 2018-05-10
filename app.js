@@ -202,6 +202,7 @@ app.factory("DataService", function ($http) {
 });
 
 app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout, $anchorScroll, DataService) {
+    $scope.loggedin = false;
 
     if (window.localStorage["token"] !== "") {
         $http
@@ -209,6 +210,7 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
             .success(function (data, status, headers, config) {
                 // $scope.PostDataResponse = data;
                 //console.log(data[0]["username"]);
+                $scope.loggedin = true;
                 $rootScope.username = data[0]["username"];
                 $rootScope.userId = data[0]["id"];
                 DataService.getUserDistrict($rootScope.userId,
@@ -228,6 +230,7 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
             .error(function (data, status, header, config) {
                 //alert(data["message"]);
                 window.localStorage["token"] = "";
+                $scope.loggedin = false;
             });
     }
 
