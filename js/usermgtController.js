@@ -74,6 +74,7 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
                 $http.post(SERVER + 'user/district/edit/' + id + '&' + body.district, body)
                     .success((data, status, headers, config) => {
                         alert("User district updated!");
+                        $window.location.reload();
                     })
                     .error(errCallback);
             } else {
