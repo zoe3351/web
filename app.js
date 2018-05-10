@@ -3,7 +3,7 @@ var app = angular.module("catApp", ["ngRoute", "xeditable"]);
 // modify this later
 const SERVER = "http://bulubulu.ischool.uw.edu:4000/";
 
-app.config(function config($routeProvider) {
+app.config(function config($routeProvider, $httpProvider) {
     $routeProvider
         .when("/home", {
             templateUrl: "pages/map.html",
@@ -84,6 +84,8 @@ app.config(function config($routeProvider) {
             }
         })
         .otherwise("/home");
+
+    $httpProvider.defaults.headers.common = { "x-access-token": `${window.localStorage["token"]}` };
 });
 
 
@@ -203,13 +205,10 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
 
     if (window.localStorage["token"] !== "") {
         $http
-            .get("http://bulubulu.ischool.uw.edu:4000/auth/me", {
-                headers: {
-                    "x-access-token": `${window.localStorage["token"]}`
-                }
-            })
+            .get("http://bulubulu.ischool.uw.edu:4000/auth/me")
             .success(function (data, status, headers, config) {
                 // $scope.PostDataResponse = data;
+                //console.log(data[0]["username"]);
                 $rootScope.username = data[0]["username"];
                 $rootScope.userId = data[0]["id"];
                 DataService.getUserDistrict($rootScope.userId,
