@@ -29,7 +29,7 @@ app.config(function config($routeProvider, $httpProvider) {
             templateUrl: "pages/profile.html",
             controller: "profileController"
         })
-        .when("/auth/reset_passoword/:token", {
+        .when("/reset/:token", {
             templateUrl: "pages/reset.html",
         })
         .when("/proposalDetail/:pid", {
