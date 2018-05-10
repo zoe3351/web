@@ -1,4 +1,5 @@
-app.controller("usermgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, $timeout, DataService) {
+app.controller("usermgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, $timeout, DataService, role) {
+    if (role != "admin") $location.path("#home");
 
     $scope.ori = [];
     $scope.allUser = [];

@@ -1,4 +1,5 @@
-app.controller("ballotController", function ($scope, $http, $routeParams, $route, DataService) {
+app.controller("ballotController", function ($scope, $http, $routeParams, $location, $route, DataService, role) {
+    if (role != "admin") $location.path("#home");
 
     let initBallot = function () {
         $scope.ballot = {
@@ -74,7 +75,7 @@ app.controller("ballotController", function ($scope, $http, $routeParams, $route
                     })
                         .success((data, status, headers, config) => {
                             alert("Grade Recorded!");
-                initBallot();
+                            initBallot();
                         })
                         .error(function (data, status, header, config) {
                             alert(JSON.stringify(data));
@@ -88,7 +89,7 @@ app.controller("ballotController", function ($scope, $http, $routeParams, $route
                         $http.post(SERVER + 'vote/' + uid + '&' + pid)
                             .success((data, status, headers, config) => {
                                 alert("Vote for proposal: " + pid + " recorded!");
-                initBallot();
+                                initBallot();
                             })
                             .error(function (data, status, header, config) {
                                 alert(JSON.stringify(data));

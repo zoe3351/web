@@ -32,26 +32,56 @@ app.config(function config($routeProvider) {
         .when("/proposalDetail/:pid", {
             templateUrl: "pages/proposalDetail.html",
             controller: "proposalDetailController",
+            resolve: {
+                role: function (DataService) {
+                    return DataService.getRole((data) => { return data.data.role });
+                },
+            }
         })
         .when("/draftmgt", {
             templateUrl: "pages/draftmgt.html",
             controller: "draftmgtController",
+            resolve: {
+                role: function (DataService) {
+                    return DataService.getRole((data) => { return data.data.role });
+                },
+            }
         })
         .when("/usermgt", {
             templateUrl: "pages/usermgt.html",
             controller: "usermgtController",
+            resolve: {
+                role: function (DataService) {
+                    return DataService.getRole((data) => { return data.data.role });
+                },
+            }
         })
         .when("/finalmgt", {
             templateUrl: "pages/finalmgt.html",
             controller: "finalmgtController",
+            resolve: {
+                role: function (DataService) {
+                    return DataService.getRole((data) => { return data.data.role });
+                },
+            }
         })
         .when("/phasemgt", {
             templateUrl: "pages/phasemgt.html",
             controller: "phasemgtController",
+            resolve: {
+                role: function (DataService) {
+                    return DataService.getRole((data) => { return data.data.role });
+                },
+            }
         })
         .when("/ballot", {
             templateUrl: "pages/ballot.html",
             controller: "ballotController",
+            resolve: {
+                role: function (DataService) {
+                    return DataService.getRole((data) => { return data.data.role });
+                },
+            }
         })
         .otherwise("/home");
 });
@@ -65,6 +95,14 @@ app.factory("DataService", function ($http) {
     function getUser(uid, succCallback, errCallback) {
         return $http.get(SERVER + 'user/' + uid).then(succCallback, errCallback);
     };
+
+    function getRole(succCallback, errCallback) {
+        return $http.get(SERVER + "auth/role", {
+            headers: {
+                "x-access-token": `${window.localStorage["token"]}`
+            }
+        }).then(succCallback, errCallback);
+    }
 
     function getDistrict(succCallback, errCallback) {
         return $http.get(SERVER + 'user/allDistrict').then(succCallback, errCallback);
@@ -145,6 +183,7 @@ app.factory("DataService", function ($http) {
     return {
         getAllUser: getAllUser,
         getUser: getUser,
+        getRole: getRole,
         getDistrict: getDistrict,
         getUserDistrict: getUserDistrict,
         getAllDraft: getAllDraft,
@@ -180,6 +219,12 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
                     (data) => {
                         alert(data["message"]);
                     });
+
+                DataService.getRole((data) => {
+                    $scope.role = data.data.role;
+                }, (data) => {
+                    alert(data["message"]);
+                });
             })
             .error(function (data, status, header, config) {
                 //alert(data["message"]);

@@ -1,5 +1,5 @@
-app.controller("phasemgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, DataService) {
-
+app.controller("phasemgtController", function ($scope, $filter, $http, $location, $route, $window, $rootScope, DataService, role) {
+    if (role != "admin") $location.path("#home");
     $scope.allFinal = [];
     let errCallback = function (data, status, header, config) {
         alert(JSON.stringify(data));

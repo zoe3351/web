@@ -1,4 +1,5 @@
-app.controller("finalmgtController", function ($scope, $filter, $http, $location, $timeout, $route, $window, $rootScope, DataService) {
+app.controller("finalmgtController", function ($scope, $filter, $http, $location, $timeout, $route, $window, $rootScope, DataService, role) {
+    if (role != "admin") $location.path("#home");
 
     $scope.ori = [];
     $scope.allFinal = [];

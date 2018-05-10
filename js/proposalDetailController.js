@@ -1,4 +1,6 @@
-app.controller("proposalDetailController", function ($scope, $http, $routeParams, $route, DataService) {
+app.controller("proposalDetailController", function ($scope, $http, $routeParams, $route, $location, DataService, role) {
+    if (role != "admin") $location.path("#home");
+
     $scope.pid = $routeParams.pid;
     $scope.proposal = DataService.getProposal($scope.pid, function (response) {
         $scope.proposal = response.data.data[0];
