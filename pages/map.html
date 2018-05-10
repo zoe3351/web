@@ -11,7 +11,8 @@
 				</li>
 			</ul>
 			<div class="input-group" ng-show="!showNewProposal" style="margin-top:20px; margin-bottom:20px">
-				<input type="text" class="form-control" ng-model="keyword" placeholder="" aria-label="" aria-describedby="basic-addon2" ng-change="timeout()">
+				<input type="text" class="form-control" ng-model="keyword" style="margin:0px" placeholder="" aria-label="" aria-describedby="basic-addon2"
+				 ng-change="timeout()">
 				<div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="button" ng-click="search()">Search</button>
 				</div>
