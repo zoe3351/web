@@ -255,7 +255,7 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
 
     DataService.getPhase((response) => {
         $scope.phase = (response.data.data[0]) ? response.data.data[0].current_phase : 0;
-        let messages = ['PLEASE WAIT TO BEGIN', 'IDEA COLLECTION', 'PROJECT DEVELOPMENT', 'VOTING', 'FUND IMPLEMENT'];
+        let messages = ['PHASE 0: WAIT TO BEGIN', 'PHASE I: IDEA COLLECTION', 'PHASE II: PROJECT DEVELOPMENT', 'PHASE III: VOTING', 'PHASE IV: FUND IMPLEMENT'];
         $scope.message = messages[$scope.phase];
     });
 });
