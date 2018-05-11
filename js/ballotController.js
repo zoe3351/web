@@ -36,7 +36,7 @@ app.controller("ballotController", function ($scope, $http, $routeParams, $locat
 
     let createUser = function (body, callback) {
         let newUser = {
-            username: "",
+            username: (new Date()).toISOString(),
             phone: 0,
             email: "admin@admin.com",
             first_name: $scope.ballot.firstname,
