@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div style="overflow-y:scroll; height:800px; margin-top: 10px;">
+    <div style="overflow-y:scroll; max-height:800px; margin-top: 10px;">
         <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">
                 <td style="width:15%">ID</td>
@@ -52,7 +52,7 @@
                         <button type="button" class="btn btn-primary" ng-click="open(final.proposal_id)">
                             <i class="fa fa-external-link-square-alt"></i>
                             edit</button>
-                        <button type="button" class="btn btn-danger" ng-click="removeFinal(final.proposal_id)">del</button>
+                        <!--<button type="button" class="btn btn-danger" ng-click="removeFinal(final.proposal_id)">del</button>-->
                     </div>
                 </td>
             </tr>
@@ -64,7 +64,7 @@
     <div class="justify-content-md-center">
         <form id="frmUploader" enctype="multipart/form-data" action="http://bulubulu.ischool.uw.edu:4000/final/import" method="post">
             <input type="file" name="excelUploader" multiple />
-            <input type="submit" class="btn btn-danger" name="submit" id="btnSubmit" value="Upload" />
+            <button type="submit" class="btn btn-danger" name="submit" id="btnSubmit" value="Upload">Upload</button>
         </form>
     </div>
 </div>
