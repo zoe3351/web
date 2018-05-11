@@ -26,7 +26,7 @@ app.controller("loginController", function ($scope, $http, $location, $route, $w
                 }
             })
             .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
+                alert("Login Failed! Username or Password incorrect!");
             });
     };
     //   .then(function(response) {
