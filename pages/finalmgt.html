@@ -64,7 +64,8 @@
     <div class="justify-content-md-center">
         <form id="frmUploader" enctype="multipart/form-data" action="http://bulubulu.ischool.uw.edu:4000/final/import" method="post">
             <input type="file" name="excelUploader" multiple />
-            <button type="submit" class="btn btn-danger" name="submit" id="btnSubmit" value="Upload">Upload</button>
+            <button type="button" class="btn btn-danger" name="submit" id="btnAlert" value="Upload">Upload</button>
+            <button type="submit" class="btn btn-danger" name="submit" id="btnSubmit" value="Upload" hidden>Upload</button>
         </form>
     </div>
 </div>
@@ -78,11 +79,16 @@
             success: showResponse  // post-submit callback
         };
 
-        // bind to the form's submit event
         $('#frmUploader').submit(function () {
             $(this).ajaxSubmit(options);
             // always return false to prevent standard browser submit and page navigation
             return false;
+        });
+
+        $('#btnAlert').on('click', () => {
+            if (confirm("This action will CLEAN all DRAFT PROPOSAL/FINAL PROPOSAL/VOTE/GRADE/DISPLAY DATA, proceed?")) {
+                $('#btnSubmit').click();
+            }
         });
     });
 

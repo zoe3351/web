@@ -46,7 +46,7 @@
         var data = "newPassword=" + document.getElementById('newPassword').value + '&verifyPassword=' + document.getElementById('verifyPassword').value + '&token=' + token;
         ajaxCall(data, "http://bulubulu.ischool.uw.edu:4000/auth/reset_password", function (status, response) {
             if (status == 200) {
-                alert('successfully sent');
+                alert('Password Reset!');
             } else {
                 alert('Error', status)
             }
