@@ -1,6 +1,9 @@
 app.controller("mapController", function ($scope, $http, $route, $location, $rootScope, $timeout, phaseAndProposal, DataService) {
     $scope.phase = phaseAndProposal.phase;
     $scope.proposals = phaseAndProposal.proposals;
+    $scope.gradedProposals = [];
+    $scope.votedProposals = [];
+    $scope.voteLeft = 3 - $scope.votedProposals.length;
 
     // once $rootScope.distrct loads, filter the proposals list
     $scope.$watch(function () {
@@ -9,6 +12,38 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
         $scope.district = $rootScope.district;
         $scope.proposals = ($scope.phase === 3 && $scope.district > 0) ? phaseAndProposal.proposals.filter(pro => pro.council_district == $scope.district) : phaseAndProposal.proposals;
     }, true);
+
+    $scope.$watch(function () {
+        return $rootScope.userId;
+    }, function () {
+        $http.get(SERVER + 'grade/check/' + $rootScope.userId)
+            .success((res, status, headers, config) => {
+                let gradedProposals = convert(res.data);
+                $scope.gradedProposals = gradedProposals;
+            })
+            .error(function (data, status, header, config) {
+                console.log(data);
+            });
+
+        $http.get(SERVER + 'vote/check/' + $rootScope.userId)
+            .success((res, status, headers, config) => {
+                let votedProposals = convert(res.data);
+                $scope.votedProposals = votedProposals;
+                $scope.voteLeft = 3 - $scope.votedProposals.length;
+            })
+            .error(function (data, status, header, config) {
+                console.log(data);
+            });
+    }, true);
+
+
+    $scope.ifGraded = (pid) => {
+        return $scope.gradedProposals.includes(pid);
+    }
+
+    $scope.ifVoted = (pid) => {
+        return $scope.votedProposals.includes(pid);
+    }
 
     $scope.keyword = "";
 

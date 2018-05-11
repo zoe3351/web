@@ -3,7 +3,9 @@
 		<div class="col-sm-3">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item">
-					<a class="nav-link active btn" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" ng-click="showProposalListTab()">Proposals</a>
+					<a class="nav-link active btn" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" ng-click="showProposalListTab()">Proposals
+						<span class="badge badge-warning" style="margin-left:10px" ng-show="phase==3 && voteLeft > 0">{{voteLeft}} Vote Left</span>
+					</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link btn" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false" ng-click="showNewProposalTab()"
@@ -40,6 +42,8 @@
 						<a href="" style="word-wrap: break-word;" data-toggle="collapse" data-target="#{{pro.proposal_id}}" aria-expanded="false"
 						 aria-controls="{{pro.proposal_id}}" ng-click="viewPinOnMap(pro.final_proposal_latitude, pro.final_proposal_longitude)">
 							{{pro.final_proposal_title}}
+							<span class="badge badge-light" style="margin-left:10px" ng-show="phase==3 && ifVoted(pro.proposal_id)">Voted</span>
+							<span class="badge badge-light" style="margin-left:10px" ng-show="phase==2 && ifGraded(pro.proposal_id)">Graded</span>
 						</a>
 						<div id="{{pro.proposal_id}}" class="collapse hide " aria-labelledby="headingOne" data-parent="#accordion">
 							<div class="card-body">
@@ -53,8 +57,8 @@
 								<p class="card-text">Benefits: {{pro.who_benefits}} </p>
 								<p class="card-text">Cost: {{pro.cost}} </p>
 								<p class="card-text">Type: {{pro.project_type}}</p>
-								<button class="btn btn-primary btn-sm" ng-show="phase==3" ng-click="vote(pro.proposal_id)">Vote</button>
-								<button class="btn btn-primary btn-sm" ng-show="phase==2" ng-click="grade(pro.proposal_id)">Grade</button>
+								<button class="btn btn-primary btn-sm" ng-show="phase==3" ng-click="vote(pro.proposal_id)" ng-disabled="ifVoted(pro.proposal_id)">Vote</button>
+								<button class="btn btn-primary btn-sm" ng-show="phase==2" ng-click="grade(pro.proposal_id)" ng-disabled="ifGraded(pro.proposal_id)">Grade</button>
 							</div>
 						</div>
 					</div>
