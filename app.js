@@ -214,7 +214,7 @@ app.factory("DataService", function ($http) {
 app.controller("mainController", function ($scope, $http, $route, $rootScope, $timeout, $anchorScroll, DataService) {
     $scope.loggedin = false;
 
-    if (window.localStorage["token"] !== "") {
+    if (window.localStorage["token"] && window.localStorage["token"] !== "") {
         $http
             .get("http://bulubulu.ischool.uw.edu:4000/auth/me")
             .success(function (data, status, headers, config) {
