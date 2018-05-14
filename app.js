@@ -1,4 +1,15 @@
 var app = angular.module("catApp", ["ngRoute", "xeditable"]);
+var errorCallback = function (data, status, headers, config) {
+    if (status == 500 && data.message == "Failed to authenticate token.") {
+        alert("Login session expired!");
+        window.location.href = "#home";
+        window.localStorage["token"] = "";
+        location.reload();
+    } else {
+        alert("An error just happended! Action failed!");
+        console.log(data);
+    }
+}
 
 // modify this later
 const SERVER = "http://bulubulu.ischool.uw.edu:4000/";
@@ -102,11 +113,7 @@ app.factory("DataService", function ($http) {
     };
 
     function getRole(succCallback, errCallback) {
-        return $http.get(SERVER + "auth/role", {
-            headers: {
-                "x-access-token": `${window.localStorage["token"]}`
-            }
-        }).then(succCallback, errCallback);
+        return $http.get(SERVER + "auth/role").then(succCallback, errCallback);
     }
 
     function getDistrict(succCallback, errCallback) {
@@ -219,21 +226,19 @@ app.controller("mainController", function ($scope, $http, $route, $rootScope, $t
                 DataService.getUserDistrict($rootScope.userId,
                     (data) => {
                         $rootScope.district = (data.data.data[0]) ? data.data.data[0].district_phase3 : 0;
-                    },
-                    (data) => {
-                        alert(data["message"]);
-                    });
+                    }, errorCallback);
 
                 DataService.getRole((data) => {
                     $scope.role = data.data.role;
-                }, (data) => {
-                    alert(data["message"]);
-                });
+                }, errorCallback);
             })
             .error(function (data, status, header, config) {
-                //alert(data["message"]);
+                alert("Login session expired, please login again.");
+                console.log(data);
                 window.localStorage["token"] = "";
                 $scope.loggedin = false;
+                window.location.href = "#home";
+                location.reload();
             });
     }
 

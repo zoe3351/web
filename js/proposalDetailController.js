@@ -20,9 +20,7 @@ app.controller("proposalDetailController", function ($scope, $http, $routeParams
                 .success((data, status, headers, config) => {
                     $route.reload();
                 })
-                .error(function (data, status, header, config) {
-                    alert(JSON.stringify(data));
-                });
+                .error(errorCallback);
         }
 
     }

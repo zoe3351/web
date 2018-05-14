@@ -94,7 +94,7 @@ app.controller("phasemgtController", function ($scope, $filter, $http, $location
                 .success(function (data, status, headers, config) {
                     alert("Proposals Updated!");
                 })
-                .error(errCallback);
+                .error(errorCallback);
         }
     }
 
@@ -117,7 +117,7 @@ app.controller("phasemgtController", function ($scope, $filter, $http, $location
                 alert("Phase changed!");
                 $window.location.reload();
             })
-            .error(errCallback);
+            .error(errorCallback);
     }
 
     $scope.saveDate = function (data) {
@@ -126,7 +126,7 @@ app.controller("phasemgtController", function ($scope, $filter, $http, $location
                 alert("Phase end dates changed!");
                 $window.location.reload();
             })
-            .error(errCallback);
+            .error(errorCallback);
     }
     $scope.checkDate = function (data) {
         if (!data.match(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)) {

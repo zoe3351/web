@@ -41,9 +41,7 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
                     alert("Profile Updated!")
                     $route.reload();
                 })
-                .error(function (data, status, header, config) {
-                    alert(JSON.stringify(data));
-                });
+                .error(errorCallback);
         }
     }
 
@@ -64,8 +62,6 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
                 alert("District Updated!")
                 $window.location.reload();
             })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-            });
+            .error(errorCallback);
     }
 });

@@ -62,13 +62,13 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
                         $scope.allUser = response.data.data;
                     }, errCallback);
                 })
-                .error(errCallback);;
+                .error(errorCallback);;
         } else {
             $http.post(SERVER + 'user/edit/' + id, body)
                 .success((data, status, headers, config) => {
                     alert("User updated!");
                 })
-                .error(errCallback);
+                .error(errorCallback);
 
             if (originDistrict && body.district) {
                 // if the user has selected district
@@ -77,20 +77,20 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
                         alert("User district updated!");
                         $window.location.reload();
                     })
-                    .error(errCallback);
+                    .error(errorCallback);
             } else if(!originDistrict && body.district) {
                 // if the user haven't selected district yet
                 $http.post(SERVER + 'user/district/add/' + id + '&' + body.district, body)
                     .success((data, status, headers, config) => {
                         alert("User district set!");
                     })
-                    .error(errCallback);
+                    .error(errorCallback);
             } else if (!body.district){
-                $http.post('http://localhost:8080/' + 'user/district/del/' + id)
+                $http.post(SERVER + 'user/district/del/' + id)
                     .success((data, status, headers, config) => {
                         alert("User district deleted!");
                     })
-                    .error(errCallback);
+                    .error(errorCallback);
             }
 
         }
@@ -103,7 +103,7 @@ app.controller("usermgtController", function ($scope, $filter, $http, $location,
                 .success((data, status, headers, config) => {
                     $route.reload();
                 })
-                .error(errCallback);;
+                .error(errorCallback);;
         }
     };
 

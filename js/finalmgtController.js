@@ -41,7 +41,7 @@ app.controller("finalmgtController", function ($scope, $filter, $http, $location
                     $scope.allFinal = response.data.data;
                 })
             })
-            .error(errCallback);
+            .error(errorCallback);
     };
 
     $scope.upload = function () {

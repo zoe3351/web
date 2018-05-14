@@ -41,7 +41,7 @@ app.controller("draftmgtController", function ($scope, $filter, $http, $location
             .success((data, status, headers, config) => {
                 alert("Draft updated!")
             })
-            .error(errCallback);
+            .error(errorCallback);
     };
 
     $scope.removeDraft = function (id) {
@@ -53,7 +53,7 @@ app.controller("draftmgtController", function ($scope, $filter, $http, $location
                     $scope.allDraft = res.data.data;
                 });
             })
-            .error(errCallback);
+            .error(errorCallback);
     };
 
     $scope.check = function (data) {

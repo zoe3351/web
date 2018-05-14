@@ -16,24 +16,26 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
     $scope.$watch(function () {
         return $rootScope.userId;
     }, function () {
-        $http.get(SERVER + 'grade/check/' + $rootScope.userId)
-            .success((res, status, headers, config) => {
-                let gradedProposals = convert(res.data);
-                $scope.gradedProposals = gradedProposals;
-            })
-            .error(function (data, status, header, config) {
-                console.log(data);
-            });
+        if ($rootScope.userId) {
+            $http.get(SERVER + 'grade/check/' + $rootScope.userId)
+                .success((res, status, headers, config) => {
+                    let gradedProposals = convert(res.data);
+                    $scope.gradedProposals = gradedProposals;
+                })
+                .error(function (data, status, header, config) {
+                    console.log(data);
+                });
 
-        $http.get(SERVER + 'vote/check/' + $rootScope.userId)
-            .success((res, status, headers, config) => {
-                let votedProposals = convert(res.data);
-                $scope.votedProposals = votedProposals;
-                $scope.voteLeft = 3 - $scope.votedProposals.length;
-            })
-            .error(function (data, status, header, config) {
-                console.log(data);
-            });
+            $http.get(SERVER + 'vote/check/' + $rootScope.userId)
+                .success((res, status, headers, config) => {
+                    let votedProposals = convert(res.data);
+                    $scope.votedProposals = votedProposals;
+                    $scope.voteLeft = 3 - $scope.votedProposals.length;
+                })
+                .error(function (data, status, header, config) {
+                    console.log(data);
+                });
+        }
     }, true);
 
 
@@ -109,9 +111,7 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
                     alert("Vote recorded, thank you!");
                     $route.reload();
                 })
-                .error(function (data, status, header, config) {
-                    alert(JSON.stringify(data));
-                });
+                .error(errorCallback);
         }
     }
 
@@ -135,9 +135,7 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
                         alert("Grade recorded, thank you!");
                         $route.reload();
                     })
-                    .error(function (data, status, header, config) {
-                        alert(JSON.stringify(data));
-                    });
+                    .error(errorCallback);
             } else {
                 alert("Wrong score!");
             }
@@ -163,9 +161,7 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
                 }
                 gradeCallBack(pid);
             })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-            });
+            .error(errorCallback);
     }
 
     $scope.showNewProposal = false;
@@ -207,11 +203,7 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
                     alert("Proposal Submitted!");
                     $route.reload();
                 })
-                .error(function (data, status, header, config) {
-                    alert(JSON.stringify(data));
-                });
-
-
+                .error(errorCallback);
         }
     };
 

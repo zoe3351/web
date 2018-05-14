@@ -50,9 +50,7 @@ app.controller("ballotController", function ($scope, $http, $routeParams, $locat
                 let uid = data.data[0].user_system_id;
                 callback(uid, body);
             })
-            .error(function (data, status, header, config) {
-                alert(JSON.stringify(data));
-            });
+            .error(errorCallback);
     }
 
     $scope.submitForm = function (valid) {
@@ -77,9 +75,7 @@ app.controller("ballotController", function ($scope, $http, $routeParams, $locat
                             alert("Grade Recorded!");
                             initBallot();
                         })
-                        .error(function (data, status, header, config) {
-                            alert(JSON.stringify(data));
-                        });
+                        .error(errorCallback);
                 }
 
                 createUser(body, callback);
@@ -91,9 +87,7 @@ app.controller("ballotController", function ($scope, $http, $routeParams, $locat
                                 alert("Vote for proposal: " + pid + " recorded!");
                                 initBallot();
                             })
-                            .error(function (data, status, header, config) {
-                                alert(JSON.stringify(data));
-                            });
+                            .error(errorCallback);
                     }
                 }
                 createUser(body, callback);
