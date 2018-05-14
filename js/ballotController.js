@@ -14,6 +14,8 @@ app.controller("ballotController", function ($scope, $http, $routeParams, $locat
 
     initBallot();
 
+    $scope.type = "grade";
+
     let convertVote = function (data) {
         if (data != "") {
             data = data.trim().split(/\s+/g);
