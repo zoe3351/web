@@ -1,3 +1,5 @@
+# Technical Specification - Frontend
+
 ## Run the code
 You can find our repo here: https://github.com/zoe3351/web
 
@@ -46,10 +48,10 @@ Form and controls provide validation services, so that the user can be notified 
 
 
 ## Code Structure
-#### Index.html Page
+#### Index.html
 The index.html is the main page of the whole web application. It contains the header, the navigation bar and the footer. And it refers to the other pages in the ng-view div tag. AngularJS does routing, helps to navigate through subpages.
 
-#### App.js file
+#### App.js
 This javaScript file contains the main angular module “catapp”. And this module has a few controllers and services. Each controller handles the functionality and logic of each page, and directives are mainly for supporting services such as data fetching.
 
 Besides, this file also define how angular support routing though $routeProvider in app.config function.
@@ -64,7 +66,7 @@ This folder contains all subpages html files.
 This folder contains all other javascript files.
 
   
-## Main components:
+## Main components
 
 #### Home page
 #### Map page
