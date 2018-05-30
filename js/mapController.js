@@ -3,7 +3,7 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
     $scope.proposals = phaseAndProposal.proposals;
     $scope.gradedProposals = [];
     $scope.votedProposals = [];
-    $scope.voteLeft = 3 - $scope.votedProposals.length;
+    $scope.voteLeft = 1 - $scope.votedProposals.length;
 
     // once $rootScope.distrct loads, filter the proposals list
     $scope.$watch(function () {
@@ -28,9 +28,9 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
 
             $http.get(SERVER + 'vote/check/' + $rootScope.userId)
                 .success((res, status, headers, config) => {
-                    let votedProposals = convert(res.data);
+                    let votedProposals = convert(res.data.filter(x => x.district == $scope.district));
                     $scope.votedProposals = votedProposals;
-                    $scope.voteLeft = 3 - $scope.votedProposals.length;
+                    $scope.voteLeft = 1 - $scope.votedProposals.length;
                 })
                 .error(function (data, status, header, config) {
                     console.log(data);
@@ -89,12 +89,12 @@ app.controller("mapController", function ($scope, $http, $route, $location, $roo
         $http.get(SERVER + 'vote/check/' + $rootScope.userId)
             .success((res, status, headers, config) => {
                 let votedProposals = convert(res.data);
-                if (votedProposals.includes(pid)) {
+                if ($scope.votedProposals.includes(pid)) {
                     alert("You have already voted this proposal!");
                     return;
                 }
-                if (votedProposals.length >= 3) {
-                    alert("You have already voted for 3 proposals!");
+                if ($scope.votedProposals.length >= 1) {
+                    alert("You have already voted for proposal in this district!");
                     return;
                 }
                 voteCallback(pid);

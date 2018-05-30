@@ -49,10 +49,9 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">District</label>
                         </div>
-                        <select class="custom-select form-control" id="districtForm001" ng-model="district1" ng-change="onchange()" ng-options="i for i in [1, 2, 3, 4, 5, 6, 7]"
-                            ng-disabled="originDistrict>0">
+                        <select class="custom-select form-control" id="districtForm001" ng-model="district1" ng-change="onchange()" ng-options="i for i in [1, 2, 3, 4, 5, 6, 7]">
                         </select>
-                        <button type="submit" class="btn btn-danger" ng-disabled="originDistrict>0">Change District</button>
+                        <button type="submit" class="btn btn-danger">Change District</button>
                     </div>
                     <img src="../images/DistrictsMap.jpg" class="rounded mx-auto d-block" alt="">
                 </form>

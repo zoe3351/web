@@ -46,7 +46,7 @@ app.controller("profileController", function ($scope, $route, $location, $rootSc
     }
 
     $scope.changeDistrict = function () {
-        if(!confirm("The district preference CANNOT be changed once set, set district?")){
+        if(!confirm(`Set district to ${$scope.district1}?`)){
             return;
         }
         let url = SERVER + 'user/district/';
